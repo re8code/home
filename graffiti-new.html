@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>새로운 낙서 작성 — Recode Coding</title>
+<meta name="description" content="Recode Coding 원장님의 낙서 게시판에 새 글을 작성합니다." />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Pretendard', 'Pretendard Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        },
+        colors: {
+          brand: {
+            50: '#eefdf5',
+            100: '#d5f9e4',
+            200: '#aef1cd',
+            300: '#74e4ad',
+            400: '#3ecf8e',
+            500: '#18b476',
+            600: '#0e9261',
+            700: '#0c7550',
+            800: '#0d5d42',
+            900: '#0c4c38',
+            950: '#052b20',
+          },
+        },
+        boxShadow: {
+          glow: '0 0 60px -15px rgba(62, 207, 142, 0.45)',
+        },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link
+  rel="stylesheet"
+  as="style"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
+/>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-feature-settings: "tnum"; }
+</style>
+</head>
+
+<body class="bg-[#FBF7EE] text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
+
+  <!-- ===== Header ===== -->
+  <header class="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-slate-950/70 backdrop-blur-lg">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 font-mono font-semibold tracking-tight text-white">
+        <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400 border border-brand-500/30">R/</span>
+        Recode Coding
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-sm text-slate-400">
+        <a href="index.html#philosophy" class="hover:text-white transition-colors">철학</a>
+        <a href="index.html#process" class="hover:text-white transition-colors">훈련 과정</a>
+        <a href="index.html#who" class="hover:text-white transition-colors">대상</a>
+      </nav>
+      <a href="index.html#cta" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-brand-400 transition-colors">
+        1:1 상담 신청
+      </a>
+    </div>
+  </header>
+
+  <main class="pt-16">
+    <section class="mx-auto max-w-4xl px-6 lg:px-8 py-16">
+
+      <!-- ===== Breadcrumb ===== -->
+      <div class="flex items-center gap-2 text-xs text-slate-500">
+        <a href="index.html" class="inline-flex items-center gap-1 hover:text-slate-800 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-3.5 w-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10" /></svg>
+          홈
+        </a>
+        <span>/</span>
+        <a href="graffiti.html" class="hover:text-slate-800 transition-colors">원장님의 낙서</a>
+        <span>/</span>
+        <span class="text-slate-600">새 글 작성</span>
+      </div>
+
+      <h1 class="mt-4 text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">새로운 낙서 작성</h1>
+
+      <div class="mt-8 border-t border-slate-900/10"></div>
+
+      <form id="new-post-form" class="mt-8 space-y-5">
+        <div>
+          <label for="title-input" class="block text-sm font-semibold text-slate-700">제목</label>
+          <input
+            id="title-input"
+            type="text"
+            placeholder="제목을 입력하세요"
+            class="mt-2 w-full rounded-xl border border-slate-900/10 bg-white px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-brand-500/50"
+          />
+        </div>
+        <div>
+          <label for="content-input" class="block text-sm font-semibold text-slate-700">내용</label>
+          <textarea
+            id="content-input"
+            rows="12"
+            placeholder="내용을 입력하세요"
+            class="mt-2 w-full rounded-xl border border-slate-900/10 bg-white px-4 py-3 text-sm leading-relaxed text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-brand-500/50"
+          ></textarea>
+        </div>
+
+        <p id="form-error" class="hidden text-sm text-red-500"></p>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" id="cancel-btn" class="rounded-full border border-slate-900/15 px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-900/30 hover:bg-slate-900/5 transition-colors">취소</button>
+          <button type="submit" id="submit-btn" class="rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-brand-400 transition-colors">등록</button>
+        </div>
+      </form>
+
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="border-t border-slate-900/10">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2 font-mono text-sm text-slate-600">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-brand-500/15 text-brand-600 border border-brand-500/30 text-xs">R/</span>
+        Recode Coding
+      </div>
+      <p class="text-xs text-slate-500">© 2026 Recode Coding. AI시대 프로그래밍 연구소.</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { fetchPosts, createPost } from './assets/js/firebase-client.js';
+    import { requestAdminPassword } from './assets/js/admin-auth.js';
+
+    const formEl = document.getElementById('new-post-form');
+    const titleInput = document.getElementById('title-input');
+    const contentInput = document.getElementById('content-input');
+    const errorEl = document.getElementById('form-error');
+    const submitBtn = document.getElementById('submit-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+
+    function showError(message) {
+      errorEl.textContent = message;
+      errorEl.classList.remove('hidden');
+    }
+
+    cancelBtn.addEventListener('click', () => {
+      window.location.href = 'graffiti.html';
+    });
+
+    formEl.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = titleInput.value.trim();
+      const content = contentInput.value.trim();
+
+      if (!title || !content) {
+        showError('제목과 내용을 모두 입력해주세요.');
+        return;
+      }
+
+      errorEl.classList.add('hidden');
+      submitBtn.disabled = true;
+      submitBtn.textContent = '등록 중...';
+
+      const remote = await fetchPosts();
+      if (remote === null) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '등록';
+        showError('게시글 목록을 불러오지 못해 등록할 수 없습니다. 새로고침 후 다시 시도해주세요.');
+        return;
+      }
+
+      const nextId = Math.max(0, ...remote.map((p) => p.id)) + 1;
+      const today = new Date().toISOString().slice(0, 10);
+
+      const newDocId = await createPost({ id: nextId, title, content, date: today, views: 0 });
+
+      if (newDocId) {
+        window.location.href = `graffiti-detail.html?id=${nextId}`;
+      } else {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '등록';
+        showError('게시글 저장에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      }
+    });
+
+    async function guard() {
+      const ok = await requestAdminPassword('글 작성');
+      if (!ok) {
+        window.location.href = 'graffiti.html';
+      }
+    }
+
+    guard();
+  </script>
+
+</body>
+</html>

@@ -104,49 +104,16 @@
     </div>
   </footer>
 
-  <script src="assets/js/graffiti-data.js"></script>
-  <script>
-    const posts = [...GRAFFITI_POSTS].sort((a, b) => b.id - a.id);
+  <script type="module">
+    import { fetchPosts, updatePost, deletePost } from './assets/js/firebase-client.js';
+    import { requestAdminPassword, confirmAction } from './assets/js/admin-auth.js';
+
     const params = new URLSearchParams(window.location.search);
     const currentId = Number(params.get('id'));
-    const index = posts.findIndex((p) => p.id === currentId);
     const detailEl = document.getElementById('post-detail');
 
-    if (index === -1) {
-      detailEl.innerHTML = `
-        <div class="py-24 text-center">
-          <p class="text-slate-600">존재하지 않는 글입니다.</p>
-          <a href="graffiti.html" class="mt-6 inline-flex items-center rounded-full border border-slate-900/15 px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-900/30 hover:bg-slate-900/5 transition-colors">목록으로</a>
-        </div>`;
-    } else {
-      const post = posts[index];
-      const prevPost = posts[index - 1] || null; // 목록 상단(더 최신 글) 방향
-      const nextPost = posts[index + 1] || null; // 목록 하단(더 이전 글) 방향
-
-      detailEl.innerHTML = `
-        <div class="mt-2">
-          <div class="flex items-center gap-2">
-            <span class="font-mono text-xs text-slate-400">#${post.id}</span>
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 border border-brand-500/30 px-3 py-1 text-xs font-mono text-brand-600">낙서</span>
-          </div>
-          <h2 class="mt-4 text-xl sm:text-2xl font-semibold text-slate-900 leading-snug">${post.title}</h2>
-          <div class="mt-4 flex items-center justify-between border-b border-slate-900/10 pb-4 text-xs text-slate-500 font-mono">
-            <span>${post.date}</span>
-            <span>조회 ${post.views}</span>
-          </div>
-          <div class="py-10 text-slate-700 leading-relaxed whitespace-pre-line">${post.content}</div>
-        </div>
-
-        <div class="border-t border-slate-900/10">
-          ${navRow('이전글', prevPost)}
-          ${navRow('다음글', nextPost)}
-        </div>
-
-        <div class="mt-10 flex justify-center">
-          <a href="graffiti.html" class="inline-flex items-center rounded-full border border-slate-900/15 px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-900/30 hover:bg-slate-900/5 transition-colors">목록</a>
-        </div>
-      `;
-    }
+    let allPosts = [];
+    let currentPost = null;
 
     function navRow(label, target) {
       const body = target
@@ -158,6 +125,129 @@
           ${body}
         </div>`;
     }
+
+    function renderNotFound(message) {
+      detailEl.innerHTML = `
+        <div class="py-24 text-center">
+          <p class="text-slate-600">${message}</p>
+          <a href="graffiti.html" class="mt-6 inline-flex items-center rounded-full border border-slate-900/15 px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-900/30 hover:bg-slate-900/5 transition-colors">목록으로</a>
+        </div>`;
+    }
+
+    function renderDetail() {
+      const index = allPosts.findIndex((p) => p.id === currentId);
+      if (index === -1) {
+        renderNotFound('존재하지 않는 글입니다.');
+        return;
+      }
+
+      currentPost = allPosts[index];
+      const prevPost = allPosts[index - 1] || null; // 목록 상단(더 최신 글) 방향
+      const nextPost = allPosts[index + 1] || null; // 목록 하단(더 이전 글) 방향
+
+      detailEl.innerHTML = `
+        <div class="mt-2">
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs text-slate-400">#${currentPost.id}</span>
+            <span class="inline-flex items-center rounded-full bg-brand-500/10 border border-brand-500/30 px-3 py-1 text-xs font-mono text-brand-600">낙서</span>
+          </div>
+          <h2 class="mt-4 text-xl sm:text-2xl font-semibold text-slate-900 leading-snug">${currentPost.title}</h2>
+          <div class="mt-4 flex items-center justify-between border-b border-slate-900/10 pb-4 text-xs text-slate-500 font-mono">
+            <span>${currentPost.date}</span>
+            <span>조회 ${currentPost.views}</span>
+          </div>
+          <div class="py-10 text-slate-700 leading-relaxed whitespace-pre-line">${currentPost.content}</div>
+        </div>
+
+        <div class="border-t border-slate-900/10">
+          ${navRow('이전글', prevPost)}
+          ${navRow('다음글', nextPost)}
+        </div>
+
+        <div class="mt-10 flex justify-center gap-2">
+          <button type="button" id="edit-btn" class="inline-flex items-center rounded-full border border-brand-500/40 px-6 py-3 text-sm font-semibold text-brand-600 hover:bg-brand-500/10 transition-colors">수정</button>
+          <button type="button" id="delete-btn" class="inline-flex items-center rounded-full border border-red-300 px-6 py-3 text-sm font-semibold text-red-500 hover:bg-red-50 transition-colors">삭제</button>
+          <a href="graffiti.html" class="inline-flex items-center rounded-full border border-slate-900/15 px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-900/30 hover:bg-slate-900/5 transition-colors">목록</a>
+        </div>
+      `;
+
+      document.getElementById('edit-btn').addEventListener('click', handleEdit);
+      document.getElementById('delete-btn').addEventListener('click', handleDelete);
+    }
+
+    function openEditModal(post) {
+      return new Promise((resolve) => {
+        const overlay = document.createElement('div');
+        overlay.className = 'fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 backdrop-blur-sm px-4';
+        overlay.innerHTML = `
+          <div class="w-full max-w-lg rounded-2xl border border-slate-900/10 bg-white p-6 shadow-xl">
+            <h3 class="text-base font-semibold text-slate-900">게시글 수정</h3>
+            <input type="text" class="edit-title mt-4 w-full rounded-xl border border-slate-900/10 px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500/50" />
+            <textarea class="edit-content mt-3 w-full h-48 rounded-xl border border-slate-900/10 px-4 py-2.5 text-sm leading-relaxed focus:outline-none focus:border-brand-500/50"></textarea>
+            <div class="mt-5 flex justify-end gap-2">
+              <button type="button" class="edit-cancel rounded-full px-4 py-2 text-sm text-slate-500 hover:bg-slate-900/5">취소</button>
+              <button type="button" class="edit-save rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-brand-400">저장</button>
+            </div>
+          </div>`;
+        document.body.appendChild(overlay);
+
+        const titleInput = overlay.querySelector('.edit-title');
+        const contentInput = overlay.querySelector('.edit-content');
+        titleInput.value = post.title;
+        contentInput.value = post.content;
+
+        function close(result) {
+          overlay.remove();
+          resolve(result);
+        }
+
+        overlay.querySelector('.edit-cancel').addEventListener('click', () => close(null));
+        overlay.querySelector('.edit-save').addEventListener('click', () => {
+          const title = titleInput.value.trim();
+          const content = contentInput.value;
+          if (!title) return;
+          close({ title, content });
+        });
+      });
+    }
+
+    async function handleEdit() {
+      const ok = await requestAdminPassword('수정');
+      if (!ok) return;
+
+      const result = await openEditModal(currentPost);
+      if (!result) return;
+
+      await updatePost(currentPost.docId, result);
+
+      currentPost.title = result.title;
+      currentPost.content = result.content;
+      renderDetail();
+    }
+
+    async function handleDelete() {
+      const ok = await requestAdminPassword('삭제');
+      if (!ok) return;
+
+      const confirmed = await confirmAction('정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.');
+      if (!confirmed) return;
+
+      await deletePost(currentPost.docId);
+
+      window.location.href = 'graffiti.html';
+    }
+
+    async function init() {
+      const remote = await fetchPosts();
+      if (remote === null) {
+        renderNotFound('게시글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+        return;
+      }
+      allPosts = remote.slice().sort((a, b) => b.id - a.id);
+      renderDetail();
+    }
+
+    init();
   </script>
 
 </body>
