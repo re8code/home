@@ -51,7 +51,7 @@
 </style>
 </head>
 
-<body class="bg-slate-950 text-slate-200 antialiased selection:bg-brand-400/30 selection:text-white">
+<body class="bg-[#FBF7EE] text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
 
   <!-- ===== Header ===== -->
   <header class="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-slate-950/70 backdrop-blur-lg">
@@ -64,7 +64,6 @@
         <a href="index.html#philosophy" class="hover:text-white transition-colors">철학</a>
         <a href="index.html#process" class="hover:text-white transition-colors">훈련 과정</a>
         <a href="index.html#who" class="hover:text-white transition-colors">대상</a>
-        <a href="graffiti.html" class="text-brand-400">원장님의 낙서</a>
       </nav>
       <a href="index.html#cta" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-brand-400 transition-colors">
         1:1 상담 신청
@@ -77,17 +76,17 @@
 
       <!-- ===== Breadcrumb ===== -->
       <div class="flex items-center gap-2 text-xs text-slate-500">
-        <a href="index.html" class="inline-flex items-center gap-1 hover:text-slate-300 transition-colors">
+        <a href="index.html" class="inline-flex items-center gap-1 hover:text-slate-800 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-3.5 w-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10" /></svg>
           홈
         </a>
         <span>/</span>
-        <a href="graffiti.html" class="hover:text-slate-300 transition-colors">원장님의 낙서</a>
+        <a href="graffiti.html" class="hover:text-slate-800 transition-colors">원장님의 낙서</a>
       </div>
 
-      <h1 class="mt-4 text-3xl sm:text-4xl font-bold text-white tracking-tight">원장님의 낙서</h1>
+      <h1 class="mt-4 text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">원장님의 낙서</h1>
 
-      <div class="mt-8 border-t border-white/10"></div>
+      <div class="mt-8 border-t border-slate-900/10"></div>
 
       <div id="post-detail"></div>
 
@@ -95,13 +94,13 @@
   </main>
 
   <!-- ===== Footer ===== -->
-  <footer class="border-t border-white/5">
+  <footer class="border-t border-slate-900/10">
     <div class="mx-auto max-w-7xl px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2 font-mono text-sm text-slate-400">
-        <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-brand-500/15 text-brand-400 border border-brand-500/30 text-xs">R/</span>
+      <div class="flex items-center gap-2 font-mono text-sm text-slate-600">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-brand-500/15 text-brand-600 border border-brand-500/30 text-xs">R/</span>
         Recode Coding
       </div>
-      <p class="text-xs text-slate-600">© 2026 Recode Coding. AI시대 프로그래밍 연구소.</p>
+      <p class="text-xs text-slate-500">© 2026 Recode Coding. AI시대 프로그래밍 연구소.</p>
     </div>
   </footer>
 
@@ -116,8 +115,8 @@
     if (index === -1) {
       detailEl.innerHTML = `
         <div class="py-24 text-center">
-          <p class="text-slate-400">존재하지 않는 글입니다.</p>
-          <a href="graffiti.html" class="mt-6 inline-flex items-center rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-slate-200 hover:border-white/30 hover:bg-white/5 transition-colors">목록으로</a>
+          <p class="text-slate-600">존재하지 않는 글입니다.</p>
+          <a href="graffiti.html" class="mt-6 inline-flex items-center rounded-full border border-slate-900/15 px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-900/30 hover:bg-slate-900/5 transition-colors">목록으로</a>
         </div>`;
     } else {
       const post = posts[index];
@@ -126,32 +125,35 @@
 
       detailEl.innerHTML = `
         <div class="mt-2">
-          <span class="inline-flex items-center rounded-full bg-brand-500/10 border border-brand-500/30 px-3 py-1 text-xs font-mono text-brand-400">낙서</span>
-          <h2 class="mt-4 text-xl sm:text-2xl font-semibold text-white leading-snug">${post.title}</h2>
-          <div class="mt-4 flex items-center justify-between border-b border-white/10 pb-4 text-xs text-slate-500 font-mono">
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs text-slate-400">#${post.id}</span>
+            <span class="inline-flex items-center rounded-full bg-brand-500/10 border border-brand-500/30 px-3 py-1 text-xs font-mono text-brand-600">낙서</span>
+          </div>
+          <h2 class="mt-4 text-xl sm:text-2xl font-semibold text-slate-900 leading-snug">${post.title}</h2>
+          <div class="mt-4 flex items-center justify-between border-b border-slate-900/10 pb-4 text-xs text-slate-500 font-mono">
             <span>${post.date}</span>
             <span>조회 ${post.views}</span>
           </div>
-          <div class="py-10 text-slate-300 leading-relaxed whitespace-pre-line">${post.content}</div>
+          <div class="py-10 text-slate-700 leading-relaxed whitespace-pre-line">${post.content}</div>
         </div>
 
-        <div class="border-t border-white/10">
+        <div class="border-t border-slate-900/10">
           ${navRow('이전글', prevPost)}
           ${navRow('다음글', nextPost)}
         </div>
 
         <div class="mt-10 flex justify-center">
-          <a href="graffiti.html" class="inline-flex items-center rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-slate-200 hover:border-white/30 hover:bg-white/5 transition-colors">목록</a>
+          <a href="graffiti.html" class="inline-flex items-center rounded-full border border-slate-900/15 px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-900/30 hover:bg-slate-900/5 transition-colors">목록</a>
         </div>
       `;
     }
 
     function navRow(label, target) {
       const body = target
-        ? `<a href="graffiti-detail.html?id=${target.id}" class="min-w-0 truncate text-slate-300 hover:text-brand-400 transition-colors">${target.title}</a>`
-        : `<span class="text-slate-600">${label === '이전글' ? '가장 최신 글입니다.' : '가장 마지막 글입니다.'}</span>`;
+        ? `<a href="graffiti-detail.html?id=${target.id}" class="min-w-0 truncate text-slate-700 hover:text-brand-600 transition-colors">${target.title}</a>`
+        : `<span class="text-slate-400">${label === '이전글' ? '가장 최신 글입니다.' : '가장 마지막 글입니다.'}</span>`;
       return `
-        <div class="flex items-center gap-4 border-b border-white/10 py-3 text-sm">
+        <div class="flex items-center gap-4 border-b border-slate-900/10 py-3 text-sm">
           <span class="w-14 shrink-0 text-slate-500">${label}</span>
           ${body}
         </div>`;
