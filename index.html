@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Recode Coding — AI시대, 신입 시니어를 훈련하다</title>
+<meta name="description" content="Recode Coding은 지식을 전달하는 학원이 아니라, AI시대 프로그래밍의 올바른 방향을 제시하고 1:1 맞춤 훈련을 통해 신입 시니어를 길러내는 연구소입니다." />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Pretendard', 'Pretendard Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        },
+        colors: {
+          brand: {
+            50: '#eefdf5',
+            100: '#d5f9e4',
+            200: '#aef1cd',
+            300: '#74e4ad',
+            400: '#3ecf8e',
+            500: '#18b476',
+            600: '#0e9261',
+            700: '#0c7550',
+            800: '#0d5d42',
+            900: '#0c4c38',
+            950: '#052b20',
+          },
+        },
+        boxShadow: {
+          glow: '0 0 60px -15px rgba(62, 207, 142, 0.45)',
+        },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link
+  rel="stylesheet"
+  as="style"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
+/>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-feature-settings: "tnum"; }
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+  .text-gradient {
+    background: linear-gradient(90deg, #74e4ad 0%, #3ecf8e 45%, #18b476 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .card-hover {
+    transition: transform .35s ease, border-color .35s ease, background-color .35s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    border-color: rgba(62, 207, 142, 0.5);
+  }
+</style>
+</head>
+
+<body class="bg-slate-950 text-slate-200 antialiased selection:bg-brand-400/30 selection:text-white">
+
+  <!-- ===== Header ===== -->
+  <header class="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-slate-950/70 backdrop-blur-lg">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2 font-mono font-semibold tracking-tight text-white">
+        <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400 border border-brand-500/30">R/</span>
+        Recode Coding
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-sm text-slate-400">
+        <a href="#philosophy" class="hover:text-white transition-colors">철학</a>
+        <a href="#process" class="hover:text-white transition-colors">훈련 과정</a>
+        <a href="#who" class="hover:text-white transition-colors">대상</a>
+      </nav>
+      <a href="#cta" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-brand-400 transition-colors">
+        1:1 상담 신청
+      </a>
+    </div>
+  </header>
+
+  <main class="pt-16">
+
+    <!-- ===== Hero ===== -->
+    <section class="relative overflow-hidden bg-grid">
+      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-brand-950/40 via-slate-950 to-slate-950"></div>
+      <div class="absolute -top-40 left-1/2 -z-10 h-[560px] w-[560px] -translate-x-1/2 rounded-full bg-brand-500/20 blur-[140px]"></div>
+
+      <div class="mx-auto max-w-5xl px-6 lg:px-8 pt-28 pb-24 text-center">
+        <p class="inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-1.5 text-xs font-mono text-brand-300">
+          AI시대 프로그래밍 연구소
+        </p>
+
+        <h1 class="mt-8 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.15]">
+          지식을 가르치지 않습니다.<br />
+          <span class="text-gradient">데이터의 흐름을 보는 눈</span>을 훈련합니다.
+        </h1>
+
+        <p class="mt-6 text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+          Recode Coding은 1:多 강의식 학원이 아닙니다. 1:1 상담을 통해 커리큘럼을 설계하고,
+          AI시대에 걸맞은 <span class="text-slate-200">신입 시니어</span>로 성장시키는
+          프로그래밍 교육 종합 컨설팅 연구소입니다.
+        </p>
+
+        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="#cta" class="w-full sm:w-auto inline-flex justify-center items-center rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-slate-950 hover:bg-brand-400 shadow-glow transition-colors">
+            1:1 상담 신청하기
+          </a>
+          <a href="#philosophy" class="w-full sm:w-auto inline-flex justify-center items-center rounded-full border border-white/15 px-7 py-3.5 text-sm font-semibold text-slate-200 hover:border-white/30 hover:bg-white/5 transition-colors">
+            교육 철학 더 알아보기
+          </a>
+        </div>
+
+        <div class="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto text-left">
+          <div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <p class="text-2xl font-bold text-white font-mono">1:1</p>
+            <p class="mt-1 text-xs text-slate-500">맞춤형 커리큘럼</p>
+          </div>
+          <div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <p class="text-2xl font-bold text-white font-mono">전달 → 훈련</p>
+            <p class="mt-1 text-xs text-slate-500">지식이 아닌 체화</p>
+          </div>
+          <div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <p class="text-2xl font-bold text-white font-mono">구조·알고리즘</p>
+            <p class="mt-1 text-xs text-slate-500">데이터 흐름 중심</p>
+          </div>
+          <div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <p class="text-2xl font-bold text-white font-mono">신입 시니어</p>
+            <p class="mt-1 text-xs text-slate-500">최종 목표</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 문제의식: 학원 vs 연구소 ===== -->
+    <section class="mx-auto max-w-7xl px-6 lg:px-8 py-24 border-t border-white/5">
+      <div class="max-w-2xl">
+        <p class="text-sm font-mono text-brand-400">WHY RECODE CODING</p>
+        <h2 class="mt-3 text-3xl sm:text-4xl font-bold text-white tracking-tight">
+          왜 우리는 &ldquo;학원&rdquo;이 아니라 &ldquo;연구소&rdquo;인가
+        </h2>
+        <p class="mt-4 text-slate-400 leading-relaxed">
+          일반적인 프로그래밍 학원은 1:多 형태로 정해진 지식만을 전달합니다.
+          Recode Coding은 이 구조와 근본적으로 다릅니다.
+        </p>
+      </div>
+
+      <div class="mt-12 grid md:grid-cols-2 gap-6">
+        <div class="rounded-2xl border border-white/10 bg-white/[0.02] p-8">
+          <p class="text-xs font-mono text-slate-500 mb-4">일반적인 학원</p>
+          <ul class="space-y-4 text-slate-400">
+            <li class="flex gap-3"><span class="text-slate-600">—</span> 1:多 형태의 일방적 지식 전달</li>
+            <li class="flex gap-3"><span class="text-slate-600">—</span> 정형화된 표준 커리큘럼</li>
+            <li class="flex gap-3"><span class="text-slate-600">—</span> 문법과 코드 작성법 중심</li>
+            <li class="flex gap-3"><span class="text-slate-600">—</span> 목표: 강의 수료</li>
+          </ul>
+        </div>
+        <div class="rounded-2xl border border-brand-500/30 bg-brand-500/[0.04] p-8 shadow-glow">
+          <p class="text-xs font-mono text-brand-400 mb-4">Recode Coding</p>
+          <ul class="space-y-4 text-slate-200">
+            <li class="flex gap-3"><span class="text-brand-400">✓</span> 1:1 상담 기반 맞춤 커리큘럼</li>
+            <li class="flex gap-3"><span class="text-brand-400">✓</span> 지식 기반 위의 &ldquo;훈련&rdquo;</li>
+            <li class="flex gap-3"><span class="text-brand-400">✓</span> 구조적 분석·설계, 데이터 흐름 중심</li>
+            <li class="flex gap-3"><span class="text-brand-400">✓</span> 목표: AI시대 신입 시니어로 성장</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 핵심 철학 ===== -->
+    <section id="philosophy" class="mx-auto max-w-7xl px-6 lg:px-8 py-24 border-t border-white/5">
+      <div class="max-w-2xl">
+        <p class="text-sm font-mono text-brand-400">CORE PHILOSOPHY</p>
+        <h2 class="mt-3 text-3xl sm:text-4xl font-bold text-white tracking-tight">
+          중요한 건 코드가 아니라, <span class="text-gradient">데이터의 흐름</span>입니다.
+        </h2>
+        <p class="mt-4 text-slate-400 leading-relaxed">
+          코드와 문법은 도구일 뿐입니다. Recode Coding이 훈련하는 것은 데이터가 어떻게
+          흐르고, 구조화되고, 변형되는가를 설계하는 능력입니다.
+        </p>
+      </div>
+
+      <div class="mt-12 grid md:grid-cols-3 gap-6">
+        <div class="card-hover rounded-2xl border border-white/10 bg-white/[0.02] p-8">
+          <div class="h-10 w-10 rounded-lg bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400 font-mono">01</div>
+          <h3 class="mt-6 text-lg font-semibold text-white">데이터 흐름 중심 사고</h3>
+          <p class="mt-3 text-sm text-slate-400 leading-relaxed">
+            코딩보다 구조화된 데이터의 흐름이 본질입니다. 이 관점 위에서 소프트웨어는 비로소
+            제대로 설계되고 구조화됩니다.
+          </p>
+        </div>
+        <div class="card-hover rounded-2xl border border-white/10 bg-white/[0.02] p-8">
+          <div class="h-10 w-10 rounded-lg bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400 font-mono">02</div>
+          <h3 class="mt-6 text-lg font-semibold text-white">구조와 알고리즘</h3>
+          <p class="mt-3 text-sm text-slate-400 leading-relaxed">
+            구조적 분석과 설계 능력이 코딩 교육의 본질입니다. 문법 암기가 아닌, 문제를
+            구조로 분해하는 힘을 훈련합니다.
+          </p>
+        </div>
+        <div class="card-hover rounded-2xl border border-white/10 bg-white/[0.02] p-8">
+          <div class="h-10 w-10 rounded-lg bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400 font-mono">03</div>
+          <h3 class="mt-6 text-lg font-semibold text-white">Agent Coding 지향</h3>
+          <p class="mt-3 text-sm text-slate-400 leading-relaxed">
+            AI시대 프로그래밍의 기술적 지향점은 Agent Coding입니다. 역설적이게도, 이를 위해서는
+            프로그래밍 언어에 대한 깊은 이해가 선행되어야 합니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 훈련 프로세스 ===== -->
+    <section id="process" class="mx-auto max-w-7xl px-6 lg:px-8 py-24 border-t border-white/5">
+      <div class="max-w-2xl">
+        <p class="text-sm font-mono text-brand-400">TRAINING PROCESS</p>
+        <h2 class="mt-3 text-3xl sm:text-4xl font-bold text-white tracking-tight">
+          지식에서 훈련으로, 훈련에서 성장으로
+        </h2>
+      </div>
+
+      <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="relative rounded-2xl border border-white/10 bg-white/[0.02] p-6">
+          <span class="font-mono text-brand-400 text-sm">STEP 1</span>
+          <h3 class="mt-3 font-semibold text-white">1:1 상담</h3>
+          <p class="mt-2 text-sm text-slate-400 leading-relaxed">개인의 배경과 목표를 파악하는 1:1 심층 상담</p>
+        </div>
+        <div class="relative rounded-2xl border border-white/10 bg-white/[0.02] p-6">
+          <span class="font-mono text-brand-400 text-sm">STEP 2</span>
+          <h3 class="mt-3 font-semibold text-white">맞춤 커리큘럼 설계</h3>
+          <p class="mt-2 text-sm text-slate-400 leading-relaxed">구조·알고리즘·데이터 흐름 중심의 개별 커리큘럼 구성</p>
+        </div>
+        <div class="relative rounded-2xl border border-white/10 bg-white/[0.02] p-6">
+          <span class="font-mono text-brand-400 text-sm">STEP 3</span>
+          <h3 class="mt-3 font-semibold text-white">지식 기반 훈련</h3>
+          <p class="mt-2 text-sm text-slate-400 leading-relaxed">전달이 아닌 체화. Agent Coding을 위한 언어 이해와 설계 훈련</p>
+        </div>
+        <div class="relative rounded-2xl border border-brand-500/30 bg-brand-500/[0.04] p-6">
+          <span class="font-mono text-brand-400 text-sm">STEP 4</span>
+          <h3 class="mt-3 font-semibold text-white">신입 시니어</h3>
+          <p class="mt-2 text-sm text-slate-300 leading-relaxed">AI시대, 스스로 판단하고 지시할 수 있는 신입 시니어로 성장</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 대상 ===== -->
+    <section id="who" class="mx-auto max-w-7xl px-6 lg:px-8 py-24 border-t border-white/5">
+      <div class="rounded-3xl border border-white/10 bg-white/[0.02] p-10 sm:p-14 grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <p class="text-sm font-mono text-brand-400">WHO WE TRAIN</p>
+          <h2 class="mt-3 text-3xl font-bold text-white tracking-tight">대학생을 위한<br />프로그래밍 종합 컨설팅</h2>
+          <p class="mt-4 text-slate-400 leading-relaxed">
+            Recode Coding은 대학생을 대상으로, 단순 코딩 강의를 넘어 커리어 전체를
+            바라보는 프로그래밍 교육 종합 컨설팅을 제공합니다.
+          </p>
+        </div>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3 text-slate-300">
+            <span class="mt-1 h-1.5 w-1.5 rounded-full bg-brand-400 shrink-0"></span>
+            AI시대 프로그래밍의 올바른 방향을 제시받고 싶은 대학생
+          </li>
+          <li class="flex items-start gap-3 text-slate-300">
+            <span class="mt-1 h-1.5 w-1.5 rounded-full bg-brand-400 shrink-0"></span>
+            문법 암기가 아닌 구조적 사고를 훈련하고 싶은 대학생
+          </li>
+          <li class="flex items-start gap-3 text-slate-300">
+            <span class="mt-1 h-1.5 w-1.5 rounded-full bg-brand-400 shrink-0"></span>
+            표준화된 강의가 아닌 1:1 맞춤 커리큘럼을 원하는 대학생
+          </li>
+          <li class="flex items-start gap-3 text-slate-300">
+            <span class="mt-1 h-1.5 w-1.5 rounded-full bg-brand-400 shrink-0"></span>
+            AI시대 &ldquo;신입 시니어&rdquo;로 커리어를 시작하고 싶은 대학생
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section id="cta" class="relative overflow-hidden border-t border-white/5">
+      <div class="absolute -bottom-40 left-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-brand-500/20 blur-[140px]"></div>
+      <div class="mx-auto max-w-3xl px-6 lg:px-8 py-28 text-center">
+        <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+          지금, 1:1 상담으로 시작하세요.
+        </h2>
+        <p class="mt-4 text-slate-400 leading-relaxed">
+          당신에게 맞는 커리큘럼은 상담에서부터 시작됩니다.
+          Recode Coding과 함께 AI시대 신입 시니어로 성장하세요.
+        </p>
+        <div class="mt-8">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" class="inline-flex items-center rounded-full bg-brand-500 px-8 py-4 text-sm font-semibold text-slate-950 hover:bg-brand-400 shadow-glow transition-colors">
+            1:1 상담 신청하기
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="border-t border-white/5">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2 font-mono text-sm text-slate-400">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-brand-500/15 text-brand-400 border border-brand-500/30 text-xs">R/</span>
+        Recode Coding
+      </div>
+      <p class="text-xs text-slate-600">© 2026 Recode Coding. AI시대 프로그래밍 연구소.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
