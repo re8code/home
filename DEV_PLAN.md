@@ -5,7 +5,7 @@
 ## 1. 기술 스택
 - **유지**: 빌드 도구 없는 정적 HTML, Tailwind CDN, Vanilla JS ES Module. 페이지 규모(5~7개) 대비 빌드 파이프라인 도입은 과함 — GitHub Pages 루트 배포와의 궁합도 그대로 유지.
 - **신규 도입**: Swiper(캐러셀, `mockup.html`에서 이미 실험함), AOS(스크롤 진입 애니메이션, 역시 `mockup.html`에서 실험함), GSAP(추가 인터랙션 강화용, 신규 도입).
-- **디자인 도구**: 지금은 `design` 스킬(Artifact 캔버스)로 목업 스케치. Figma MCP는 추후 적절한 시점에 연결해 효율성·정밀도를 높일 예정(현재 등록된 MCP 서버들은 모두 삭제 대상이므로 무시).
+- **디자인 도구**: `design` 스킬(Artifact 캔버스)로 목업 스케치. Figma MCP는 `figma@claude-plugins-official` 플러그인(project scope, `.claude/settings.json`의 `enabledPlugins`로 관리 — git 동기화됨)으로 연결 완료(2026-08-21), 인증도 완료된 상태.
 
 ## 2. 브랜치 전략
 - `dev` 브랜치에서 작업 → 로컬 서버(`python3 -m http.server 8765`)로 확인 → `main`으로 merge → GitHub Pages 자동 배포.
