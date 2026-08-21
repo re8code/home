@@ -8,8 +8,8 @@
 - **디자인 도구**: `design` 스킬(Artifact 캔버스)로 목업 스케치. Figma MCP는 `figma@claude-plugins-official` 플러그인(project scope, `.claude/settings.json`의 `enabledPlugins`로 관리 — git 동기화됨)으로 연결 완료(2026-08-21), 인증도 완료된 상태.
 
 ## 2. 브랜치 전략
-- `dev` 브랜치에서 작업 → 로컬 서버(`python3 -m http.server 8765`)로 확인 → `main`으로 merge → GitHub Pages 자동 배포.
-- 현재 로컬 `dev`에 `origin/dev` 대비 미푸시 커밋(v0.10)이 있고, 여러 미커밋 변경사항(설정 정리, `CLAUDE.md`/`NEED.md`/`PRD.md` 등)이 있음 — 리뉴얼 착수 전 별도로 정리 필요.
+- `dev` 브랜치에서 작업 → 로컬 서버(`python3 -m http.server 8765`)로 확인 → (평소에는) `main`으로 merge → GitHub Pages 자동 배포.
+- **`index.html` 리뉴얼 작업 중에는 `main` 병합 보류(2026-08-21 확정)**: `index.html`을 직접 건드리는 작업이라 `dev`에서 계속 커밋만 쌓고, `main` merge(=실서비스 배포)는 리뉴얼이 일단락될 때까지 하지 않는다.
 
 ## 3. 단계별 계획
 
@@ -22,16 +22,11 @@
 - 히어로·철학 섹션 재작성 (`NEED.md`의 3대 기둥 구조 기반).
 - Swiper/AOS/GSAP 적용.
 
-### Phase 2 — 신규 페이지 제작
-- 프로젝트 의뢰 접수 페이지.
-- 오프라인 수업 문의 페이지.
-- 폼 데이터 처리 방식은 `PRD.md` 미결 사항 확정 후 결정 (기존 Firestore 패턴 재사용 유력).
-
-### Phase 3 — 낙서장 톤 조정
+### Phase 2 — 낙서장 톤 조정
 - `graffiti*.html`의 디자인 톤을 새 브랜드 톤에 맞춰 조정 (Firestore CRUD 로직은 변경하지 않음).
 
-### Phase 4 — 외부 연동 정리
-- OJ(`oj.recode.ai.kr`)/LMS(`lms.recode.ai.kr`) 서브도메인 오픈 시점에 맞춰 링크 활성화·"준비중" 배지 정리.
+### Phase 3 — 외부 연동 정리
+- OJ(`oj.recode.ai.kr`)/LMS(`lms.recode.ai.kr`)/business(`business.recode.ai.kr`)/studio(`studio.recode.ai.kr`) 4개 서브도메인은 각각 별도 프로젝트로 직접 제작 중 — 이 저장소는 오픈 시점에 맞춰 링크 활성화·"준비중" 배지 정리만 담당.
 
 ## 4. 작업 관례
 - 각 Phase 착수 시 `tasks/*.md`에 작업 지시 기록, 완료 후 `report/YYYY-MM-DD-*.md`에 진행 보고서 작성 (기존 관례 유지).
