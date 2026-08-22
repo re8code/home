@@ -24,6 +24,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `graffiti.html` / `graffiti-detail.html` / `graffiti-new.html` — "원장님의 낙서" 게시판 (목록 / 상세·수정·삭제 / 작성). Firestore CRUD를 `assets/js/firebase-client.js`에서 가져와 사용하며, `<script type="module">` 인라인 블록에서 DOM과 연결한다.
 - `mockup.html` — 훈련 코스 페이지 목업(Epic Games Store 레이아웃 참고, 실제 서비스 페이지 아님). Swiper(캐러셀)와 AOS(스크롤 애니메이션)를 CDN으로 추가 로드하는 유일한 페이지.
 - 모든 페이지 하단에서 `assets/js/mobile-menu.js`를 `defer`로 로드해 모바일 내비게이션 토글(`#mobile-menu-btn` / `#mobile-menu`)을 처리한다.
+- `assets/image/` — 외부에서 가져온 로고·아이콘 등 이미지 리소스(예: `mockup.html` Language 카드의 언어별 로고 PNG). 각 파일의 출처·라이선스는 도입 시점의 `report/*.md`에 기록되어 있으니, 재배포 범위를 확인하려면 해당 보고서를 참고한다.
 
 ## Firebase 연동 (`assets/js/`)
 

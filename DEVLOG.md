@@ -36,3 +36,18 @@
   3. 게이지/자동 전환 주기를 6초 → 3초로 단축.
   - 클로드 인 크롬으로 로컬 서버 확인: 버튼 높이 균등화, 클릭 시 전환 애니메이션 동작, 콘솔 에러 없음 확인.
 - 히어로 슬라이드 전환 후속 반영: 텍스트만 슬라이딩되던 것을 배경 블롭(`hero-blob-1/2`)까지 포함해 하나의 장면(`#hero-scene`)으로 묶어 함께 슬라이딩/페이드되도록 확장. `hero-banner`(둥근 사각 틀)는 고정 창 역할만 유지. 클로드 인 크롬으로 전환 중간 프레임 확인, 콘솔 에러 없음.
+
+## 2026-08-22
+- origin 전체 브랜치(`main`, `dev`)를 fetch하고, 로컬에 없던 `dev` 브랜치를 `origin/dev` 추적 브랜치로 생성해 동기화. 이후 `dev`로 체크아웃.
+- `tasks/task-layer-01.md` 체크박스를 실제 반영 상태(v0.15 커밋에서 이미 완료)에 맞춰 `[x]`로 갱신.
+- `tasks/task-layer-02.md` 반영해 `mockup.html` Language(01) 섹션을 Swiper 캐러셀에서 정적 그리드로 교체(상세: `report/2026-08-22-mockup-language-layer-02.md`):
+  - 카드 구성을 C/C++, Java, Python, JavaScript, Dart 5개로 확정(Go/Rust 카드 제거, Dart/Flutter 카드 신규 작성).
+  - 좌우 이동 화살표·Swiper 마크업 제거, `grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5`로 5개 카드가 동일 크기·전체 너비로 배치되도록 변경. 다른 카테고리 섹션은 Swiper 유지.
+  - 클로드 인 크롬으로 로컬 서버 확인: 카드 순서/동일 크기 배치, 화살표 미노출, 콘솔 에러 없음.
+- 사용자가 Language 5개 카드를 직접 수정(뱃지 제거, 라벨 전체 표기)한 것을 클로드 인 크롬으로 확인 — 마크업/콘솔 정상.
+- Language 5개 카드의 커버아트 텍스트 라벨을 언어별 공식 로고 스타일 인라인 SVG 아이콘(C++/Java/Python/JavaScript/Dart)으로 교체, 흰색 아이콘 플레이트 위에 배치(상세: `report/2026-08-22-mockup-language-layer-02.md`). Dart 아이콘은 1차 시안이 너무 얇아 facet 좌표를 재조정. 클로드 인 크롬으로 확대 검수, 콘솔 에러 없음.
+- 손그림 SVG 대신 실제 공식 로고 리소스를 웹에서 찾아 `assets/image/`(신규 폴더)에 PNG로 다운로드: C++/Java/Python/JavaScript는 `abranhe/programming-languages-logos`(MIT), Dart는 Wikimedia Commons(Google 공식, CC BY 4.0). 이후 사용자 요청으로 Java/Python/Dart는 "언어명이 함께 구성된" 워드마크 버전(devicon MIT, `*-original-wordmark.svg`)을 wsrv.nl로 PNG 변환해 재다운로드, Pillow로 투명 배경 검증 후 교체.
+- `mockup.html` Language 5개 카드의 인라인 SVG 아이콘을 `assets/image/*.png` 실사 로고 이미지로 최종 교체. 흰색 플레이트를 고정 정사각형 대신 이미지 비율에 맞는 패딩 기반으로 변경. 클로드 인 크롬으로 로컬 서버 재확인, 콘솔 에러 없음.
+- 로고 이미지의 흰색 플레이트를 제거하고 그린 그라디언트 배경 위에 직접 배치(`drop-shadow-lg`만 유지), 이미지 크기도 전반적으로 확대(cpp/js h-14→h-24, java/python h-20→h-28, dart h-9→h-14). 5개 파일 모두 투명 배경이라 별도 편집 없이 바로 적용, 클로드 인 크롬으로 재확인·콘솔 에러 없음.
+- Language 카드 커버아트 그라디언트가 너무 어두워(brand-300→800) 로고 일부가 묻힌다는 피드백 → 브랜드 팔레트 내 밝은 조합(brand-100→400, `#d5f9e4`→`#3ecf8e`)으로 재설정(상세: `report/2026-08-22-mockup-language-layer-02.md`). 다른 카테고리 섹션 색상은 그대로. 클로드 인 크롬으로 재확인, 콘솔 에러 없음.
+- Language 5개 카드 소개 문구를 언어별 고유 특징·학습적 의미 중심으로 재작성(C/C++ 메모리 직접 관리, Java 강타입·대규모 구조, Python AI 시대 표준어, JavaScript 브라우저 유일성·비동기, Dart 하나의 코드로 여러 플랫폼). 클로드 인 크롬으로 렌더링 확인, 콘솔 에러 없음.
