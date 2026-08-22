@@ -2,7 +2,7 @@
 
 이 문서는 "Recode Coding" 서비스 전체(이 저장소 + 외부 연동 서브도메인)의 아키텍처를 정리한다. 구조가 바뀔 때마다(신규 서브도메인 오픈, 백엔드 교체, 배포 방식 변경 등) 이 문서를 함께 갱신한다. 특정 시점의 상세 작업 근거는 `../report/*.md`, 요구사항 변화는 `PRD.md`/`DEV_PLAN.md`(같은 `doc/` 폴더)를 참고.
 
-- 최종 갱신: 2026-08-22 (`src/mockup.html` 내용을 `index.html`로 흡수, `mockup.html` 삭제)
+- 최종 갱신: 2026-08-22 (`dev`(v0.20) → `main` 병합·실배포 완료)
 
 ## 1. 한눈에 보기
 
@@ -37,7 +37,7 @@ graph TD
 - **저장소**: `git@github.com:re8code/home.git` (`main` = 실서비스 배포 브랜치, `dev` = 작업 브랜치)
 - **호스팅**: GitHub Pages, `main` 브랜치 `/ (root)` 소스(branch 배포는 `/ (root)` 또는 `/docs`만 지원, 임의 폴더 불가). `index.html`만 저장소 루트에 있어 별도 빌드 없이 그대로 서빙되고, 나머지 페이지는 `src/`에 모아뒀다(2026-08-22).
 - **커스텀 도메인**: 저장소 루트 `CNAME` 파일에 `recode.ai.kr` 기재 → GitHub Pages가 이 값으로 서빙. DNS/HTTPS 설정 절차는 `../report/2026-07-29-deployment-guide.md` 참고(문서 작성 당시 예시 도메인은 dothome이었으나 현재 실제 연결 도메인은 `recode.ai.kr`).
-- **브랜치 전략**: `dev`에서 작업 → 로컬 서버(`python3 -m http.server 8765`)로 검증 → `main`으로 merge하는 시점이 곧 실배포. **`index.html` 리뉴얼이 진행 중인 동안은 `main` merge를 보류**하고 `dev`에만 커밋을 쌓는다(2026-08-21 확정). `index.html` 콘텐츠 자체는 2026-08-22 완료됐지만, `main` 병합은 사용자가 별도로 지시할 때 진행한다.
+- **브랜치 전략**: `dev`에서 작업 → 로컬 서버(`python3 -m http.server 8765`)로 검증 → `main`으로 merge하는 시점이 곧 실배포. `index.html` 리뉴얼이 진행되는 동안(2026-08-21~22)은 `main` merge를 보류하고 `dev`에만 커밋을 쌓았으나, 사용자 지시로 2026-08-22 `dev`(v0.20, `2623db0`)를 `main`에 fast-forward 병합·push 완료 — GitHub Pages가 재배포되어 `recode.ai.kr`에 실제 반영됨. 이후로는 다시 일반적인 흐름(작업은 `dev`, 실배포에 영향 주는 `main` 병합은 항상 사용자의 명시적 지시가 있을 때)을 따른다.
 - **빌드 파이프라인 없음**: 페이지 수(5~7개) 대비 빌드 도구 도입은 과하다고 판단해 순수 정적 HTML + Tailwind CDN + Vanilla JS ES Module 구조를 유지하기로 결정(`DEV_PLAN.md` §1).
 
 ## 3. 프론트엔드 구조 (이 저장소)
