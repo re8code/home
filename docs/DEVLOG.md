@@ -132,3 +132,7 @@
 - 사용자 지시로 `v0.20` 커밋(index.html 서브바 정리, Language 4개 언어 페이지 신설, GNB 흔들림 해결 등 이번 세션 전체) 생성·`dev`에 push 완료(커밋 `2623db0`).
 - 사용자 지시로 `dev`(v0.20)를 `main`에 병합 — `index.html` 리뉴얼 기간 동안 걸어뒀던 "main 병합 보류" 방침(2026-08-21 확정)을 사용자의 명시적 지시로 해제하고 fast-forward 병합·push. `main` push로 GitHub Pages가 자동 재배포되어 `recode.ai.kr`에 v0.10~v0.20의 전체 리뉴얼(index.html 전면 개편, src//doc/ 구조 재편, lang-*.html 5개, GNB 통일 등)이 실제로 반영됨. 병합 후 로컬은 다시 `dev` 브랜치로 전환해 작업 재개 상태 유지.
   - `doc/DEV_PLAN.md`(§2 브랜치 전략 — 병합 보류 해제 기록), `doc/ARCHITECTURE.md`(§2 브랜치 전략 갱신, 최종 갱신일 메모를 병합 완료로 갱신)에 반영.
+- 사용자가 `doc/` 폴더명을 `docs/`로 직접 변경(`git mv` 없이 파일시스템에서 이름만 변경 — git에는 4개 파일 삭제+미추적 신규 폴더로 인식됨). `CLAUDE.md`와 "살아있는" 문서(`ARCHITECTURE.md`)의 `doc/` 접두사 참조를 `docs/`로 갱신 — `DEVLOG.md`(이 문서) 안의 과거 항목들은 저장소 관례(과거 기록 재작성하지 않음)에 따라 `doc/`로 그대로 유지.
+  - `CLAUDE.md`: "저장소 관례" 절의 `doc/` 접두사 설명·5개 문서 경로 전부 `docs/`로 치환.
+  - `docs/ARCHITECTURE.md`: 1절 인트로 문장·§3 표의 `doc/DEV_PLAN.md` 참조 2곳을 `docs/`로 수정.
+  - `docs/DEV_PLAN.md`/`docs/PRD.md`는 원래 상대경로(`../CLAUDE.md`, 파일명만)로 서로를 참조하고 있어 수정 불필요함을 grep으로 확인.

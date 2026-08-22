@@ -1,6 +1,6 @@
 # ARCHITECTURE.md — 서비스 아키텍처
 
-이 문서는 "Recode Coding" 서비스 전체(이 저장소 + 외부 연동 서브도메인)의 아키텍처를 정리한다. 구조가 바뀔 때마다(신규 서브도메인 오픈, 백엔드 교체, 배포 방식 변경 등) 이 문서를 함께 갱신한다. 특정 시점의 상세 작업 근거는 `../report/*.md`, 요구사항 변화는 `PRD.md`/`DEV_PLAN.md`(같은 `doc/` 폴더)를 참고.
+이 문서는 "Recode Coding" 서비스 전체(이 저장소 + 외부 연동 서브도메인)의 아키텍처를 정리한다. 구조가 바뀔 때마다(신규 서브도메인 오픈, 백엔드 교체, 배포 방식 변경 등) 이 문서를 함께 갱신한다. 특정 시점의 상세 작업 근거는 `../report/*.md`, 요구사항 변화는 `PRD.md`/`DEV_PLAN.md`(같은 `docs/` 폴더)를 참고.
 
 - 최종 갱신: 2026-08-22 (`dev`(v0.20) → `main` 병합·실배포 완료)
 
@@ -47,7 +47,7 @@ graph TD
 | 페이지 | 역할 | 비고 |
 | --- | --- | --- |
 | `index.html` (루트) | 랜딩 / 5갈래 내비게이션 허브 + 훈련 코스 5개 섹션(Language/Algorithm/Web & WebApp/Unity/Agent AI) + 핵심 철학 + CTA | OJ/낙서장/LMS/business/studio 진입점 + 1:1 상담 CTA(Google Forms 직결). Epic Games Store 레이아웃 참고 시안(`src/mockup.html`)을 2026-08-22 최종안으로 채택해 전면 교체, `mockup.html`은 삭제. Swiper·AOS를 CDN으로 추가 로드하는 유일한 페이지. `src/` 페이지로는 `src/` 접두사로 링크 |
-| `src/graffiti.html` / `src/graffiti-detail.html` / `src/graffiti-new.html` | "원장님의 낙서" 게시판 (목록/상세·수정·삭제/작성) | 유일하게 Firebase와 통신하는 페이지군. 헤더는 GNB로 통일됐지만 본문 디자인 톤 조정(`doc/DEV_PLAN.md` Phase 2)은 아직 미착수 |
+| `src/graffiti.html` / `src/graffiti-detail.html` / `src/graffiti-new.html` | "원장님의 낙서" 게시판 (목록/상세·수정·삭제/작성) | 유일하게 Firebase와 통신하는 페이지군. 헤더는 GNB로 통일됐지만 본문 디자인 톤 조정(`docs/DEV_PLAN.md` Phase 2)은 아직 미착수 |
 | `src/lang-cp.html` / `lang-jv.html` / `lang-py.html` / `lang-js.html` / `lang-dt.html` | Language 코스 언어별 상세 페이지 (C/C++ · Java · Python · JavaScript · Dart, 5개) | `index.html` Language 카드에서 연결되는 실제 페이지. 커리큘럼 목록 UI는 korea-pass.kr 공지사항 목록 페이지를 벤치마크. 각 페이지 상단 언어 바로가기 탭으로 5개 페이지가 서로 연결됨(2026-08-22 전부 제작 완료) |
 
 - **GNB**: `index.html` / `src/graffiti*.html`(3개) / `src/lang-*.html`(5개) 총 9개 페이지 전부 헤더(`<header>` 전체 — 로고/nav/CTA/모바일 메뉴)가 동일한 마크업(페이지별 커스텀 nav 링크 없음, 2026-08-22 통일). 상세: `../CLAUDE.md` "페이지 구조".
