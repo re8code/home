@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>병합 정렬(Merge Sort) 시각화 — 훈련 코스 | Recode Coding</title>
+<meta name="description" content="배열을 절반씩 나눠 정렬한 뒤 하나로 합치는 병합 정렬 과정을 한 단계씩, 또는 자동 재생으로 직접 확인하는 시각화 페이지. 리코드 코딩의 알고리즘 훈련 코스." />
+
+<style>
+  @view-transition { navigation: auto; }
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; background-color: rgba(12,12,15,.95); border-bottom: 1px solid rgba(255,255,255,.1); }
+  header > div:first-child { max-width: 1440px; margin: 0 auto; padding: 0 1.5rem; height: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  header nav { display: flex; align-items: center; gap: 1.5rem; }
+  header #mobile-menu { display: none; }
+  header a { color: #fff; text-decoration: none; }
+  header nav a { color: #94a3b8; }
+  header a[aria-disabled="true"] { color: #64748b; }
+  header nav + a { display: inline-flex; align-items: center; background-color: #18b476; color: #fff; padding: .5rem 1rem; border-radius: 9999px; font-weight: 600; font-size: .875rem; }
+  header span.rounded-lg { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: .5rem; background-color: rgba(24,180,118,.15); color: #3ecf8e; border: 1px solid rgba(24,180,118,.3); }
+  @media (min-width: 768px) { header #mobile-menu-btn { display: none; } }
+  main { padding-top: 4rem; }
+</style>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Pretendard', 'Pretendard Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        },
+        colors: {
+          brand: {
+            50: '#eefdf5',
+            100: '#d5f9e4',
+            200: '#aef1cd',
+            300: '#74e4ad',
+            400: '#3ecf8e',
+            500: '#18b476',
+            600: '#0e9261',
+            700: '#0c7550',
+            800: '#0d5d42',
+            900: '#0c4c38',
+            950: '#052b20',
+          },
+        },
+        boxShadow: {
+          glow: '0 0 60px -15px rgba(62, 207, 142, 0.45)',
+        },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link
+  rel="stylesheet"
+  as="style"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
+/>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-feature-settings: "tnum"; background-color: #FBF7EE; }
+  .cover-art {
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,0.10), transparent 55%),
+      linear-gradient(155deg, var(--from), var(--to));
+  }
+  .filter-tab.is-active {
+    background-color: #0f172a;
+    color: #fff;
+  }
+  .viz-bar {
+    transition: height .3s ease, background-color .25s ease;
+  }
+  .code-line {
+    display: block;
+    border-radius: .375rem;
+    padding: .125rem .5rem;
+    transition: background-color .2s ease;
+  }
+  .code-line.is-active {
+    background-color: rgba(24, 180, 118, 0.28);
+  }
+  .viz-btn:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+  }
+</style>
+</head>
+
+<body class="text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
+
+  <!-- ===== Header (GNB) ===== -->
+  <header class="fixed top-0 inset-x-0 z-[60] bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 h-16 flex items-center justify-between gap-8">
+      <div class="flex items-center gap-6">
+        <a href="../index.html" class="flex items-center gap-2 font-mono font-semibold tracking-tight text-white">
+          <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400 border border-brand-500/30">R/</span>
+          <span class="hidden sm:inline">Recode Coding</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="hidden md:inline-flex items-center gap-1.5 text-sm text-slate-500 cursor-not-allowed">
+          회사 소개
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+      </div>
+      <div class="hidden md:flex items-center gap-8">
+        <nav class="flex items-center gap-6 text-sm text-slate-400">
+          <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+          <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            LMS
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            business
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            studio
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+        </nav>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-400 transition-colors">
+          1:1 상담 신청
+        </a>
+      </div>
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
+        aria-label="메뉴 열기"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg data-icon="open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-5 w-5">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg data-icon="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="hidden h-5 w-5">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-[#0c0c0f]/95 backdrop-blur">
+      <nav class="flex flex-col px-6 py-4 gap-4 text-sm text-slate-300">
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          회사 소개
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+        <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          LMS
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          business
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          studio
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-brand-500 px-4 py-2 font-semibold text-white hover:bg-brand-400 transition-colors">1:1 상담 신청</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pt-16">
+
+    <!-- ===== 페이지 헤더: 브레드크럼 + 타이틀 ===== -->
+    <section class="mx-auto max-w-5xl px-6 lg:px-8 pt-12">
+      <nav class="flex items-center gap-2 text-sm text-slate-500" aria-label="breadcrumb">
+        <a href="../index.html" class="inline-flex items-center hover:text-slate-900 transition-colors" aria-label="홈">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+        </a>
+        <span>/</span>
+        <span class="text-slate-900 font-medium">병합 정렬</span>
+      </nav>
+
+      <div class="mt-6 flex items-end gap-5">
+        <div class="cover-art h-16 w-16 shrink-0 rounded-2xl flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+          <span class="text-lg font-bold text-white font-mono">Mrg</span>
+        </div>
+        <div>
+          <p class="text-xs font-mono font-semibold text-teal-700 tracking-wide">SORTING</p>
+          <h1 class="mt-1 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">병합 정렬 (Merge Sort)</h1>
+        </div>
+      </div>
+      <p class="mt-5 max-w-2xl text-slate-500 leading-relaxed">
+        배열을 절반씩 나눠 각각 정렬한 뒤 하나로 합치는 과정을 한 단계씩, 또는 자동 재생으로 직접 확인하세요.
+        배열 상태와 관계없이 항상 비슷한 속도로 동작한다는 점을 다른 정렬과 비교할 수 있습니다.
+      </p>
+
+      <div class="mt-8 border-b border-slate-200"></div>
+    </section>
+
+    <!-- ===== 시각화 ===== -->
+    <section class="mx-auto max-w-5xl px-6 lg:px-8 mt-10">
+      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6 sm:p-8">
+
+        <!-- 배열 프리셋 -->
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" data-preset="random" class="preset-btn filter-tab is-active rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">무작위</button>
+            <button type="button" data-preset="sorted" class="preset-btn filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">정렬됨</button>
+            <button type="button" data-preset="reverse" class="preset-btn filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">역순</button>
+            <button type="button" data-preset="nearly" class="preset-btn filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">거의 정렬됨</button>
+          </div>
+          <button type="button" id="btn-shuffle" class="inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-slate-700 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg>
+            새로 섞기
+          </button>
+        </div>
+
+        <!-- 막대 그래프 -->
+        <div id="bars" class="mt-6 h-64 flex items-end gap-1.5 sm:gap-2 border-b border-slate-200 pb-2"></div>
+        <div id="indices" class="flex gap-1.5 sm:gap-2 text-center text-[11px] font-mono text-slate-400"></div>
+
+        <!-- 상태 표시 -->
+        <p id="viz-desc" class="mt-5 min-h-[2.5rem] rounded-lg bg-slate-50 border border-slate-100 px-4 py-2.5 text-sm text-slate-700 leading-relaxed">재생 버튼을 눌러 정렬을 시작하세요.</p>
+
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
+          <p id="viz-stats" class="text-sm text-slate-500 font-mono">비교 0회 · 기록 0회</p>
+          <p id="viz-progress" class="text-sm text-slate-400 font-mono">1 / 1</p>
+        </div>
+
+        <!-- 컨트롤 -->
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-2">
+            <button type="button" id="btn-first" class="viz-btn inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="처음으로">|◀</button>
+            <button type="button" id="btn-prev" class="viz-btn inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="이전 단계">◀</button>
+            <button type="button" id="btn-play" class="viz-btn inline-flex h-11 w-11 items-center justify-center rounded-full bg-brand-500 hover:bg-brand-400 text-white shadow-sm" aria-label="재생">▶</button>
+            <button type="button" id="btn-next" class="viz-btn inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="다음 단계">▶</button>
+            <button type="button" id="btn-last" class="viz-btn inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="마지막으로">▶|</button>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-400 mr-1">속도</span>
+            <button type="button" data-speed="1000" class="speed-btn filter-tab rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors">느리게</button>
+            <button type="button" data-speed="500" class="speed-btn filter-tab is-active rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors">보통</button>
+            <button type="button" data-speed="180" class="speed-btn filter-tab rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors">빠르게</button>
+          </div>
+        </div>
+
+        <!-- 범례 -->
+        <div class="mt-5 flex flex-wrap items-center gap-4 text-xs text-slate-500">
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded bg-slate-300"></span>대기</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded bg-indigo-200"></span>병합 구간</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded bg-amber-400"></span>비교 중</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded bg-rose-400"></span>방금 기록됨</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded bg-brand-500"></span>정렬 완료</span>
+        </div>
+      </div>
+
+      <!-- 의사코드 -->
+      <div class="mt-4 rounded-2xl border border-slate-200 bg-slate-950 shadow-sm p-6">
+        <p class="text-xs font-mono font-semibold text-slate-400 tracking-wide mb-3">PSEUDOCODE (merge 단계)</p>
+        <pre class="text-sm font-mono text-slate-200 leading-relaxed overflow-x-auto"><code
+          ><span class="code-line" data-line="1">merge(array, lo, mid, hi):</span
+          ><span class="code-line pl-6" data-line="2">  i ← lo, j ← mid</span
+          ><span class="code-line pl-6" data-line="3">  while i &lt; mid and j &lt; hi</span
+          ><span class="code-line pl-12" data-line="4">    if array[i] ≤ array[j]</span
+          ><span class="code-line pl-16" data-line="5">      결과에 array[i] 기록, i ← i+1</span
+          ><span class="code-line pl-12" data-line="6">    else</span
+          ><span class="code-line pl-16" data-line="7">      결과에 array[j] 기록, j ← j+1</span
+          ><span class="code-line pl-6" data-line="8">  남은 값을 순서대로 이어서 기록</span
+        ></code></pre>
+      </div>
+    </section>
+
+    <!-- ===== 설명 ===== -->
+    <section class="mx-auto max-w-5xl px-6 lg:px-8 mt-10">
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
+          <h2 class="font-semibold text-slate-900">어떻게 동작하나요</h2>
+          <p class="mt-2 text-sm text-slate-500 leading-relaxed">
+            배열을 더 이상 나눌 수 없을 때까지(원소 1개) 절반씩 재귀적으로 나눈 뒤, 이미 정렬된 두 부분을 왼쪽부터 하나씩 비교하며
+            더 작은 값을 순서대로 옮겨 담습니다. 항상 O(n log n)을 보장하고 안정 정렬(같은 값의 순서 유지)이라는 장점이 있는 대신,
+            병합 과정에 원본과 같은 크기의 추가 공간이 필요하다는 트레이드오프가 있습니다.
+          </p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
+          <h2 class="font-semibold text-slate-900">시간·공간 복잡도</h2>
+          <dl class="mt-3 space-y-2 text-sm">
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">최선</dt>
+              <dd class="font-mono font-semibold text-slate-900">O(n log n)</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">평균</dt>
+              <dd class="font-mono font-semibold text-slate-900">O(n log n)</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">최악</dt>
+              <dd class="font-mono font-semibold text-slate-900">O(n log n)</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">공간 복잡도</dt>
+              <dd class="font-mono font-semibold text-rose-600">O(n)</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">안정 정렬</dt>
+              <dd class="font-mono font-semibold text-slate-900">예 (Stable)</dd>
+            </div>
+          </dl>
+          <p class="mt-3 text-xs text-slate-400 leading-relaxed">프리셋을 바꿔가며 비교·기록 횟수를 확인해보세요 — 버블·선택·삽입 정렬과 달리 배열 상태와 거의 무관하게 항상 O(n log n)입니다. 대신 O(1)이 아닌 O(n) 추가 공간이 필요합니다.</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-slate-400">
+        다른 정렬 알고리즘(버블·선택·삽입·퀵)도 함께 시각화되어 있습니다 —
+        <a href="../index.html#algo" class="text-brand-700 hover:text-brand-800 underline underline-offset-2">Algorithm 코스로 돌아가기</a>
+      </p>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="mx-auto max-w-5xl px-6 lg:px-8 py-16">
+      <div class="rounded-2xl border border-brand-900/40 bg-gradient-to-br from-brand-600 via-brand-800 to-brand-950 p-10 sm:p-12 text-center">
+        <p class="text-xs font-mono font-semibold text-brand-200 tracking-wide">1:1 정원제 · 상시 모집</p>
+        <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white tracking-tight">정렬, 시간복잡도를 손으로 체감하며 다시 배우세요</h2>
+        <p class="mt-3 text-sm text-slate-200/90 leading-relaxed">
+          당신에게 맞는 커리큘럼은 1:1 상담에서부터 시작됩니다.
+        </p>
+        <div class="mt-7">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-slate-950 hover:bg-slate-200 transition-colors">
+            1:1 상담 신청하기
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="border-t border-slate-200">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 pt-14 pb-8">
+      <p class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">RECODE</p>
+
+      <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-8 border-t border-slate-200 pt-10">
+        <div>
+          <p class="text-sm font-semibold text-slate-900">훈련 코스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#lang" class="hover:text-slate-900 transition-colors">Language</a></li>
+            <li><a href="../index.html#algo" class="hover:text-slate-900 transition-colors">Algorithm</a></li>
+            <li><a href="../index.html#web" class="hover:text-slate-900 transition-colors">Web &amp; WebApp</a></li>
+            <li><a href="../index.html#game" class="hover:text-slate-900 transition-colors">Unity</a></li>
+            <li><a href="../index.html#agent-ai" class="hover:text-slate-900 transition-colors">Agent AI</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">회사</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#philosophy" class="hover:text-slate-900 transition-colors">교육 철학</a></li>
+            <li><a href="../index.html" class="hover:text-slate-900 transition-colors">소개</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">모집</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#cta" class="hover:text-slate-900 transition-colors">1:1 상담 신청</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">리소스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="graffiti.html" class="hover:text-slate-900 transition-colors">원장님의 낙서</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">문의</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 text-center">
+        © 2026 Recode Coding. AI시대 프로그래밍 연구소.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/mobile-menu.js" defer></script>
+  <script>
+    (function () {
+      const BASE_VALUES = [22, 30, 38, 46, 54, 62, 70, 78, 86, 94];
+
+      const state = {
+        steps: [],
+        stepIndex: 0,
+        playing: false,
+        timer: null,
+        speedMs: 500,
+      };
+
+      const barsEl = document.getElementById('bars');
+      const indicesEl = document.getElementById('indices');
+      const descEl = document.getElementById('viz-desc');
+      const statsEl = document.getElementById('viz-stats');
+      const progressEl = document.getElementById('viz-progress');
+      const btnFirst = document.getElementById('btn-first');
+      const btnPrev = document.getElementById('btn-prev');
+      const btnPlay = document.getElementById('btn-play');
+      const btnNext = document.getElementById('btn-next');
+      const btnLast = document.getElementById('btn-last');
+      const btnShuffle = document.getElementById('btn-shuffle');
+
+      function shuffle(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
+
+      function makeArray(preset) {
+        if (preset === 'sorted') return BASE_VALUES.slice();
+        if (preset === 'reverse') return BASE_VALUES.slice().reverse();
+        if (preset === 'nearly') {
+          const a = BASE_VALUES.slice();
+          for (let k = 0; k < 2; k++) {
+            const i = Math.floor(Math.random() * (a.length - 1));
+            [a[i], a[i + 1]] = [a[i + 1], a[i]];
+          }
+          return a;
+        }
+        return shuffle(BASE_VALUES);
+      }
+
+      function buildSteps(initial) {
+        const a = initial.slice();
+        const n = a.length;
+        const steps = [];
+        let comparisons = 0;
+        let writes = 0;
+
+        steps.push({ array: a.slice(), compare: [], place: null, range: null, sortedUntil: 0, line: null, desc: '재생 버튼을 누르거나 다음 단계 버튼으로 정렬을 시작하세요.', comparisons, writes });
+
+        function merge(lo, mid, hi) {
+          const left = a.slice(lo, mid);
+          const right = a.slice(mid, hi);
+          let i = 0, j = 0, k = lo;
+          while (i < left.length && j < right.length) {
+            comparisons++;
+            const takeLeft = left[i] <= right[j];
+            steps.push({
+              array: a.slice(), compare: [lo + i, mid + j], place: null, range: [lo, hi], sortedUntil: 0,
+              line: 4, desc: `${left[i]}과(와) ${right[j]}을(를) 비교합니다 — ${takeLeft ? '왼쪽 값을 먼저 놓습니다.' : '오른쪽 값을 먼저 놓습니다.'}`,
+              comparisons, writes,
+            });
+            if (takeLeft) { a[k] = left[i]; i++; } else { a[k] = right[j]; j++; }
+            writes++;
+            steps.push({
+              array: a.slice(), compare: [], place: k, range: [lo, hi], sortedUntil: 0,
+              line: takeLeft ? 5 : 7, desc: `${a[k]}을(를) ${k}번째 자리에 기록합니다.`,
+              comparisons, writes,
+            });
+            k++;
+          }
+          while (i < left.length) {
+            a[k] = left[i]; i++; writes++;
+            steps.push({ array: a.slice(), compare: [], place: k, range: [lo, hi], sortedUntil: 0, line: 8, desc: `남은 값 ${a[k]}을(를) ${k}번째 자리에 기록합니다.`, comparisons, writes });
+            k++;
+          }
+          while (j < right.length) {
+            a[k] = right[j]; j++; writes++;
+            steps.push({ array: a.slice(), compare: [], place: k, range: [lo, hi], sortedUntil: 0, line: 8, desc: `남은 값 ${a[k]}을(를) ${k}번째 자리에 기록합니다.`, comparisons, writes });
+            k++;
+          }
+          const done = lo === 0 && hi === n;
+          steps.push({ array: a.slice(), compare: [], place: null, range: [lo, hi], sortedUntil: done ? n : 0, line: 1, desc: `[${lo}, ${hi}) 구간 병합 완료.`, comparisons, writes });
+        }
+
+        function sort(lo, hi) {
+          if (hi - lo <= 1) return;
+          const mid = (lo + hi) >> 1;
+          sort(lo, mid);
+          sort(mid, hi);
+          merge(lo, mid, hi);
+        }
+
+        sort(0, n);
+        steps.push({ array: a.slice(), compare: [], place: null, range: null, sortedUntil: n, line: null, desc: '정렬이 완료되었습니다!', comparisons, writes });
+
+        return steps;
+      }
+
+      function renderBarsSkeleton(n) {
+        barsEl.innerHTML = '';
+        indicesEl.innerHTML = '';
+        for (let i = 0; i < n; i++) {
+          const col = document.createElement('div');
+          col.className = 'flex-1 flex flex-col items-center justify-end h-full';
+          const label = document.createElement('div');
+          label.className = 'bar-label text-xs font-mono text-slate-500 mb-1';
+          const bar = document.createElement('div');
+          bar.className = 'viz-bar w-full rounded-t-md bg-slate-300';
+          col.appendChild(label);
+          col.appendChild(bar);
+          barsEl.appendChild(col);
+
+          const idx = document.createElement('div');
+          idx.className = 'flex-1';
+          idx.textContent = i;
+          indicesEl.appendChild(idx);
+        }
+      }
+
+      function render() {
+        const step = state.steps[state.stepIndex];
+        const maxVal = 100;
+        const cols = barsEl.children;
+        step.array.forEach((val, idx) => {
+          const col = cols[idx];
+          const label = col.querySelector('.bar-label');
+          const bar = col.querySelector('.viz-bar');
+          label.textContent = val;
+          bar.style.height = (val / maxVal * 100) + '%';
+
+          const isSorted = idx < step.sortedUntil;
+          const isPlace = step.place === idx;
+          const isCompare = step.compare.includes(idx);
+          const inRange = step.range && idx >= step.range[0] && idx < step.range[1];
+
+          let cls;
+          if (isSorted) cls = 'bg-brand-500';
+          else if (isPlace) cls = 'bg-rose-400';
+          else if (isCompare) cls = 'bg-amber-400';
+          else if (inRange) cls = 'bg-indigo-200';
+          else cls = 'bg-slate-300';
+
+          bar.className = 'viz-bar w-full rounded-t-md ' + cls;
+        });
+
+        descEl.textContent = step.desc;
+        statsEl.textContent = `비교 ${step.comparisons}회 · 기록 ${step.writes}회`;
+        progressEl.textContent = `${state.stepIndex + 1} / ${state.steps.length}`;
+
+        document.querySelectorAll('.code-line').forEach((el) => {
+          el.classList.toggle('is-active', Number(el.dataset.line) === step.line);
+        });
+
+        const atStart = state.stepIndex === 0;
+        const atEnd = state.stepIndex === state.steps.length - 1;
+        btnFirst.disabled = atStart;
+        btnPrev.disabled = atStart;
+        btnNext.disabled = atEnd;
+        btnLast.disabled = atEnd;
+        if (atEnd && state.playing) pause();
+      }
+
+      function goTo(index) {
+        state.stepIndex = Math.max(0, Math.min(state.steps.length - 1, index));
+        render();
+      }
+
+      function updatePlayButton() {
+        btnPlay.textContent = state.playing ? '❚❚' : '▶';
+        btnPlay.setAttribute('aria-label', state.playing ? '일시정지' : '재생');
+      }
+
+      function play() {
+        if (state.stepIndex >= state.steps.length - 1) state.stepIndex = 0;
+        state.playing = true;
+        updatePlayButton();
+        clearInterval(state.timer);
+        state.timer = setInterval(() => {
+          if (state.stepIndex >= state.steps.length - 1) {
+            pause();
+            return;
+          }
+          state.stepIndex++;
+          render();
+        }, state.speedMs);
+      }
+
+      function pause() {
+        state.playing = false;
+        clearInterval(state.timer);
+        updatePlayButton();
+      }
+
+      function loadArray(preset) {
+        pause();
+        const arr = makeArray(preset);
+        state.steps = buildSteps(arr);
+        state.stepIndex = 0;
+        renderBarsSkeleton(arr.length);
+        render();
+      }
+
+      btnFirst.addEventListener('click', () => goTo(0));
+      btnPrev.addEventListener('click', () => goTo(state.stepIndex - 1));
+      btnNext.addEventListener('click', () => goTo(state.stepIndex + 1));
+      btnLast.addEventListener('click', () => goTo(state.steps.length - 1));
+      btnPlay.addEventListener('click', () => (state.playing ? pause() : play()));
+      btnShuffle.addEventListener('click', () => {
+        const activePreset = document.querySelector('.preset-btn.is-active');
+        loadArray(activePreset ? activePreset.dataset.preset : 'random');
+      });
+
+      document.querySelectorAll('.preset-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.preset-btn').forEach((b) => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          loadArray(btn.dataset.preset);
+        });
+      });
+
+      document.querySelectorAll('.speed-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.speed-btn').forEach((b) => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          state.speedMs = Number(btn.dataset.speed);
+          if (state.playing) play();
+        });
+      });
+
+      loadArray('random');
+    })();
+  </script>
+</body>
+</html>

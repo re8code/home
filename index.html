@@ -338,75 +338,122 @@
 
     <!-- ===== 02. Algorithm ===== -->
     <section id="algo" class="mx-auto max-w-[1440px] px-6 lg:px-10 py-16 border-t border-slate-200">
-      <div class="flex items-end justify-between gap-6">
-        <div class="max-w-2xl">
-          <p class="text-xs font-mono font-semibold text-teal-700 tracking-wide">ALGORITHM</p>
-          <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">구조와 알고리즘으로 문제를 분해한다</h2>
-          <p class="mt-2 text-slate-500 leading-relaxed text-sm">코딩보다 구조적 분석·설계 능력이 본질이라는 관점의 훈련 과정</p>
-        </div>
-        <div class="flex items-center gap-2 swiper-nav-group shrink-0">
-          <button type="button" class="swiper-nav-prev nav-arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="이전 카드">‹</button>
-          <button type="button" class="swiper-nav-next nav-arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="다음 카드">›</button>
-        </div>
+      <div class="max-w-2xl">
+        <p class="text-xs font-mono font-semibold text-teal-700 tracking-wide">ALGORITHM</p>
+        <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">구조와 알고리즘으로 문제를 분해한다</h2>
+        <p class="mt-2 text-slate-500 leading-relaxed text-sm">같은 문제를 푸는 다섯 가지 정렬로, 시간복잡도를 눈으로 비교하는 훈련부터 시작합니다.</p>
       </div>
 
-      <div class="swiper course-swiper mt-8">
-        <div class="swiper-wrapper">
+      <!-- 좌우 이동 없이 5개 카드를 동일한 크기로 전체 너비에 맞춰 배치 -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-8">
 
-          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
-              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
-                <span class="text-4xl font-bold text-white/90 font-mono">DS</span>
-                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">입문</span>
-              </div>
-              <div class="p-5 flex-1 flex flex-col">
-                <h3 class="font-semibold text-slate-900">자료구조 기초</h3>
-                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">배열·스택·큐·트리로 데이터의 형태와 흐름을 체화</p>
-              </div>
-            </div>
+        <a href="src/algo-bubble-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+              <rect x="12" y="224" width="40" height="40" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="68" y="194" width="40" height="70" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="124" y="164" width="40" height="100" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="180" y="104" width="40" height="160" rx="6" fill="#fb7185"/>
+              <rect x="236" y="134" width="40" height="130" rx="6" fill="#fb7185"/>
+              <rect x="292" y="89" width="40" height="175" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="348" y="64" width="40" height="200" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <line x1="204" y1="38" x2="246" y2="38" stroke="#fb7185" stroke-width="4" stroke-linecap="round"/>
+              <polygon points="250,38 240,32 240,44" fill="#fb7185"/>
+              <line x1="250" y1="58" x2="208" y2="58" stroke="#fb7185" stroke-width="4" stroke-linecap="round"/>
+              <polygon points="204,58 214,52 214,64" fill="#fb7185"/>
+            </svg>
           </div>
-
-          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
-              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
-                <span class="text-4xl font-bold text-white/90 font-mono">Al</span>
-                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">중급</span>
-              </div>
-              <div class="p-5 flex-1 flex flex-col">
-                <h3 class="font-semibold text-slate-900">알고리즘 문제 해결</h3>
-                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">완전탐색·그리디·DP 등 문제를 구조로 분해하는 훈련</p>
-              </div>
-            </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">버블 정렬</h3>
+            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">인접한 두 값을 비교·교환하며 O(n²)이 왜 느린지 체감하는 첫 정렬</p>
           </div>
+        </a>
 
-          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
-              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
-                <span class="text-4xl font-bold text-white/90 font-mono">CT</span>
-                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">중급</span>
-              </div>
-              <div class="p-5 flex-1 flex flex-col">
-                <h3 class="font-semibold text-slate-900">코딩테스트 대비</h3>
-                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">실전 문제풀이를 통한 구조적 사고의 반복 훈련</p>
-              </div>
-            </div>
+        <a href="src/algo-selection-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+              <rect x="12" y="224" width="40" height="40" rx="6" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="6 5"/>
+              <rect x="68" y="134" width="40" height="130" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="124" y="114" width="40" height="150" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="180" y="94" width="40" height="170" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="236" y="224" width="40" height="40" rx="6" fill="#38bdf8"/>
+              <rect x="292" y="74" width="40" height="190" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="348" y="54" width="40" height="210" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <path d="M256,214 C200,140 90,140 34,212" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 10"/>
+              <polygon points="34,212 22,204 38,198" fill="#38bdf8"/>
+            </svg>
           </div>
-
-          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40">
-              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
-                <span class="text-4xl font-bold text-white/90 font-mono">Sys</span>
-                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">심화</span>
-              </div>
-              <div class="p-5 flex-1 flex flex-col">
-                <h3 class="font-semibold text-slate-900">시스템 설계 기초</h3>
-                <p class="mt-2 text-sm text-slate-600 leading-relaxed flex-1">전체 시스템 단위에서 데이터 흐름을 설계하는 관점 훈련</p>
-              </div>
-            </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">선택 정렬</h3>
+            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">매 순회마다 최솟값을 찾아 앞으로 보내며 비교와 교환 비용을 구분</p>
           </div>
+        </a>
 
-        </div>
-        <div class="swiper-pagination"></div>
+        <a href="src/algo-insertion-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+              <rect x="16" y="224" width="44" height="40" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="80" y="184" width="44" height="80" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="144" y="144" width="44" height="120" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="208" y="104" width="44" height="160" rx="6" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="6 5"/>
+              <rect x="272" y="84" width="44" height="180" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="336" y="54" width="44" height="210" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="208" y="22" width="44" height="55" rx="6" fill="#38bdf8"/>
+              <line x1="230" y1="82" x2="230" y2="96" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
+              <polygon points="230,102 220,88 240,88" fill="#38bdf8"/>
+            </svg>
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">삽입 정렬</h3>
+            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">정렬된 자리에 값을 끼워 넣으며 데이터 상태에 따른 성능 차이를 확인</p>
+          </div>
+        </a>
+
+        <a href="src/algo-merge-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+              <rect x="30" y="77" width="22" height="18" rx="4" fill="#ffffff" fill-opacity="0.4"/>
+              <rect x="62" y="65" width="22" height="30" rx="4" fill="#ffffff" fill-opacity="0.4"/>
+              <rect x="94" y="53" width="22" height="42" rx="4" fill="#ffffff" fill-opacity="0.4"/>
+              <rect x="306" y="77" width="22" height="18" rx="4" fill="#ffffff" fill-opacity="0.4"/>
+              <rect x="338" y="65" width="22" height="30" rx="4" fill="#ffffff" fill-opacity="0.4"/>
+              <rect x="370" y="53" width="22" height="42" rx="4" fill="#ffffff" fill-opacity="0.4"/>
+              <path d="M62,92 C90,140 150,148 195,153" stroke="#ffffff" stroke-opacity="0.65" stroke-width="3" stroke-linecap="round"/>
+              <path d="M338,92 C310,140 250,148 205,153" stroke="#ffffff" stroke-opacity="0.65" stroke-width="3" stroke-linecap="round"/>
+              <rect x="16" y="234" width="44" height="30" rx="6" fill="#aef1cd"/>
+              <rect x="80" y="209" width="44" height="55" rx="6" fill="#aef1cd"/>
+              <rect x="144" y="184" width="44" height="80" rx="6" fill="#aef1cd"/>
+              <rect x="208" y="159" width="44" height="105" rx="6" fill="#aef1cd"/>
+              <rect x="272" y="134" width="44" height="130" rx="6" fill="#aef1cd"/>
+              <rect x="336" y="114" width="44" height="150" rx="6" fill="#aef1cd"/>
+            </svg>
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">병합 정렬</h3>
+            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">절반씩 나눠 정렬한 뒤 합치는 분할 정복으로 안정적인 O(n log n)을 보장</p>
+          </div>
+        </a>
+
+        <a href="src/algo-quick-sort.html" class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+              <line x1="172" y1="26" x2="172" y2="264" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.5" stroke-dasharray="7 6"/>
+              <line x1="228" y1="26" x2="228" y2="264" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.5" stroke-dasharray="7 6"/>
+              <rect x="12" y="214" width="40" height="50" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="68" y="194" width="40" height="70" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="124" y="174" width="40" height="90" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="180" y="134" width="40" height="130" rx="6" fill="#a78bfa"/>
+              <rect x="236" y="104" width="40" height="160" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="292" y="74" width="40" height="190" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+              <rect x="348" y="44" width="40" height="220" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+            </svg>
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">퀵 정렬</h3>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed flex-1">기준값으로 좌우를 나누는 분할 정복 — 평균은 빠르지만 최악의 경우가 존재</p>
+          </div>
+        </a>
+
       </div>
     </section>
 
