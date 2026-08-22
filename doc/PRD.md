@@ -17,7 +17,7 @@
 | --- | --- | --- |
 | `index.html` | 허브형 랜딩 재설계, 5갈래 내비게이션 진입점 | 완료(2026-08-22) — `mockup.html` 라이트 톤 시안(코스 카테고리 히어로 + Language/Algorithm/Web & WebApp/Unity/Agent AI 5개 섹션 + 핵심 철학 + CTA)을 최종안으로 채택해 전면 교체, `mockup.html`은 삭제 |
 | 낙서장 게시판 (`src/graffiti*.html`) | 기능은 유지, 디자인 톤만 리뉴얼 톤에 맞춰 조정 | 톤 조정 |
-| 언어별 코스 상세 페이지 (`src/lang-*.html`) | `index.html` Language 카드 클릭 시 이동하는 개별 언어 페이지. 커리큘럼 목록 UI는 korea-pass.kr 공지사항 목록 페이지를 벤치마크 | `lang-cp.html`(C/C++) 제작·연결 완료, 나머지 언어(Java/Python/JavaScript/Dart)는 순차 진행 예정 |
+| 언어별 코스 상세 페이지 (`src/lang-*.html`) | `index.html` Language 카드 클릭 시 이동하는 개별 언어 페이지. 커리큘럼 목록 UI는 korea-pass.kr 공지사항 목록 페이지를 벤치마크 | 완료(2026-08-22) — C/C++·Java·Python·JavaScript·Dart 5개 페이지 전부 제작, 상호 링크 연결 |
 
 ### Out of Scope — 별도 프로젝트, 외부 링크만 연결
 | 영역 | 내용 |
@@ -50,7 +50,7 @@
 - 페이지별 Tailwind config 중복 정의 방식을 유지할지, 공통화할지는 `DEV_PLAN.md`에서 결정한다.
 
 ## 8. 미결 사항 (Open Questions)
-- 언어별 코스 상세 페이지: `lang-cp.html`(C/C++)만 우선 제작·연결 완료(2026-08-22). Java/Python/JavaScript/Dart용 `lang-jv.html` 등 나머지 페이지는 동일 패턴으로 제작 시점 미정.
+- 언어별 코스 상세 페이지: `lang-cp.html`(C/C++)에 이어 `lang-jv.html`(Java)/`lang-py.html`(Python)/`lang-js.html`(JavaScript)/`lang-dt.html`(Dart) 4개도 제작·연결 완료(2026-08-22) — Language 코스 5개 페이지 전부 존재하며, 각 페이지 상단 언어 바로가기 탭과 `index.html` Language 카드에서 모두 연결됨.
 - LMS/business/studio 3개 서브도메인의 실제 오픈 시점. (UI 처리 방식은 2026-08-21 상단 내비게이션 1차 구현 시 우선 "준비중" 배지 + 비활성 링크로 임시 확정 — `index.html` 헤더 참고. 서브도메인 오픈 시 실제 링크로 교체 예정.)
 - OJ(`oj.recode.ai.kr`)는 2026-08-21부로 `index.html` 상단 내비게이션에서 실제 링크로 연결 완료(새 탭).
 - 디자인 톤 확정 (완료, 2026-08-22): `mockup.html`에서 검토하던 라이트 크림 배경(`#FBF7EE`) + 에메랄드 브랜드 컬러 시안(히어로/철학 타일/CTA 배너는 다크 액센트 패널 유지, 훈련 코스 카테고리 5개 Language/Algorithm/Web & WebApp/Unity/Agent AI)을 최종안으로 채택 — 원래 `index.html`에 있던 다크 인디고 톤 히어로(문제의식/훈련 프로세스/대상 섹션 포함)는 제거되고 `mockup.html` 내용으로 완전히 대체됨. `mockup.html` 파일 자체는 삭제.

@@ -6,6 +6,20 @@
 <title>원장님의 낙서 — Recode Coding</title>
 <meta name="description" content="Recode Coding 원장님이 남기는 생각과 기록, 원장님의 낙서 게시판입니다." />
 
+<style>
+  @view-transition { navigation: auto; }
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; background-color: rgba(12,12,15,.95); border-bottom: 1px solid rgba(255,255,255,.1); }
+  header > div:first-child { max-width: 1440px; margin: 0 auto; padding: 0 1.5rem; height: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  header nav { display: flex; align-items: center; gap: 1.5rem; }
+  header #mobile-menu { display: none; }
+  header a { color: #fff; text-decoration: none; }
+  header nav a { color: #94a3b8; }
+  header nav + a { display: inline-flex; align-items: center; background-color: #18b476; color: #fff; padding: .5rem 1rem; border-radius: 9999px; font-weight: 600; font-size: .875rem; }
+  header span.rounded-lg { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: .5rem; background-color: rgba(24,180,118,.15); color: #3ecf8e; border: 1px solid rgba(24,180,118,.3); }
+  @media (min-width: 768px) { header #mobile-menu-btn { display: none; } }
+  main { padding-top: 4rem; }
+</style>
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -54,7 +68,7 @@
 <body class="bg-[#FBF7EE] text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
 
   <!-- ===== Header (GNB) ===== -->
-  <header class="sticky top-0 z-[60] bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
+  <header class="fixed top-0 inset-x-0 z-[60] bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
     <div class="mx-auto max-w-[1440px] px-6 lg:px-10 h-16 flex items-center justify-between gap-8">
       <a href="../index.html" class="flex items-center gap-2 font-mono font-semibold tracking-tight text-white">
         <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400 border border-brand-500/30">R/</span>
@@ -118,7 +132,7 @@
     </div>
   </header>
 
-  <main>
+  <main class="pt-16">
     <section class="mx-auto max-w-4xl px-6 lg:px-8 py-16">
 
       <!-- ===== Breadcrumb ===== -->

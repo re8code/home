@@ -86,3 +86,46 @@
   - normalize한 헤더 텍스트를 diff해 5개 페이지 헤더가 (로고 링크·"원장님의 낙서" 링크의 상대경로 차이를 빼면) 완전히 동일한 마크업임을 스크립트로 확인.
   - 클로드 인 크롬으로 확인: `graffiti.html` 접속 시 통일된 GNB 정상 렌더(이전엔 없던 wonoj/LMS/business/studio 노출), `lang-cp.html`에서 "원장님의 낙서" 클릭 → `graffiti.html` 정상 이동, 콘솔 에러 없음. `pt-16` 제거로 헤더-본문 사이 이중 여백 없음도 확인.
   - `CLAUDE.md`(페이지 구조에 "GNB" 항목 신설), `doc/ARCHITECTURE.md`(§3 표·비고에 GNB 통일 반영), `doc/DEV_PLAN.md`(Phase 2에 헤더 선반영 완료 기록)에 반영.
+- 사용자 지시로 `index.html` GNB 바로 아래 있던 서브바("코스 검색" 입력 + 탐색/커리큘럼/후기 탭, `sticky top-16`)를 완전히 제거. JS에서 참조하는 id/셀렉터가 없어 마크업만 삭제하면 되는 구조였음. 클로드 인 크롬으로 확인: GNB 바로 아래 히어로가 이어지고 여백 이상 없음, 콘솔 에러 없음.
+- 사용자 지시로 `src/lang-cp.html`을 2가지 정리:
+  - 브레드크럼 "홈 / 훈련 코스 / C/C++"에서 "훈련 코스"(`../index.html#lang`) 항목 제거 → "홈 / C/C++"로 축약.
+  - "커리큘럼 검색어 입력" 검색창(및 svg 아이콘) 컴포넌트 삭제. JS(`applyView`)에서 `searchInput`/`keyword` 관련 로직 전부 제거하고 분류 탭(전체/기초/실습/프로젝트) 필터링만 남김 — 검색이 유일하게 "0건" 결과를 만들 수 있던 경로였으므로, 더 이상 도달 불가능해진 "검색 조건에 맞는 커리큘럼이 없습니다" 빈 상태 문구(`#curriculum-empty`)도 마크업·JS 양쪽에서 함께 제거.
+  - 클로드 인 크롬으로 확인: 브레드크럼 축약 정상, 검색창 사라짐, 분류 탭 클릭(예: "프로젝트" → 2건) 정상 동작, 콘솔 에러 없음.
+  - `CLAUDE.md`의 `lang-cp.html` 설명 문구 갱신(검색창 제거, 브레드크럼 축약 반영).
+- 사용자 지시로 `src/lang-cp.html`을 추가로 2가지 정리:
+  - 타이틀 위 라벨을 "01 · LANGUAGE" → "LANGUAGE"로 변경(번호 제거).
+  - 분류 탭(전체/기초/실습/프로젝트, 카드를 카테고리별로 필터링하던 버튼)을 언어 바로가기 탭(C/C++/Java/Python/JavaScript/Dart, 각각 `lang-cp.html`/`lang-jv.html`/`lang-py.html`/`lang-js.html`/`lang-dart.html`로 이동하는 `<a>` 링크)으로 교체 — `<button data-filter-tab>` → `<nav><a href="...">`, 현재 페이지(C/C++)는 `aria-current="page"` + `is-active` 스타일 유지. `role="tablist"`는 실제 탭이 아니라 페이지 이동 링크가 됐으므로 제거.
+  - JS도 함께 정리: `tabs`/`activeCategory` 관련 로직 전부 삭제, `applyView()`는 "처음 6개만 보이고 더보기로 전체 노출"만 담당하도록 단순화. `data-category` 속성은 카드에 남아 있지만(정보성 뱃지 텍스트와 별개 메타데이터) 더 이상 JS에서 참조하지 않음.
+  - `lang-jv.html`/`lang-py.html`/`lang-js.html`/`lang-dart.html` 4개 파일은 아직 존재하지 않아 해당 탭 클릭 시 404 — Java/Python/JavaScript/Dart 페이지를 이 순서·파일명대로 제작하는 게 다음 자연스러운 후속 작업.
+  - 클로드 인 크롬으로 확인: "LANGUAGE" 라벨 정상, 5개 언어 탭 렌더(C/C++만 active), "더보기" 클릭 시 7~12주차 정상 노출, 콘솔 에러 없음.
+  - `CLAUDE.md`(lang-cp.html 설명에 언어 바로가기 탭·파일명 규칙 추가), `doc/PRD.md`(§8에 확정된 파일명 4개 기록)에 반영.
+- 사용자 지시로 (1) `src/lang-cp.html`의 "더보기" 버튼 완전 제거(12개 카드 처음부터 전부 노출, `hidden` 클래스 제거 + 관련 JS 삭제) (2) `lang-cp.html`을 템플릿으로 `src/lang-jv.html`(Java)/`src/lang-py.html`(Python)/`src/lang-js.html`(JavaScript)/`src/lang-dt.html`(Dart) 4개 신규 제작 (3) 관련 링크 전부 연결.
+  - 언어 바로가기 탭의 Dart href를 이전 세션에서 잘못 썼던 `lang-dart.html`에서 사용자가 이번에 지정한 실제 파일명 `lang-dt.html`로 5개 페이지 전부 수정.
+  - 각 언어 페이지는 헤더/푸터/레이아웃 구조를 `lang-cp.html`과 동일하게 유지하고: 로고·타이틀·인트로 문단(각 언어 특징 반영, index.html 카드 설명 확장), 언어 바로가기 탭(현재 페이지만 `is-active`+`aria-current`), 12주차 커리큘럼(기초 5·실습 5·프로젝트 2, 언어별 실제 기술 스택 반영 — Java는 Spring/컬렉션/멀티스레딩, Python은 NumPy/Pandas/AI API, JavaScript는 비동기/DOM/React, Dart는 Widget/State/Provider), CTA 문구만 언어별로 교체.
+  - 작은 로고 배지(cover-art h-16 w-16 박스) 이미지 크기를 언어별로 조정: java/python은 `h-10 w-auto`(정사각형 1000×1000 원본이라 cpp.png와 동일 처리), javascript는 `h-10 w-auto rounded-lg`(기존 index.html 카드와 동일하게 라운드 처리), dart는 `w-12 h-auto`(원본이 1000×266 와이드 비율이라 height 고정 대신 width를 고정하고 height를 자동 계산해 박스 밖으로 넘치지 않게 함).
+  - `index.html`의 Language 섹션에서 지금까지 링크가 없던 Java/Python/JavaScript/Dart 4개 카드(`<div class="course-card">`)를 `<a href="src/lang-jv.html">` 등으로 교체 — C/C++ 카드와 동일한 패턴.
+  - 클로드 인 크롬으로 전수 검증: `lang-cp.html`(더보기 버튼 없이 12개 전부 노출)→"Java" 탭 클릭→`lang-jv.html` 정상 이동, Dart 로고 박스 오버플로우 없음(zoom으로 확인), `index.html`→Dart 카드 클릭→`lang-dt.html` 정상 이동, `lang-js.html` 12주차까지 스크롤 확인 — 매 단계 콘솔 에러 없음.
+  - grep으로 5개 페이지의 언어 바로가기 탭 `href`가 서로 완전히 일치하는지 확인(`lang-dart.html` 잔여 참조 없음).
+  - `CLAUDE.md`(5개 페이지 전부 존재·연결됨으로 갱신, "더보기" 제거 기록 추가), `doc/PRD.md`(§3/§8 — Language 코스 상세 페이지 완료로 갱신), `doc/DEV_PLAN.md`(Phase 2.5 완료 표시), `doc/ARCHITECTURE.md`(mermaid `LangCp` 노드를 5개 페이지로, §3 표·GNB 설명을 9개 페이지 기준으로 갱신)에 반영.
+- 사용자 지시로 GNB를 "스크롤을 당길 때 움직이지 않도록" `fixed`로 전환. 헤더가 `sticky top-0`이면 일반적인 스크롤 중에는 화면에 고정돼 보이지만, 트랙패드/마우스 오버스크롤(러버밴드 바운스) 시 살짝 흔들리는 것처럼 보일 수 있어 완전히 뷰포트에 고정되는 `fixed`를 요청하신 것으로 판단.
+  - 9개 페이지(`index.html`, `src/graffiti*.html` 3개, `src/lang-*.html` 5개) 전부의 헤더를 `class="sticky top-0 z-[60] ..."` → `class="fixed top-0 inset-x-0 z-[60] ..."`로 일괄 변경(sed).
+  - `fixed`는 문서 흐름에서 완전히 빠지므로, 9개 페이지 전부의 `<main>`에 `pt-16`(헤더 높이 64px과 동일)을 추가해 본문이 헤더 뒤로 가려지지 않게 보정 — 이전에 이미 한 번(그래피티 페이지 fixed→sticky 전환 때) 걷어냈던 `pt-16`을 이번엔 반대 방향(sticky→fixed)으로 다시 전부 추가.
+  - 클로드 인 크롬으로 확인: `index.html`/`lang-cp.html` 모두 헤더-본문 사이 이중 여백 없이 정상 렌더, 큰 폭으로 스크롤해도 헤더가 뷰포트 상단에 그대로 고정, 콘솔 에러 없음.
+  - `CLAUDE.md`(GNB 항목에 `fixed`+`pt-16` 짝 규칙 명시), `doc/DEV_PLAN.md`(헤더 포지셔닝이 이날 fixed→sticky→fixed로 두 번 바뀐 이력 기록)에 반영.
+- 사용자가 "페이지 이동할 때 GNB가 잠시 흔들린다"고 재보고 — `fixed`로 바꿔도 남아있던 문제로, 원인을 재진단.
+  - Tailwind를 CDN 런타임 스크립트로 쓰는 구조라, 그 스크립트가 로드·실행되기 전까지는 헤더의 Tailwind 유틸리티 클래스(`fixed`, `bg-[#0c0c0f]/95`, `h-16` 등)가 전혀 적용되지 않는다는 게 근본 원인으로 파악됨 — 매 페이지 이동(전체 문서 리로드)마다 헤더가 잠깐 언스타일드 상태(콘텐츠가 세로로 쌓여 늘어남)로 보였다가 스크립트 실행 시점에 64px 높이 고정 바로 갑자기 접히는 것.
+  - 9개 페이지 전부의 `<head>`에서 Tailwind CDN `<script>` 태그보다 **앞**에 순수 CSS `<style>` 블록을 추가(sed로 일괄 삽입): `header { position: fixed; top:0; left:0; right:0; z-index:60; height:4rem; overflow:hidden; background-color:rgba(12,12,15,.95); border-bottom:1px solid rgba(255,255,255,.1); }`와 `main { padding-top:4rem; }`. `<style>` 태그는 파싱되는 즉시 적용되고 네트워크 요청(스크립트 다운로드)을 기다리지 않으므로, Tailwind 스크립트가 아직 로드되지 않은 순간에도 헤더가 처음부터 올바른 위치·크기로 렌더링된다.
+  - 클로드 인 크롬으로 9개 페이지 모두 정상 렌더·콘솔 에러 없음 확인(전환 순간의 FOUC 자체는 스크린샷 도구로는 캡처하기 어려운 서브 300ms 현상이라, 정적 렌더 결과와 삽입된 CSS의 타이밍 근거로 판단).
+  - `CLAUDE.md`(GNB 항목에 Tailwind CDN FOUC 원인·critical CSS 대응 기록, 새 페이지 만들 때 헤더/`pt-16`/critical CSS 3종 세트를 함께 복사하라고 명시), `doc/DEV_PLAN.md`(§1 기술 스택에 Tailwind CDN의 FOUC 트레이드오프와 완화 방법 기록, 근본 해결엔 빌드 도구가 필요함을 명시).
+- 사용자가 "여전히 흔들린다, 새로고침해도 동일하다"고 재보고 — 1차 critical CSS(헤더 박스 크기/위치만 고정)로는 부족했던 것으로 판단, 실제로 눈으로 확인 가능한 재현 방법을 마련해 재진단.
+  - `index.html`을 스크래치 폴더에 복사하고 Tailwind CDN `<script>` 태그를 `setTimeout(..., 2~3초)`로 인위적으로 지연 로드하도록 패치한 테스트용 사본을 만들어(원본 저장소는 건드리지 않음, `assets`/`src`는 심볼릭 링크로 연결) 별도 포트(8766)에서 서빙 — 지연 구간 동안 헤더를 직접 스크린샷/zoom으로 관찰.
+  - 발견: 헤더 박스 자체(위치/높이)는 1차 조치로 이미 안정적이었지만, 그 안의 nav 링크가 파란 밑줄(브라우저 기본 링크 스타일)로 보였다가 Tailwind 로드 후 회색·밑줄 없음으로 바뀌고, CTA 버튼이 맨텍스트 → 초록 알약 버튼으로, 로고 옆 사각 배지가 무늬 없음 → 초록 톤 사각형으로, 데스크톱 폭에서도 모바일 햄버거 아이콘이 잠깐 노출되는 4가지 잔여 깜빡임을 확인 — 이게 사용자가 계속 느낀 "흔들림"의 정체.
+  - critical CSS `<style>` 블록에 4가지를 전부 추가해 Tailwind가 나중에 적용할 값과 동일하게 맞춤: `header a{color:#fff;text-decoration:none}` + `header nav a{color:#94a3b8}`(nav 링크 밑줄 제거·회색), `header nav + a{...}`(CTA를 처음부터 초록 알약 버튼으로), `header span.rounded-lg{...}`(로고 배지를 처음부터 초록 톤 사각형으로), `@media (min-width:768px){header #mobile-menu-btn{display:none}}`(Tailwind의 `md:hidden`과 동일한 768px 기준으로 데스크톱에서 모바일 버튼 숨김). 9개 페이지 전부에 동일 적용.
+  - 같은 지연 테스트 사본으로 재검증: 지연 구간 동안 캡처한 헤더와 Tailwind 로드 완료 후 캡처한 헤더가 zoom 스크린샷 상 구분이 안 갈 정도로 동일함을 확인(멱등) — 테스트용 사본·심볼릭 링크·임시 서버는 검증 후 전부 삭제.
+  - `CLAUDE.md`(GNB 항목에 1차/2차 대응 구분, 잔여 깜빡임 4종과 대응 규칙 상세 기록)에 반영.
+- 사용자가 "GNB가 fixed인데 왜 아직도 흔들리냐"고 정확한 반문 — 지금까지의 수정이 실제로 콘텐츠 레벨 시프트를 없앴는지 스크린샷 비교가 아니라 브라우저의 객관적 측정 API로 재검증.
+  - `PerformanceObserver({type:'layout-shift', buffered:true})`를 `<head>` 최상단(Tailwind 스크립트보다도 앞)에 심어 `sessionStorage`에 로그를 남기는 스크래치 사본을 만들고, `location.reload()`로 실제 새로고침을 실행 → 로그를 확인한 결과 **레이아웃 시프트 0건**(Cumulative Layout Shift 관점에서 요소가 실제로 움직인 적이 없음)을 확인. 리로드 직후 즉시 스크린샷을 찍어도 이미 완성된 상태만 캡처될 뿐, 전환 중간 프레임을 잡을 수 없었음(로컬 환경이 매우 빨라 전환 자체가 도구의 캡처 속도보다 빠름).
+  - 결론: 지금까지 고친 "콘텐츠가 스타일 적용 전후로 다르게 보이는" 종류의 흔들림은 측정상 더 이상 없음. 남아있다면 레이아웃 시프트가 아니라, 정적 다중 페이지 사이트 구조상 새로고침/페이지 이동마다 브라우저가 이전 문서를 완전히 버리고 새 문서를 처음부터 그리는 **일반적인 MPA 전환 자체의 끊김**일 가능성이 높음 — 이건 CSS 포지셔닝으로 고칠 수 있는 대상이 아님.
+  - 대응: CSS Cross-Document View Transitions(`@view-transition { navigation: auto; }`)를 9개 페이지 전부의 critical `<style>` 블록 맨 앞에 추가. 같은 오리진 내 페이지 전환/새로고침 시 이전 문서 → 새 문서를 브라우저가 자동으로 크로스페이드 처리해주는 표준 CSS 기능(빌드 도구 불필요, Chrome/Edge 126+ 지원, 미지원 브라우저에서는 그냥 무시되고 기존 동작 유지 — progressive enhancement). 테스트 브라우저(Chrome 151)에서 `'startViewTransition' in document`로 지원 확인.
+  - 클로드 인 크롬으로 프로덕션 파일 재확인: 정상 렌더, 콘솔 에러 없음. 테스트에 썼던 `PerformanceObserver` 스크래치 사본·심볼릭 링크·임시 서버는 검증 후 삭제.
+  - **사용자가 하드 리프레시로 재확인 후 "수정되었음" 최종 확인**(2026-08-22) — GNB 흔들림 이슈 해결 완료. 원인은 두 겹이었음: ① Tailwind CDN 런타임 로드 전 헤더 내부 요소(nav 링크 색상·밑줄, CTA 버튼 모양, 로고 배지, 모바일 버튼)가 언스타일드로 보이다 스냅되는 FOUC → critical CSS로 최종값과 동일하게 선반영해 해결. ② 그 외 남아있던 체감은 정적 다중 페이지 사이트의 새로고침/페이지 전환 자체가 갖는 "이전 문서를 통째로 버리고 새로 그리는" MPA 특유의 끊김 → `@view-transition { navigation: auto; }`로 브라우저 네이티브 크로스페이드를 적용해 해결.
