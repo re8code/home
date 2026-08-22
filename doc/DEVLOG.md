@@ -76,3 +76,13 @@
   - `CLAUDE.md`의 "저장소 관례"(문서 점검 규칙 등)에서 4개 문서 경로를 `doc/PRD.md`처럼 `doc/` 접두사로 갱신, `doc/` 폴더 자체를 설명하는 문장 추가.
   - `doc/ARCHITECTURE.md`·`doc/DEV_PLAN.md`(현재 상태를 설명하는 "살아있는" 문서)의 `report/*.md`·`tasks/*.md`·`CLAUDE.md` 상대경로를 `doc/`가 한 단계 들어간 만큼 `../report/...`/`../tasks/...`/`../CLAUDE.md`로 갱신. `doc/DEVLOG.md`(날짜별 이력 기록)와 `report/*.md`(작성 시점에 고정된 보고서) 안의 과거 항목들은 저장소 관례대로 손대지 않음(기존에도 `report/2026-07-29-deployment-guide.md`의 dothome 도메인 언급처럼 과거 기록은 재작성하지 않는 패턴).
   - 이동 후 `doc/`·루트·`report/`·`tasks/`·`*.html` 전체를 grep해 4개 문서명에 대한 잔여 참조 없음 확인.
+- `v0.18` 커밋(페이지 구조 재편 src/·doc/, lang-cp.html 신설, index.html 최종 확정) `dev` 브랜치에 push 완료.
+- 사용자 지시로 상단 헤더를 페이지 이동과 무관하게 항상 동일한 GNB(전역 내비게이션)로 통일. 그동안 `index.html`/`src/lang-cp.html`/`src/graffiti*.html` 3개 헤더가 서로 다른 구조였음을 확인:
+  - `index.html`: 전체 GNB(원장님의 낙서/wonoj/LMS·business·studio 준비중/1:1 상담 신청), `sticky top-0`, `max-w-[1440px]`.
+  - `src/lang-cp.html`: "훈련 코스" 페이지 전용 링크가 섞여 있고 business/studio 항목이 빠진 축소판, `sticky top-0`.
+  - `src/graffiti*.html` 3개: 아예 다른 옛 헤더(`fixed top-0`, `max-w-7xl`, nav는 "철학"/"훈련 코스" 2개뿐, "원장님의 낙서"·CTA는 보이지 않는 spacer `<span>`으로만 존재).
+  - `index.html`의 헤더를 기준(canonical GNB)으로 삼아 나머지 4개 페이지(`src/graffiti.html`/`graffiti-detail.html`/`graffiti-new.html`/`lang-cp.html`) 헤더를 전부 동일한 마크업으로 교체 — 페이지별 커스텀 nav 링크는 제거. 경로만 위치에 맞게 조정(`src/` 페이지는 로고 `../index.html`, "원장님의 낙서" `graffiti.html`).
+  - `graffiti*.html` 3개는 헤더가 `fixed`→`sticky`로 바뀌며 더 이상 필요 없어진 `<main class="pt-16">`의 `pt-16`도 함께 제거(안 지우면 sticky 헤더 아래 빈 여백이 이중으로 생김).
+  - normalize한 헤더 텍스트를 diff해 5개 페이지 헤더가 (로고 링크·"원장님의 낙서" 링크의 상대경로 차이를 빼면) 완전히 동일한 마크업임을 스크립트로 확인.
+  - 클로드 인 크롬으로 확인: `graffiti.html` 접속 시 통일된 GNB 정상 렌더(이전엔 없던 wonoj/LMS/business/studio 노출), `lang-cp.html`에서 "원장님의 낙서" 클릭 → `graffiti.html` 정상 이동, 콘솔 에러 없음. `pt-16` 제거로 헤더-본문 사이 이중 여백 없음도 확인.
+  - `CLAUDE.md`(페이지 구조에 "GNB" 항목 신설), `doc/ARCHITECTURE.md`(§3 표·비고에 GNB 통일 반영), `doc/DEV_PLAN.md`(Phase 2에 헤더 선반영 완료 기록)에 반영.

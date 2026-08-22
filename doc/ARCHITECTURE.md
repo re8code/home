@@ -47,9 +47,10 @@ graph TD
 | 페이지 | 역할 | 비고 |
 | --- | --- | --- |
 | `index.html` (루트) | 랜딩 / 5갈래 내비게이션 허브 + 훈련 코스 5개 섹션(Language/Algorithm/Web & WebApp/Unity/Agent AI) + 핵심 철학 + CTA | OJ/낙서장/LMS/business/studio 진입점 + 1:1 상담 CTA(Google Forms 직결). Epic Games Store 레이아웃 참고 시안(`src/mockup.html`)을 2026-08-22 최종안으로 채택해 전면 교체, `mockup.html`은 삭제. Swiper·AOS를 CDN으로 추가 로드하는 유일한 페이지. `src/` 페이지로는 `src/` 접두사로 링크 |
-| `src/graffiti.html` / `src/graffiti-detail.html` / `src/graffiti-new.html` | "원장님의 낙서" 게시판 (목록/상세·수정·삭제/작성) | 유일하게 Firebase와 통신하는 페이지군. 헤더 톤 조정(Phase 2)은 아직 미착수 |
+| `src/graffiti.html` / `src/graffiti-detail.html` / `src/graffiti-new.html` | "원장님의 낙서" 게시판 (목록/상세·수정·삭제/작성) | 유일하게 Firebase와 통신하는 페이지군. 헤더는 GNB로 통일됐지만 본문 디자인 톤 조정(`doc/DEV_PLAN.md` Phase 2)은 아직 미착수 |
 | `src/lang-cp.html` (외 `lang-*.html` 예정) | Language 코스 언어별 상세 페이지 | `index.html` Language 카드에서 연결되는 실제 페이지. 커리큘럼 목록 UI는 korea-pass.kr 공지사항 목록 페이지를 벤치마크. 현재 C/C++만 제작, 나머지 언어는 동일 패턴으로 순차 제작 예정 |
 
+- **GNB**: `index.html`/`src/graffiti*.html`/`src/lang-cp.html` 5개 페이지 전부 헤더(`<header>` 전체 — 로고/nav/CTA/모바일 메뉴)가 동일한 마크업(페이지별 커스텀 nav 링크 없음, 2026-08-22 통일). 상세: `../CLAUDE.md` "페이지 구조".
 - `src/` 안의 페이지끼리는 파일명만으로 상호 링크하고, 루트(`index.html`)나 `assets/`를 가리킬 때는 `../`를 붙인다.
 - `assets/js/mobile-menu.js` — 모든 페이지 하단에서 `defer` 로드, 모바일 내비게이션 토글 공통 처리.
 - `assets/image/` — 외부에서 가져온 로고·아이콘 리소스(예: `index.html` Language 카드의 언어별 로고 PNG). 출처/라이선스는 도입 시점 `../report/*.md`에 기록.

@@ -25,6 +25,7 @@
 
 ### Phase 2 — 낙서장 톤 조정
 - `graffiti*.html`의 디자인 톤을 새 브랜드 톤에 맞춰 조정 (Firestore CRUD 로직은 변경하지 않음).
+- 헤더는 2026-08-22 GNB 통일 작업으로 선반영 완료 — `index.html`/`src/lang-cp.html`과 완전히 동일한 마크업으로 교체(페이지별 커스텀 nav 제거, `fixed`→`sticky`로 전환하며 `<main>`의 `pt-16` 오프셋도 제거). 본문(카드 리스트·푸터 등)의 톤 조정은 아직 남은 작업.
 
 ### Phase 2.5 — 언어별 코스 상세 페이지 (`lang-*.html`)
 - `index.html` Language 카드 클릭 시 이동하는 개별 언어 페이지(과거에는 `mockup.html`의 카드였으나, `mockup.html`이 `index.html`로 흡수되며 이제 `index.html`의 카드). 커리큘럼 목록 UI는 korea-pass.kr 공지사항 목록 페이지(`/notice/noticeList.do`)를 벤치마크(검색창 + 분류 탭 + 뱃지·메타·제목 카드 리스트 + "더보기").
