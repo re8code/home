@@ -52,5 +52,6 @@
 ## 8. 미결 사항 (Open Questions)
 - 언어별 코스 상세 페이지: `lang-cp.html`(C/C++)에 이어 `lang-jv.html`(Java)/`lang-py.html`(Python)/`lang-js.html`(JavaScript)/`lang-dt.html`(Dart) 4개도 제작·연결 완료(2026-08-22) — Language 코스 5개 페이지 전부 존재하며, 각 페이지 상단 언어 바로가기 탭과 `index.html` Language 카드에서 모두 연결됨.
 - LMS/business/studio 3개 서브도메인의 실제 오픈 시점. (UI 처리 방식은 2026-08-21 상단 내비게이션 1차 구현 시 우선 "준비중" 배지 + 비활성 링크로 임시 확정 — `index.html` 헤더 참고. 서브도메인 오픈 시 실제 링크로 교체 예정.)
+- "회사 소개" 페이지 제작(2026-08-22 신규 결정): GNB 로고 바로 오른쪽에 nav 첫 항목으로 "준비중" 배지 + 비활성 링크를 9개 페이지 전부에 우선 추가(LMS/business/studio와 동일 패턴). 실제 소개 페이지는 아직 미제작 — 완성되면 이 배지를 제거하고 실제 링크로 교체.
 - OJ(`oj.recode.ai.kr`)는 2026-08-21부로 `index.html` 상단 내비게이션에서 실제 링크로 연결 완료(새 탭).
 - 디자인 톤 확정 (완료, 2026-08-22): `mockup.html`에서 검토하던 라이트 크림 배경(`#FBF7EE`) + 에메랄드 브랜드 컬러 시안(히어로/철학 타일/CTA 배너는 다크 액센트 패널 유지, 훈련 코스 카테고리 5개 Language/Algorithm/Web & WebApp/Unity/Agent AI)을 최종안으로 채택 — 원래 `index.html`에 있던 다크 인디고 톤 히어로(문제의식/훈련 프로세스/대상 섹션 포함)는 제거되고 `mockup.html` 내용으로 완전히 대체됨. `mockup.html` 파일 자체는 삭제.
