@@ -79,6 +79,23 @@
     background-color: #0f172a;
     color: #fff;
   }
+  .curriculum-detail {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .25s ease;
+  }
+  .curriculum-detail > div {
+    overflow: hidden;
+  }
+  [data-expanded="true"] .curriculum-detail {
+    grid-template-rows: 1fr;
+  }
+  .curriculum-chevron {
+    transition: transform .2s ease;
+  }
+  [data-expanded="true"] .curriculum-chevron {
+    transform: rotate(180deg);
+  }
 </style>
 </head>
 
@@ -194,100 +211,160 @@
       <!-- ===== 커리큘럼 목록 (공지사항 카드 리스트 벤치마크) ===== -->
       <div id="curriculum-list" class="mt-3 flex flex-col gap-3">
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6" data-curriculum-card data-category="basic">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">1주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">1. OT — C 언어와 메모리 모델 이해</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">포인터, 스택, 힙이 실제로 어떻게 동작하는지 전체 그림을 먼저 그리고 12주 커리큘럼의 로드맵을 확인합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">OT — C 언어와 메모리 모델 이해</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">컴파일러가 소스 코드를 기계어로 바꾸는 과정, 프로그램 실행 시 메모리가 코드/데이터/스택/힙 영역으로 나뉘는 구조를 다이어그램으로 살펴봅니다. 앞으로 12주 동안 어떤 순서로 개념이 쌓이는지 미리 확인해 학습 방향을 잡습니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6" data-curriculum-card data-category="basic">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">2주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">2. 변수와 자료형, 비트 수준의 데이터 표현</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">정수와 실수가 비트로 저장되는 방식, 오버플로우와 형 변환의 원리를 직접 확인합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">변수와 자료형, 비트 수준의 데이터 표현</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">부호 있는 정수의 2의 보수 표현, 실수의 IEEE 754 저장 방식을 직접 비트 단위로 출력해 눈으로 확인합니다. 암묵적 형 변환이 버그로 이어지는 실제 사례를 통해 왜 자료형 크기를 의식해야 하는지 체감합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6" data-curriculum-card data-category="basic">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">3주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">3. 포인터와 메모리 주소</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">변수의 주소를 다루는 포인터 문법과 역참조, 이중 포인터까지 단계적으로 익힙니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">포인터와 메모리 주소</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">&와 * 연산자의 의미부터 시작해, 포인터가 가리키는 값을 바꾸는 실습과 함수에 포인터를 전달해 원본 값을 변경하는 예제를 직접 작성합니다. 포인터의 포인터(이중 포인터)가 필요한 상황도 함께 다룹니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6" data-curriculum-card data-category="basic">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">4주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">4. 배열과 포인터 연산</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">배열이 포인터로 어떻게 취급되는지, 포인터 산술 연산으로 메모리를 순회하는 법을 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">배열과 포인터 연산</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">배열명이 첫 원소의 주소로 변환되는 원리와, 인덱스 접근이 사실 포인터 연산으로 컴파일되는 과정을 확인합니다. 포인터 증감 연산으로 배열을 순회하는 코드를 직접 작성하며 배열-포인터 관계를 완전히 이해합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6" data-curriculum-card data-category="basic">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">5주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">5. 함수와 스택 프레임</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">함수 호출 시 스택에 무엇이 쌓이는지, 재귀 호출의 메모리 구조를 시각적으로 이해합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">함수와 스택 프레임</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">함수를 호출할 때마다 스택 프레임이 생성·소멸되는 과정을 디버거로 추적하며, 지역 변수와 반환 주소가 어디에 저장되는지 확인합니다. 재귀 함수가 스택을 어떻게 소비하는지 살펴보며 스택 오버플로우의 원인도 이해합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6" data-curriculum-card data-category="practice">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">6주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">6. 동적 메모리 할당 (malloc / free)</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">힙 메모리를 직접 할당·해제하며 메모리 누수와 댕글링 포인터를 방지하는 습관을 훈련합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">동적 메모리 할당 (malloc / free)</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">malloc/calloc/realloc으로 원하는 만큼 메모리를 할당하고 free로 해제하는 기본 패턴을 익힙니다. 해제를 잊어 발생하는 메모리 누수, 해제 후 접근하는 댕글링 포인터 문제를 직접 재현해보고 방지하는 코딩 습관을 만듭니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6" data-curriculum-card data-category="practice">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">7주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">7. 구조체와 메모리 정렬(Alignment)</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">구조체 멤버가 메모리에 배치되는 원리와 패딩, 정렬 규칙을 실습으로 확인합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">구조체와 메모리 정렬(Alignment)</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">sizeof로 구조체 크기를 확인하며 컴파일러가 멤버 사이에 패딩 바이트를 삽입하는 이유를 이해합니다. 멤버 선언 순서를 바꿔가며 구조체 크기가 달라지는 걸 직접 관찰하고, 메모리 정렬이 성능에 미치는 영향까지 다룹니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6" data-curriculum-card data-category="practice">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">8주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">8. 파일 입출력과 시스템 콜</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">표준 입출력 함수와 운영체제 시스템 콜의 관계를 이해하고 파일을 직접 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">파일 입출력과 시스템 콜</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">fopen/fread/fwrite 같은 표준 라이브러리 함수가 내부적으로 open/read/write 시스템 콜을 호출하는 구조를 확인합니다. 텍스트 파일과 바이너리 파일을 각각 읽고 쓰는 실습을 통해 버퍼링의 개념도 함께 익힙니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6" data-curriculum-card data-category="practice">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">9주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">9. C++ 객체지향 기초 (클래스 · 캡슐화)</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">구조체에서 클래스로 확장하며 캡슐화, 생성자·소멸자의 동작 원리를 익힙니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">C++ 객체지향 기초 (클래스 · 캡슐화)</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">C의 구조체에 함수(멤버 함수)가 결합된 형태로 클래스를 이해하고, public/private 접근 제어로 데이터를 캡슐화하는 이유를 다룹니다. 객체가 생성·소멸될 때 생성자와 소멸자가 자동으로 호출되는 흐름을 추적합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6" data-curriculum-card data-category="practice">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">10주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">10. STL과 표준 컨테이너</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">vector, map 등 표준 라이브러리 컨테이너의 내부 구조와 활용법을 실전 코드로 학습합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">STL과 표준 컨테이너</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">직접 만든 동적 배열과 vector를 비교하며 STL이 내부적으로 어떻게 메모리를 관리하는지 이해합니다. map, set 같은 연관 컨테이너와 반복자(iterator) 개념까지 실전 예제로 다룹니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20" data-curriculum-card data-category="project">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-violet-500/10 px-2.5 py-1 text-xs font-semibold text-violet-700">프로젝트</span>
-            <span class="text-sm text-slate-400">11주차</span>
+        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20 cursor-pointer" data-curriculum-card data-category="project" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">11. 스마트 포인터와 RAII</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">메모리를 자동으로 관리하는 RAII 패턴과 unique_ptr, shared_ptr의 동작 원리를 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">스마트 포인터와 RAII</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">객체의 생성자·소멸자에 자원 관리를 위임하는 RAII 원칙을 이해하고, 이를 구현한 스마트 포인터가 어떻게 소유권을 관리하는지 다룹니다. unique_ptr과 shared_ptr의 차이, 순환 참조 문제와 weak_ptr까지 확장합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20" data-curriculum-card data-category="project">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-violet-500/10 px-2.5 py-1 text-xs font-semibold text-violet-700">프로젝트</span>
-            <span class="text-sm text-slate-400">12주차</span>
+        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20 cursor-pointer" data-curriculum-card data-category="project" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">12. 미니 프로젝트 — 메모리 매니저 구현</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">지금까지 배운 포인터와 메모리 관리 지식을 총동원해 나만의 메모리 매니저를 직접 구현합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">미니 프로젝트 — 메모리 매니저 구현</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">malloc/free를 대체하는 간단한 메모리 풀(memory pool)을 직접 설계·구현하며 12주 동안 배운 포인터, 구조체, 동적 할당 지식을 하나의 프로젝트로 통합합니다. 코드 리뷰를 통해 실제 시스템 프로그래밍 관점에서 피드백을 받습니다.</p>
+          </div></div>
         </div>
 
       </div>
@@ -356,5 +433,25 @@
   </footer>
 
   <script src="../assets/js/mobile-menu.js" defer></script>
+  <script>
+    document.querySelectorAll('[data-curriculum-card]').forEach((card) => {
+      const toggle = () => {
+        const expanded = card.getAttribute('data-expanded') === 'true';
+        card.setAttribute('data-expanded', String(!expanded));
+        card.setAttribute('aria-expanded', String(!expanded));
+      };
+      card.addEventListener('click', toggle);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+      card.addEventListener('blur', () => {
+        card.setAttribute('data-expanded', 'false');
+        card.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
 </body>
 </html>

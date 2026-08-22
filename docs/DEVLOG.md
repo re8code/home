@@ -136,3 +136,22 @@
   - `CLAUDE.md`: "저장소 관례" 절의 `doc/` 접두사 설명·5개 문서 경로 전부 `docs/`로 치환.
   - `docs/ARCHITECTURE.md`: 1절 인트로 문장·§3 표의 `doc/DEV_PLAN.md` 참조 2곳을 `docs/`로 수정.
   - `docs/DEV_PLAN.md`/`docs/PRD.md`는 원래 상대경로(`../CLAUDE.md`, 파일명만)로 서로를 참조하고 있어 수정 불필요함을 grep으로 확인.
+- 사용자 지시로 `lang-cp.html`(다른 4개 언어 페이지는 제외, 이 파일에만 적용)의 커리큘럼 카드 12개를 2단계로 개편:
+  1. 뱃지(기초/실습/프로젝트)+N주차 표시 제거 → 제목 앞에 `1.`~`12.` 번호 부여(제목 폰트 크기는 유지), 제목 아래 작은 non-bold 설명(brief) 한 줄 신규 작성.
+  2. 카드를 클릭하면 brief 아래로 더 자세한 detail 문단이 펼쳐지도록 아코디언 구현 — CSS Grid `grid-template-rows: 0fr`→`1fr` 트랜지션(`.curriculum-detail`, `<style>` 블록에 추가)으로 JS 없이 부드러운 높이 애니메이션을 구현하고, 셰브런 아이콘 회전도 같은 `data-expanded` 속성으로 연동. 카드는 `role="button" tabindex="0" aria-expanded`를 갖춰 클릭뿐 아니라 키보드(Enter/Space)로도 토글 가능, 파일 하단 인라인 `<script>`에서 `[data-curriculum-card]` 전체에 리스너를 붙임.
+  - 12개 항목 전부에 brief(기존 설명 재사용)와 신규 detail 문장(2~3문장, 실습 내용을 구체적으로 서술)을 작성.
+  - 클로드 인 크롬으로 로컬 서버(8765) 확인: 카드 클릭 시 부드럽게 확장되며 detail 텍스트 노출, 재클릭 시 정상 축소, 콘솔 에러 없음.
+  - `CLAUDE.md`(`lang-cp.html` 항목에 새 카드 형식 설명 추가, 나머지 4개 언어 페이지는 아직 이전 뱃지+주차 형식이라 형식이 공존 중임을 명시)에 반영.
+- 사용자 지시로 "항목에 focus가 풀리면 다시 원래 크기로" — 위 아코디언 카드가 클릭으로 펼쳐진 뒤 계속 열려있지 않고, 포커스를 잃으면(다른 카드 클릭·빈 영역 클릭·Tab 이동 등 `blur` 이벤트) 자동으로 접히도록 동작 추가. 카드마다 `blur` 리스너를 붙여 `data-expanded`/`aria-expanded`를 무조건 `false`로 리셋 — 결과적으로 한 번에 하나의 카드만 펼쳐진 상태를 유지.
+  - 클로드 인 크롬으로 확인: 카드 A를 펼친 뒤 카드 B를 클릭하면 A가 자동으로 접히고 B만 펼쳐짐, 빈 영역 클릭 시에도 펼쳐진 카드가 접힘. 콘솔 에러 없음.
+  - `CLAUDE.md`(커리큘럼 카드 형식 설명에 blur 시 자동 축소 동작 추가)에 반영.
+- 사용자 지시로 `lang-cp.html`의 아코디언 커리큘럼 카드 형식(번호+brief+클릭 시 펼쳐지는 detail, blur 시 자동 축소)을 나머지 4개 언어 페이지(`lang-jv.html`/`lang-py.html`/`lang-js.html`/`lang-dt.html`)에도 동일 적용 — 이제 5개 언어 페이지 전부 동일한 카드 형식을 쓴다.
+  - 반복 작업량이 커서(4개 파일 × 12개 카드) 스크래치 폴더에 Python 스크립트(`apply_accordion.py`)를 작성해 일괄 처리: 정규식으로 기존 뱃지+주차+제목 카드 블록을 파싱하고(제목까지 추출해 미리 작성해둔 brief/detail 텍스트와 매칭 검증), 새 카드 마크업(번호·brief·detail·셰브런·`curriculum-detail`)으로 치환. `<style>`에 `.curriculum-detail`/`.curriculum-chevron` 규칙을, 파일 하단에 클릭/키보드/blur 토글 스크립트를 삽입.
+  - Java/Python/JavaScript/Dart 각 12개 항목의 brief(기존 한 줄 설명 재사용)와 detail(2~3문장, 언어별 실제 문법·개념을 구체적으로 서술 — 예: Java는 JVM·강타입·Spring 계층 구조, Python은 동적 타이핑·덕 타이핑·Pandas, JavaScript는 이벤트 루프·클로저·React 상태 흐름, Dart는 null 안정성·Widget 트리·Provider) 전부 신규 작성.
+  - 스크립트 실행 전 정규식 매칭 12건, 제목 일치 여부를 파일마다 검증(불일치 시 즉시 중단하도록 assert)해 오치환 위험을 없앰 — 4개 파일 전부 12/12 매칭·치환 성공.
+  - 클로드 인 크롬으로 4개 페이지 전수 확인: Dart 페이지에서 카드 클릭 시 부드럽게 확장·detail 노출, JavaScript·Python 페이지 스크롤로 12번 카드까지 정상 렌더(CTA 섹션 포함), 콘솔 에러 없음.
+  - `CLAUDE.md`(커리큘럼 카드 형식 설명을 "`lang-cp.html`에만 적용"에서 "5개 페이지 전부 동일 형식"으로 갱신, 새 언어 페이지 추가 시 이 5개 파일 중 하나를 템플릿으로 삼으라고 명시)에 반영.
+- 사용자 지시로 `index.html`의 "01 · LANGUAGE" 같은 번호 접두사 라벨을 전부 제거 — 히어로 eyebrow(`#hero-eyebrow`)와 5개 섹션 헤더 `<p>` 6곳, 히어로 자동 전환에 쓰이는 JS `SLIDES[].eyebrow` 배열 5곳까지 총 11곳을 sed로 일괄 치환("LANGUAGE"/"ALGORITHM"/"WEB & WEBAPP"/"UNITY"/"AGENT AI"만 남김).
+  - 사용자에게 범위를 먼저 확인: 사이드 게이지 리스트(`#hero-side-list`)의 컬러 사각 아이콘 안 숫자(`01`~`05`)도 함께 지울지 물었고, "텍스트 라벨만 제거"로 확정 — 아이콘 배지 숫자는 손대지 않음.
+  - 클로드 인 크롬으로 확인: 히어로 라벨 "LANGUAGE"로, 사이드 리스트 아이콘은 `01`~`05` 그대로, 스크롤해 "UNITY" 섹션 헤더도 번호 없이 정상 렌더. 콘솔 에러 없음.
+  - `CLAUDE.md`(`index.html` 항목에 라벨 제거 범위와, 사이드 리스트 아이콘 숫자는 별개로 유지된다는 점 명시)에 반영.

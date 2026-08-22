@@ -75,6 +75,23 @@
     border-color: rgba(24, 180, 118, 0.4);
     box-shadow: 0 16px 32px -18px rgba(15, 23, 42, 0.2);
   }
+  .curriculum-detail {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .25s ease;
+  }
+  .curriculum-detail > div {
+    overflow: hidden;
+  }
+  [data-expanded="true"] .curriculum-detail {
+    grid-template-rows: 1fr;
+  }
+  .curriculum-chevron {
+    transition: transform .2s ease;
+  }
+  [data-expanded="true"] .curriculum-chevron {
+    transform: rotate(180deg);
+  }
   .filter-tab.is-active {
     background-color: #0f172a;
     color: #fff;
@@ -194,100 +211,160 @@
       <!-- ===== 커리큘럼 목록 (공지사항 카드 리스트 벤치마크) ===== -->
       <div class="mt-3 flex flex-col gap-3">
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">1주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">1. OT — Python 철학과 인터프리터 동작 방식</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">Python이 코드를 한 줄씩 해석해 실행하는 인터프리터 언어인 이유와 12주 학습 로드맵을 함께 확인합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">OT — Python 철학과 인터프리터 동작 방식</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">컴파일 언어와 달리 소스 코드를 바로 실행하는 인터프리터 구조, 그리고 'Simple is better than complex' 같은 Python의 설계 철학(PEP 20)이 실제 문법에 어떻게 반영되어 있는지 살펴봅니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">2주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">2. 변수와 자료형, 동적 타이핑</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">변수 선언 없이 값을 담을 수 있는 동적 타이핑의 원리와, 그로 인해 생기는 실수를 미리 방지하는 법을 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">변수와 자료형, 동적 타이핑</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">type()과 isinstance()로 런타임에 타입을 확인하는 방법, 동적 타이핑이 주는 유연함과 트레이드오프를 실제 버그 사례로 체감합니다. 타입 힌트(type hint)를 도입해 협업 시 가독성을 높이는 방법도 함께 다룹니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">3주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">3. 리스트·딕셔너리와 컴프리헨션</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">리스트, 딕셔너리를 자유자재로 다루고 컴프리헨션 문법으로 간결한 코드를 작성하는 법을 익힙니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">리스트·딕셔너리와 컴프리헨션</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">for문으로 작성한 반복 로직을 리스트/딕셔너리 컴프리헨션으로 재작성하며 Python다운(Pythonic) 코드 스타일을 체득합니다. 중첩 컴프리헨션과 조건부 표현식까지 실전 예제로 다룹니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">4주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">4. 함수와 일급 객체</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">함수를 변수에 담고 다른 함수의 인자로 전달할 수 있는 일급 객체 개념을 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">함수와 일급 객체</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">함수를 값처럼 다루는 일급 객체(first-class citizen) 특성을 활용해 고차 함수, 클로저, 데코레이터의 기본 동작 원리를 실습합니다. *args/**kwargs로 가변 인자를 다루는 법도 함께 익힙니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">5주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">5. 클래스와 덕 타이핑</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">클래스 문법과 함께, '오리처럼 걷고 울면 오리로 취급'하는 Python 특유의 덕 타이핑을 이해합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">클래스와 덕 타이핑</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">상속 없이도 동일한 인터페이스(메서드)를 구현하면 같은 방식으로 다룰 수 있는 덕 타이핑의 원리를 실습합니다. Java 같은 정적 타입 언어의 다형성과 비교하며 Python의 유연함이 어디서 오는지 이해합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">6주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">6. 파일 입출력과 예외 처리</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">with 문으로 파일을 안전하게 열고 닫으며, try-except로 예상 가능한 오류에 대응하는 법을 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">파일 입출력과 예외 처리</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">컨텍스트 매니저(with)가 파일을 자동으로 닫아주는 원리와, 여러 예외 타입을 구분해 처리하는 except 구조를 실습합니다. 커스텀 예외 클래스를 직접 만들어보는 것까지 다룹니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">7주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">7. 모듈·패키지와 가상환경</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">코드를 모듈·패키지로 구조화하고, venv로 프로젝트별 독립된 실행 환경을 관리하는 법을 익힙니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">모듈·패키지와 가상환경</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">import 시스템이 모듈을 찾는 경로 규칙과 __init__.py의 역할을 이해합니다. 가상환경을 직접 만들고 requirements.txt로 의존성을 관리하는 실전 워크플로우를 연습합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">8주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">8. NumPy·Pandas로 데이터 다루기</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">NumPy 배열 연산과 Pandas DataFrame으로 대량의 데이터를 효율적으로 가공하는 법을 실습합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">NumPy·Pandas로 데이터 다루기</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">순수 Python 반복문과 NumPy 벡터 연산의 속도 차이를 직접 비교하고, Pandas로 CSV 데이터를 불러와 필터링·집계·정렬하는 실전 데이터 처리 흐름을 익힙니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">9주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">9. API 호출과 requests</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">requests 라이브러리로 외부 API를 호출하고 JSON 응답을 파싱해 활용하는 법을 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">API 호출과 requests</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">GET/POST 요청을 보내고 상태 코드·헤더·바디를 다루는 기본기부터, 인증 토큰을 포함한 요청, 에러 응답 처리까지 실전 API 연동 패턴을 실습합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">10주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">10. AI/LLM API 연동 기초</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">OpenAI·Anthropic 같은 LLM API를 Python 코드에서 호출해 응답을 처리하는 기본 패턴을 익힙니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">AI/LLM API 연동 기초</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">API 키 관리, 프롬프트 구성, 스트리밍 응답 처리 같은 LLM API 연동의 실전 패턴을 다룹니다. 응답을 파싱해 애플리케이션 로직에 연결하는 작은 예제를 직접 구현합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-violet-500/10 px-2.5 py-1 text-xs font-semibold text-violet-700">프로젝트</span>
-            <span class="text-sm text-slate-400">11주차</span>
+        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20 cursor-pointer" data-curriculum-card data-category="project" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">11. 데이터 파이프라인 설계</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">데이터 수집부터 가공, 저장까지 이어지는 파이프라인을 여러 모듈로 나눠 설계하는 법을 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">데이터 파이프라인 설계</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">지금까지 배운 파일 입출력, API 호출, Pandas 가공 로직을 하나의 파이프라인으로 연결하는 설계 방법을 연습합니다. 각 단계를 함수/모듈로 분리해 재사용 가능하게 만드는 것이 핵심입니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-violet-500/10 px-2.5 py-1 text-xs font-semibold text-violet-700">프로젝트</span>
-            <span class="text-sm text-slate-400">12주차</span>
+        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20 cursor-pointer" data-curriculum-card data-category="project" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">12. 미니 프로젝트 — 데이터 분석 자동화 도구</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">지금까지 배운 데이터 처리와 API 연동 지식을 총동원해 실제 동작하는 분석 자동화 도구를 직접 구현합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">미니 프로젝트 — 데이터 분석 자동화 도구</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">외부 데이터를 수집·가공하고 AI API로 요약·분석까지 자동화하는 미니 프로젝트를 진행합니다. 코드 리뷰를 통해 실무 데이터 파이프라인 설계 관점의 피드백을 받습니다.</p>
+          </div></div>
         </div>
 
       </div>
@@ -356,5 +433,25 @@
   </footer>
 
   <script src="../assets/js/mobile-menu.js" defer></script>
+  <script>
+    document.querySelectorAll('[data-curriculum-card]').forEach((card) => {
+      const toggle = () => {
+        const expanded = card.getAttribute('data-expanded') === 'true';
+        card.setAttribute('data-expanded', String(!expanded));
+        card.setAttribute('aria-expanded', String(!expanded));
+      };
+      card.addEventListener('click', toggle);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+      card.addEventListener('blur', () => {
+        card.setAttribute('data-expanded', 'false');
+        card.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
 </body>
 </html>

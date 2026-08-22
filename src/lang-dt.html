@@ -75,6 +75,23 @@
     border-color: rgba(24, 180, 118, 0.4);
     box-shadow: 0 16px 32px -18px rgba(15, 23, 42, 0.2);
   }
+  .curriculum-detail {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .25s ease;
+  }
+  .curriculum-detail > div {
+    overflow: hidden;
+  }
+  [data-expanded="true"] .curriculum-detail {
+    grid-template-rows: 1fr;
+  }
+  .curriculum-chevron {
+    transition: transform .2s ease;
+  }
+  [data-expanded="true"] .curriculum-chevron {
+    transform: rotate(180deg);
+  }
   .filter-tab.is-active {
     background-color: #0f172a;
     color: #fff;
@@ -194,100 +211,160 @@
       <!-- ===== 커리큘럼 목록 (공지사항 카드 리스트 벤치마크) ===== -->
       <div class="mt-3 flex flex-col gap-3">
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">1주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">1. OT — Dart와 Flutter 렌더링 파이프라인</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">Dart 코드가 위젯 트리로 변환되어 화면에 그려지기까지의 전체 흐름을 먼저 그리고 12주 로드맵을 확인합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">OT — Dart와 Flutter 렌더링 파이프라인</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">Dart VM이 코드를 실행하고, Flutter가 위젯 트리를 빌드·레이아웃·페인트하는 렌더링 파이프라인의 큰 그림을 다이어그램으로 살펴봅니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">2주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">2. 변수·자료형과 null 안정성</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">Dart의 sound null safety가 컴파일 타임에 null 참조 오류를 어떻게 방지하는지 직접 확인합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">변수·자료형과 null 안정성</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">nullable(?)과 non-nullable 타입을 구분해 선언하고, late·! 연산자를 상황에 맞게 사용하는 법을 실습하며 런타임 null 오류를 원천 차단하는 감각을 익힙니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">3주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">3. 함수와 화살표 문법</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">일반 함수 선언과 화살표(=>) 문법의 차이, 명명된 매개변수 같은 Dart 특유의 함수 문법을 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">함수와 화살표 문법</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">짧은 함수를 화살표 문법으로 간결하게 표현하는 법과, {}로 감싼 명명된 매개변수·기본값 지정 등 Dart 함수 시그니처의 유연함을 실습합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">4주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">4. 클래스와 믹스인</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">클래스 기본 문법과, 다중 상속 없이 여러 클래스의 기능을 조합하는 믹스인(mixin)을 이해합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">클래스와 믹스인</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">with 키워드로 믹스인을 클래스에 결합해 코드를 재사용하는 패턴을 실습하고, 상속과 믹스인을 각각 언제 선택해야 하는지 기준을 세웁니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
-            <span class="text-sm text-slate-400">5주차</span>
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">5. 컬렉션과 컬렉션 연산자</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">List/Map/Set 컬렉션과 스프레드(...)·컬렉션 if/for 같은 Dart 특유의 컬렉션 연산자를 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">컬렉션과 컬렉션 연산자</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">위젯 리스트를 조건부로 구성할 때 유용한 컬렉션 if/for 문법을 실습하며, Flutter UI 코드에서 이 연산자들이 왜 자주 쓰이는지 체감합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">6주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">6. 선언형 UI — Widget 트리 이해</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">모든 것이 Widget인 Flutter의 선언형 UI 철학과, 위젯이 중첩되어 트리를 구성하는 원리를 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">선언형 UI — Widget 트리 이해</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">StatelessWidget을 직접 조합해 화면을 구성하며, build() 메서드가 호출될 때마다 위젯 트리가 어떻게 재구성되는지 이해합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">7주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">7. State 관리 기초 (StatefulWidget)</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">StatefulWidget과 setState()로 화면 상태를 관리하고 리렌더링을 트리거하는 기본 패턴을 익힙니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">State 관리 기초 (StatefulWidget)</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">State 객체의 생명주기(initState, dispose 등)를 이해하고, setState() 호출이 언제 어떤 위젯을 다시 그리는지 실습으로 확인합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">8주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">8. 비동기 처리 — Future와 Stream</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">단발성 비동기 값을 다루는 Future와, 연속된 값의 흐름을 다루는 Stream의 차이와 사용법을 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">비동기 처리 — Future와 Stream</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">async/await로 Future를 다루는 법과 StreamBuilder로 Stream 데이터를 UI에 실시간 반영하는 패턴을 실습하며 두 개념의 사용 시점을 구분합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">9주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">9. 레이아웃과 반응형 UI 구성</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">Row/Column/Stack 같은 레이아웃 위젯과 MediaQuery로 다양한 화면 크기에 대응하는 UI를 구성합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">레이아웃과 반응형 UI 구성</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">Flexible/Expanded로 공간을 배분하는 원리와, 화면 크기에 따라 레이아웃을 다르게 구성하는 반응형 UI 패턴을 실전 예제로 다룹니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
-            <span class="text-sm text-slate-400">10주차</span>
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">10. 상태 관리 라이브러리 (Provider) 기초</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">위젯 트리 깊은 곳까지 상태를 전달하는 문제를 Provider로 해결하는 원리를 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">상태 관리 라이브러리 (Provider) 기초</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">setState만으로는 한계가 있는 전역 상태 공유 문제를 ChangeNotifier와 Provider로 해결하는 패턴을 실습하며, 상태 관리 라이브러리가 필요한 이유를 체감합니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-violet-500/10 px-2.5 py-1 text-xs font-semibold text-violet-700">프로젝트</span>
-            <span class="text-sm text-slate-400">11주차</span>
+        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20 cursor-pointer" data-curriculum-card data-category="project" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">11. 크로스플랫폼 배포 파이프라인 설계</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">하나의 코드베이스로 iOS/Android/Web에 배포하는 Flutter의 빌드·배포 파이프라인을 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">크로스플랫폼 배포 파이프라인 설계</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">플랫폼별 빌드 설정 차이, 앱 아이콘·스플래시 화면 같은 플랫폼 리소스 관리, 스토어 배포까지 이어지는 실전 배포 흐름을 개념적으로 살펴봅니다.</p>
+          </div></div>
         </div>
 
-        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-violet-500/10 px-2.5 py-1 text-xs font-semibold text-violet-700">프로젝트</span>
-            <span class="text-sm text-slate-400">12주차</span>
+        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20 cursor-pointer" data-curriculum-card data-category="project" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">12. 미니 프로젝트 — 멀티플랫폼 할 일 관리 앱</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">지금까지 배운 위젯·상태 관리·비동기 처리를 총동원해 하나의 코드로 여러 플랫폼에서 동작하는 할 일 앱을 직접 구현합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="mt-3 font-semibold text-slate-900">미니 프로젝트 — 멀티플랫폼 할 일 관리 앱</p>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">할 일 추가·수정·삭제 기능을 Provider로 상태 관리하며 구현하고, 로컬 저장까지 연동하는 미니 프로젝트를 진행합니다. 코드 리뷰를 통해 실무 Flutter 설계 관점의 피드백을 받습니다.</p>
+          </div></div>
         </div>
 
       </div>
@@ -356,5 +433,25 @@
   </footer>
 
   <script src="../assets/js/mobile-menu.js" defer></script>
+  <script>
+    document.querySelectorAll('[data-curriculum-card]').forEach((card) => {
+      const toggle = () => {
+        const expanded = card.getAttribute('data-expanded') === 'true';
+        card.setAttribute('data-expanded', String(!expanded));
+        card.setAttribute('aria-expanded', String(!expanded));
+      };
+      card.addEventListener('click', toggle);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+      card.addEventListener('blur', () => {
+        card.setAttribute('data-expanded', 'false');
+        card.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
 </body>
 </html>
