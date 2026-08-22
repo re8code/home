@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>C/C++ — 훈련 코스 | Recode Coding</title>
+<meta name="description" content="메모리를 직접 다루며 컴퓨터가 동작하는 물리적 원리를 체득하는 C/C++ 훈련 코스. 리코드 코딩의 1:1 맞춤 커리큘럼을 확인하세요." />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Pretendard', 'Pretendard Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        },
+        colors: {
+          brand: {
+            50: '#eefdf5',
+            100: '#d5f9e4',
+            200: '#aef1cd',
+            300: '#74e4ad',
+            400: '#3ecf8e',
+            500: '#18b476',
+            600: '#0e9261',
+            700: '#0c7550',
+            800: '#0d5d42',
+            900: '#0c4c38',
+            950: '#052b20',
+          },
+        },
+        boxShadow: {
+          glow: '0 0 60px -15px rgba(62, 207, 142, 0.45)',
+        },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link
+  rel="stylesheet"
+  as="style"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
+/>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-feature-settings: "tnum"; background-color: #FBF7EE; }
+  .cover-art {
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,0.10), transparent 55%),
+      linear-gradient(155deg, var(--from), var(--to));
+  }
+  .curriculum-card {
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .curriculum-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(24, 180, 118, 0.4);
+    box-shadow: 0 16px 32px -18px rgba(15, 23, 42, 0.2);
+  }
+  .filter-tab.is-active {
+    background-color: #0f172a;
+    color: #fff;
+  }
+</style>
+</head>
+
+<body class="text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
+
+  <!-- ===== Header ===== -->
+  <header class="sticky top-0 z-50 bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 h-16 flex items-center justify-between gap-8">
+      <a href="../index.html" class="flex items-center gap-2 font-mono font-semibold tracking-tight text-white">
+        <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400 border border-brand-500/30">R/</span>
+        <span class="hidden sm:inline">Recode Coding</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <nav class="flex items-center gap-6 text-sm text-slate-400">
+          <a href="../index.html#lang" class="hover:text-white transition-colors">훈련 코스</a>
+          <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+          <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            LMS
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+        </nav>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-400 transition-colors">
+          1:1 상담 신청
+        </a>
+      </div>
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
+        aria-label="메뉴 열기"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg data-icon="open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-5 w-5">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg data-icon="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="hidden h-5 w-5">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-[#0c0c0f]/95 backdrop-blur">
+      <nav class="flex flex-col px-6 py-4 gap-4 text-sm text-slate-300">
+        <a href="../index.html#lang" class="hover:text-white transition-colors">훈련 코스</a>
+        <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+        <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          LMS
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-brand-500 px-4 py-2 font-semibold text-white hover:bg-brand-400 transition-colors">1:1 상담 신청</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== 페이지 헤더: 브레드크럼 + 타이틀 (공지사항 목록 벤치마크) ===== -->
+    <section class="mx-auto max-w-4xl px-6 lg:px-8 pt-12">
+      <nav class="flex items-center gap-2 text-sm text-slate-500" aria-label="breadcrumb">
+        <a href="../index.html" class="inline-flex items-center hover:text-slate-900 transition-colors" aria-label="홈">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+        </a>
+        <span>/</span>
+        <a href="../index.html#lang" class="hover:text-slate-900 transition-colors">훈련 코스</a>
+        <span>/</span>
+        <span class="text-slate-900 font-medium">C/C++</span>
+      </nav>
+
+      <div class="mt-6 flex items-end gap-5">
+        <div class="cover-art h-16 w-16 shrink-0 rounded-2xl flex items-center justify-center" style="--from:#d5f9e4;--to:#3ecf8e">
+          <img src="../assets/image/cpp.png" alt="C++ 로고" class="h-10 w-auto object-contain drop-shadow" />
+        </div>
+        <div>
+          <p class="text-xs font-mono font-semibold text-brand-700 tracking-wide">01 · LANGUAGE</p>
+          <h1 class="mt-1 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">C/C++</h1>
+        </div>
+      </div>
+      <p class="mt-5 max-w-2xl text-slate-500 leading-relaxed">
+        메모리를 직접 다루며 컴퓨터가 동작하는 물리적 원리를 체득하는 언어입니다.
+        포인터와 메모리 주소, 스택과 힙의 흐름을 눈으로 좇는 훈련을 통해 이후 어떤 언어를 배우더라도
+        &ldquo;그 아래에서 실제로 무슨 일이 벌어지는가&rdquo;를 판단할 수 있는 기초 체력을 기릅니다.
+      </p>
+
+      <div class="mt-8 border-b border-slate-200"></div>
+    </section>
+
+    <!-- ===== 커리큘럼 검색 + 필터 (공지사항 목록 페이지 벤치마크) ===== -->
+    <section class="mx-auto max-w-4xl px-6 lg:px-8 mt-10">
+      <div class="flex items-center gap-2 rounded-full bg-white border border-slate-200 px-4 py-3 text-sm text-slate-500 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4 shrink-0"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input
+          id="curriculum-search"
+          type="text"
+          placeholder="커리큘럼 검색어 입력"
+          class="w-full bg-transparent outline-none placeholder:text-slate-400"
+        />
+      </div>
+
+      <div class="mt-5 flex flex-wrap items-center gap-2" role="tablist" aria-label="커리큘럼 분류">
+        <button type="button" data-filter-tab="all" class="filter-tab is-active rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">전체</button>
+        <button type="button" data-filter-tab="basic" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">기초</button>
+        <button type="button" data-filter-tab="practice" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">실습</button>
+        <button type="button" data-filter-tab="project" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">프로젝트</button>
+      </div>
+
+      <p id="curriculum-count" class="mt-5 text-sm text-slate-500">전체 <span class="font-semibold text-slate-900">12</span>건</p>
+
+      <!-- ===== 커리큘럼 목록 (공지사항 카드 리스트 벤치마크) ===== -->
+      <div id="curriculum-list" class="mt-3 flex flex-col gap-3">
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6" data-curriculum-card data-category="basic">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
+            <span class="text-sm text-slate-400">1주차</span>
+          </div>
+          <p class="mt-3 font-semibold text-slate-900">OT — C 언어와 메모리 모델 이해</p>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6" data-curriculum-card data-category="basic">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
+            <span class="text-sm text-slate-400">2주차</span>
+          </div>
+          <p class="mt-3 font-semibold text-slate-900">변수와 자료형, 비트 수준의 데이터 표현</p>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6" data-curriculum-card data-category="basic">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
+            <span class="text-sm text-slate-400">3주차</span>
+          </div>
+          <p class="mt-3 font-semibold text-slate-900">포인터와 메모리 주소</p>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6" data-curriculum-card data-category="basic">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
+            <span class="text-sm text-slate-400">4주차</span>
+          </div>
+          <p class="mt-3 font-semibold text-slate-900">배열과 포인터 연산</p>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6" data-curriculum-card data-category="basic">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-1 text-xs font-semibold text-brand-700">기초</span>
+            <span class="text-sm text-slate-400">5주차</span>
+          </div>
+          <p class="mt-3 font-semibold text-slate-900">함수와 스택 프레임</p>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6" data-curriculum-card data-category="practice">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
+            <span class="text-sm text-slate-400">6주차</span>
+          </div>
+          <p class="mt-3 font-semibold text-slate-900">동적 메모리 할당 (malloc / free)</p>
+        </div>
+
+        <div class="curriculum-card hidden rounded-2xl border border-sky-200 bg-white shadow-sm p-6" data-curriculum-card data-category="practice">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
+            <span class="text-sm text-slate-400">7주차</span>
+          </div>
+          <p class="mt-3 font-semibold text-slate-900">구조체와 메모리 정렬(Alignment)</p>
+        </div>
+
+        <div class="curriculum-card hidden rounded-2xl border border-sky-200 bg-white shadow-sm p-6" data-curriculum-card data-category="practice">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
+            <span class="text-sm text-slate-400">8주차</span>
+          </div>
+          <p class="mt-3 font-semibold text-slate-900">파일 입출력과 시스템 콜</p>
+        </div>
+
+        <div class="curriculum-card hidden rounded-2xl border border-sky-200 bg-white shadow-sm p-6" data-curriculum-card data-category="practice">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
+            <span class="text-sm text-slate-400">9주차</span>
+          </div>
+          <p class="mt-3 font-semibold text-slate-900">C++ 객체지향 기초 (클래스 · 캡슐화)</p>
+        </div>
+
+        <div class="curriculum-card hidden rounded-2xl border border-sky-200 bg-white shadow-sm p-6" data-curriculum-card data-category="practice">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-700">실습</span>
+            <span class="text-sm text-slate-400">10주차</span>
+          </div>
+          <p class="mt-3 font-semibold text-slate-900">STL과 표준 컨테이너</p>
+        </div>
+
+        <div class="curriculum-card hidden rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20" data-curriculum-card data-category="project">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full bg-violet-500/10 px-2.5 py-1 text-xs font-semibold text-violet-700">프로젝트</span>
+            <span class="text-sm text-slate-400">11주차</span>
+          </div>
+          <p class="mt-3 font-semibold text-slate-900">스마트 포인터와 RAII</p>
+        </div>
+
+        <div class="curriculum-card hidden rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20" data-curriculum-card data-category="project">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full bg-violet-500/10 px-2.5 py-1 text-xs font-semibold text-violet-700">프로젝트</span>
+            <span class="text-sm text-slate-400">12주차</span>
+          </div>
+          <p class="mt-3 font-semibold text-slate-900">미니 프로젝트 — 메모리 매니저 구현</p>
+        </div>
+
+      </div>
+
+      <div class="mt-4 mb-4">
+        <button type="button" id="curriculum-more" class="w-full rounded-2xl border border-slate-200 bg-white py-3.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm">
+          더보기
+        </button>
+        <p id="curriculum-empty" class="hidden py-10 text-center text-sm text-slate-400">검색 조건에 맞는 커리큘럼이 없습니다.</p>
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="mx-auto max-w-4xl px-6 lg:px-8 py-16">
+      <div class="rounded-2xl border border-brand-900/40 bg-gradient-to-br from-brand-600 via-brand-800 to-brand-950 p-10 sm:p-12 text-center">
+        <p class="text-xs font-mono font-semibold text-brand-200 tracking-wide">1:1 정원제 · 상시 모집</p>
+        <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white tracking-tight">C/C++, 데이터 흐름의 눈으로 다시 배우세요</h2>
+        <p class="mt-3 text-sm text-slate-200/90 leading-relaxed">
+          당신에게 맞는 커리큘럼은 1:1 상담에서부터 시작됩니다.
+        </p>
+        <div class="mt-7">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-slate-950 hover:bg-slate-200 transition-colors">
+            1:1 상담 신청하기
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="border-t border-slate-200">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 pt-14 pb-8">
+      <p class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">RECODE</p>
+
+      <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-8 border-t border-slate-200 pt-10">
+        <div>
+          <p class="text-sm font-semibold text-slate-900">훈련 코스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#lang" class="hover:text-slate-900 transition-colors">Language</a></li>
+            <li><a href="../index.html#algo" class="hover:text-slate-900 transition-colors">Algorithm</a></li>
+            <li><a href="../index.html#web" class="hover:text-slate-900 transition-colors">Web &amp; WebApp</a></li>
+            <li><a href="../index.html#game" class="hover:text-slate-900 transition-colors">Unity</a></li>
+            <li><a href="../index.html#agent-ai" class="hover:text-slate-900 transition-colors">Agent AI</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">회사</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#philosophy" class="hover:text-slate-900 transition-colors">교육 철학</a></li>
+            <li><a href="../index.html" class="hover:text-slate-900 transition-colors">소개</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">모집</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#cta" class="hover:text-slate-900 transition-colors">1:1 상담 신청</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">리소스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="graffiti.html" class="hover:text-slate-900 transition-colors">원장님의 낙서</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">문의</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 text-center">
+        © 2026 Recode Coding. AI시대 프로그래밍 연구소.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/mobile-menu.js" defer></script>
+  <script>
+    (function () {
+      const searchInput = document.getElementById('curriculum-search');
+      const tabs = Array.from(document.querySelectorAll('[data-filter-tab]'));
+      const cards = Array.from(document.querySelectorAll('[data-curriculum-card]'));
+      const moreBtn = document.getElementById('curriculum-more');
+      const countEl = document.getElementById('curriculum-count');
+      const emptyEl = document.getElementById('curriculum-empty');
+      const INITIAL_LIMIT = 6;
+
+      let activeCategory = 'all';
+      let expanded = false;
+
+      function applyView() {
+        const keyword = searchInput.value.trim().toLowerCase();
+        let matchedCount = 0;
+        let visibleCount = 0;
+
+        cards.forEach((card, index) => {
+          const category = card.dataset.category;
+          const title = card.querySelector('p').textContent.toLowerCase();
+          const matchesCategory = activeCategory === 'all' || category === activeCategory;
+          const matchesKeyword = keyword === '' || title.includes(keyword);
+          const matches = matchesCategory && matchesKeyword;
+
+          if (matches) matchedCount += 1;
+
+          const withinInitialLimit = expanded || keyword !== '' || activeCategory !== 'all' || index < INITIAL_LIMIT;
+          const show = matches && withinInitialLimit;
+
+          card.classList.toggle('hidden', !show);
+          if (show) visibleCount += 1;
+        });
+
+        countEl.innerHTML = `전체 <span class="font-semibold text-slate-900">${matchedCount}</span>건`;
+        moreBtn.classList.toggle('hidden', expanded || keyword !== '' || activeCategory !== 'all' || matchedCount <= INITIAL_LIMIT);
+        emptyEl.classList.toggle('hidden', matchedCount !== 0);
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          activeCategory = tab.dataset.filterTab;
+          expanded = false;
+          tabs.forEach((t) => t.classList.toggle('is-active', t === tab));
+          applyView();
+        });
+      });
+
+      moreBtn.addEventListener('click', () => {
+        expanded = true;
+        applyView();
+      });
+
+      searchInput.addEventListener('input', () => {
+        expanded = false;
+        applyView();
+      });
+
+      applyView();
+    })();
+  </script>
+</body>
+</html>

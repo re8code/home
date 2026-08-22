@@ -45,43 +45,67 @@
   href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
 />
 
+<!-- Swiper -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<!-- AOS (스크롤 진입 애니메이션) -->
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
 <style>
   html { scroll-behavior: smooth; }
-  body { font-feature-settings: "tnum"; }
-  .bg-grid {
+  body { font-feature-settings: "tnum"; background-color: #FBF7EE; }
+
+  .cover-art {
     background-image:
-      linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
-    background-size: 44px 44px;
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,0.10), transparent 55%),
+      linear-gradient(155deg, var(--from), var(--to));
   }
-  .text-gradient {
-    background: linear-gradient(90deg, #74e4ad 0%, #3ecf8e 45%, #18b476 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  .nav-arrow {
+    transition: background-color .2s ease, color .2s ease;
   }
-  .card-hover {
-    transition: transform .35s ease, border-color .35s ease, background-color .35s ease;
+  .nav-arrow:disabled { opacity: .3; pointer-events: none; }
+  .course-card {
+    transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
   }
-  .card-hover:hover {
-    transform: translateY(-4px);
-    border-color: rgba(62, 207, 142, 0.5);
+  .course-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(24, 180, 118, 0.45);
+    box-shadow: 0 20px 40px -20px rgba(15, 23, 42, 0.25);
   }
+
+  /* Swiper 커스텀 최소 스타일 */
+  .course-swiper { padding-bottom: 2.5rem; }
+  .course-swiper .swiper-slide { height: auto; }
+  .swiper-pagination-bullet { background: rgba(15, 23, 42, 0.18); opacity: 1; }
+  .swiper-pagination-bullet-active { background: #18b476; }
+
+  .diag-panel { clip-path: polygon(12% 0, 100% 0, 88% 100%, 0 100%); }
+
+  /* 히어로 자동 전환 사이드 리스트의 타이머 게이지 — 버튼 전체 배경이 채워지는 방식 */
+  .side-item { position: relative; overflow: hidden; }
+  @keyframes gaugeFill { from { width: 0%; } to { width: 100%; } }
+
+  /* 히어로 메인 배너 슬라이드 전환 — 배경 블롭 + 텍스트를 하나의 장면(#hero-scene)으로 함께 슬라이딩/페이드 */
+  #hero-scene { will-change: transform, opacity; }
+  @keyframes heroSlideOut { to { transform: translateX(-32px); opacity: 0; } }
+  @keyframes heroSlideIn { from { transform: translateX(32px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  #hero-scene.is-sliding-out { animation: heroSlideOut 280ms ease forwards; }
+  #hero-scene.is-sliding-in { animation: heroSlideIn 320ms ease forwards; }
 </style>
 </head>
 
-<body class="bg-slate-950 text-slate-200 antialiased selection:bg-brand-400/30 selection:text-white">
+<body class="text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
 
   <!-- ===== Header ===== -->
-  <header class="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-slate-950/70 backdrop-blur-lg">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8 h-16 flex items-center justify-between">
+  <header class="sticky top-0 z-[60] bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 h-16 flex items-center justify-between gap-8">
       <a href="#" class="flex items-center gap-2 font-mono font-semibold tracking-tight text-white">
         <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400 border border-brand-500/30">R/</span>
-        Recode Coding
+        <span class="hidden sm:inline">Recode Coding</span>
       </a>
       <div class="hidden md:flex items-center gap-8">
         <nav class="flex items-center gap-6 text-sm text-slate-400">
-          <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+          <a href="src/graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
           <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
           <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
             LMS
@@ -96,7 +120,7 @@
             <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
           </a>
         </nav>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-brand-400 transition-colors">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-400 transition-colors">
           1:1 상담 신청
         </a>
       </div>
@@ -116,9 +140,9 @@
         </svg>
       </button>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-slate-950/95 backdrop-blur-lg">
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-[#0c0c0f]/95 backdrop-blur">
       <nav class="flex flex-col px-6 py-4 gap-4 text-sm text-slate-300">
-        <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+        <a href="src/graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
         <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
         <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
           LMS
@@ -132,236 +156,754 @@
           studio
           <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
         </a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-brand-500 px-4 py-2 font-semibold text-slate-950 hover:bg-brand-400 transition-colors">1:1 상담 신청</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-brand-500 px-4 py-2 font-semibold text-white hover:bg-brand-400 transition-colors">1:1 상담 신청</a>
       </nav>
     </div>
   </header>
 
-  <main class="pt-16">
+  <!-- ===== Sub bar: 검색 + 탭 ===== -->
+  <div class="sticky top-16 z-[50] bg-white/90 backdrop-blur border-b border-slate-200">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 h-14 flex items-center gap-8 overflow-x-auto">
+      <div class="flex items-center gap-2 rounded-full bg-white border border-slate-200 px-4 py-2 text-sm text-slate-500 w-56 shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4 shrink-0"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        코스 검색
+      </div>
+      <nav class="flex items-center gap-6 text-sm shrink-0">
+        <span class="text-slate-900 font-semibold border-b-2 border-slate-900 pb-4 -mb-4">탐색</span>
+        <span class="text-slate-500 hover:text-slate-900 transition-colors cursor-pointer">커리큘럼</span>
+        <span class="text-slate-500 hover:text-slate-900 transition-colors cursor-pointer">후기</span>
+      </nav>
+    </div>
+  </div>
 
-    <!-- ===== Hero ===== -->
-    <section class="relative overflow-hidden bg-grid">
-      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-brand-950/40 via-slate-950 to-slate-950"></div>
-      <div class="absolute -top-40 left-1/2 -z-10 h-[560px] w-[560px] -translate-x-1/2 rounded-full bg-brand-500/20 blur-[140px]"></div>
+  <main>
 
-      <div class="mx-auto max-w-5xl px-6 lg:px-8 pt-28 pb-24 text-center">
-        <p class="inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-1.5 text-xs font-mono text-brand-300">
-          AI시대 프로그래밍 연구소
-        </p>
+    <!-- ===== Hero: 대형 배너(자동 전환) + 사이드 리스트(타이머 게이지) ===== -->
+    <section class="mx-auto max-w-[1440px] px-6 lg:px-10 pt-8">
+      <div class="grid lg:grid-cols-[1fr_320px] gap-4">
 
-        <h1 class="mt-8 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white !leading-[1.3]">
-          지식을 배우지 않습니다.<br />
-          <span class="text-gradient">데이터 흐름을 보는 눈</span>을 훈련합니다.
-        </h1>
-
-        <p class="mt-6 text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-          Recode Coding은 1:多 강의식 학원이 아닙니다. 1:1 상담을 통해 커리큘럼을 설계하고,
-          AI시대에 걸맞은 <span class="text-slate-200">신입 시니어</span>로 성장시키는
-          프로그래밍 교육 종합 컨설팅 연구소입니다.
-        </p>
-
-        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="#cta" class="w-full sm:w-auto inline-flex justify-center items-center rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-slate-950 hover:bg-brand-400 shadow-glow transition-colors">
-            1:1 상담 신청하기
-          </a>
-          <a href="#philosophy" class="w-full sm:w-auto inline-flex justify-center items-center rounded-full border border-white/15 px-7 py-3.5 text-sm font-semibold text-slate-200 hover:border-white/30 hover:bg-white/5 transition-colors">
-            교육 철학 더 알아보기
-          </a>
-        </div>
-
-        <div class="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto text-center">
-          <div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
-            <p class="text-2xl font-bold text-white font-mono">1:1</p>
-            <p class="mt-1 text-xs text-slate-500">맞춤형 커리큘럼</p>
-          </div>
-          <div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
-            <p class="text-2xl font-bold text-white font-mono">훈련 학습</p>
-            <p class="mt-1 text-xs text-slate-500">익히는 학습</p>
-          </div>
-          <div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
-            <p class="text-2xl font-bold text-white font-mono">데이터 구조</p>
-            <p class="mt-1 text-xs text-slate-500">데이터 흐름 중심</p>
-          </div>
-          <div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
-            <p class="text-2xl font-bold text-white font-mono">신입 시니어</p>
-            <p class="mt-1 text-xs text-slate-500">최종적인 목표</p>
+        <!-- 메인 배너: 일정 간격으로 슬라이드 자동 전환 (다크 액센트 패널 — 라이트 페이지 위 스포트라이트) -->
+        <div id="hero-banner" class="relative rounded-2xl overflow-hidden min-h-[440px] bg-gradient-to-br from-brand-950 via-brand-900 to-brand-950 border border-brand-900/40">
+          <!-- hero-scene: 배경 블롭 + 텍스트를 하나의 장면으로 묶어 함께 슬라이딩/페이드. hero-banner(둥근 사각 틀)는 고정된 창(overflow-hidden) 역할만 함 -->
+          <div id="hero-scene" class="absolute inset-0">
+            <div id="hero-blob-1" class="absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-brand-500/25 blur-[120px] transition-colors duration-700"></div>
+            <div id="hero-blob-2" class="absolute -bottom-24 -right-24 h-[420px] w-[420px] rounded-full bg-brand-300/20 blur-[120px] transition-colors duration-700"></div>
+            <div id="hero-content" class="absolute inset-0 flex flex-col justify-end p-8 sm:p-12 max-w-2xl">
+              <p id="hero-eyebrow" class="text-xs font-mono font-semibold text-brand-300 tracking-wide">01 · LANGUAGE</p>
+              <h1 id="hero-title" class="mt-4 text-3xl sm:text-5xl font-bold tracking-tight text-white !leading-[1.25]">
+                언어의 구조를 보는<br /> 눈을 기르는 훈련
+              </h1>
+              <p id="hero-desc" class="mt-4 text-slate-300 leading-relaxed">
+                문법이 아닌 데이터 흐름 관점에서 언어를 다시 배웁니다. Python, JS/TS, Java, C/C++, Go/Rust.
+              </p>
+              <div class="mt-7">
+                <a id="hero-cta" href="#lang" class="inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-200 transition-colors">
+                  Language 코스 보기
+                </a>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- 사이드 카테고리 리스트: 활성 항목에 타이머 게이지(전체 배경) 표시 -->
+        <div id="hero-side-list" class="rounded-2xl border border-slate-200 bg-white p-3 flex h-full flex-col gap-1 shadow-sm">
+          <button type="button" data-slide="0" class="side-item is-active flex flex-1 flex-col justify-center gap-2.5 rounded-xl p-3 text-left transition-colors hover:bg-slate-50">
+            <span data-gauge class="absolute top-0 left-0 bottom-0 w-0 rounded-xl" style="background-color: rgba(24,180,118,0.16)"></span>
+            <span class="relative flex items-center gap-3">
+              <span class="h-12 w-12 shrink-0 rounded-lg bg-gradient-to-br from-brand-400 to-brand-800 flex items-center justify-center text-white font-bold font-mono text-xs">01</span>
+              <span class="min-w-0">
+                <p class="text-sm font-semibold text-slate-900">Language</p>
+                <p class="text-xs text-slate-500 truncate">프로그래밍 언어 구조 훈련</p>
+              </span>
+            </span>
+          </button>
+          <button type="button" data-slide="1" class="side-item flex flex-1 flex-col justify-center gap-2.5 rounded-xl p-3 text-left transition-colors hover:bg-slate-50">
+            <span data-gauge class="absolute top-0 left-0 bottom-0 w-0 rounded-xl" style="background-color: rgba(20,184,166,0.16)"></span>
+            <span class="relative flex items-center gap-3">
+              <span class="h-12 w-12 shrink-0 rounded-lg bg-gradient-to-br from-teal-400 to-teal-800 flex items-center justify-center text-white font-bold font-mono text-xs">02</span>
+              <span class="min-w-0">
+                <p class="text-sm font-semibold text-slate-900">Algorithm</p>
+                <p class="text-xs text-slate-500 truncate">구조적 문제 분해 훈련</p>
+              </span>
+            </span>
+          </button>
+          <button type="button" data-slide="2" class="side-item flex flex-1 flex-col justify-center gap-2.5 rounded-xl p-3 text-left transition-colors hover:bg-slate-50">
+            <span data-gauge class="absolute top-0 left-0 bottom-0 w-0 rounded-xl" style="background-color: rgba(14,165,233,0.16)"></span>
+            <span class="relative flex items-center gap-3">
+              <span class="h-12 w-12 shrink-0 rounded-lg bg-gradient-to-br from-sky-400 to-sky-800 flex items-center justify-center text-white font-bold font-mono text-xs">03</span>
+              <span class="min-w-0">
+                <p class="text-sm font-semibold text-slate-900">Web &amp; WebApp</p>
+                <p class="text-xs text-slate-500 truncate">서비스 데이터 흐름 훈련</p>
+              </span>
+            </span>
+          </button>
+          <button type="button" data-slide="3" class="side-item flex flex-1 flex-col justify-center gap-2.5 rounded-xl p-3 text-left transition-colors hover:bg-slate-50">
+            <span data-gauge class="absolute top-0 left-0 bottom-0 w-0 rounded-xl" style="background-color: rgba(217,119,6,0.16)"></span>
+            <span class="relative flex items-center gap-3">
+              <span class="h-12 w-12 shrink-0 rounded-lg bg-gradient-to-br from-amber-400 to-orange-700 flex items-center justify-center text-white font-bold font-mono text-xs">04</span>
+              <span class="min-w-0">
+                <p class="text-sm font-semibold text-slate-900">Unity</p>
+                <p class="text-xs text-slate-500 truncate">인터랙티브 데이터 흐름</p>
+              </span>
+            </span>
+          </button>
+          <button type="button" data-slide="4" class="side-item flex flex-1 flex-col justify-center gap-2.5 rounded-xl p-3 text-left transition-colors hover:bg-slate-50">
+            <span data-gauge class="absolute top-0 left-0 bottom-0 w-0 rounded-xl" style="background-color: rgba(139,92,246,0.16)"></span>
+            <span class="relative flex items-center gap-3">
+              <span class="h-12 w-12 shrink-0 rounded-lg bg-gradient-to-br from-violet-400 to-violet-800 flex items-center justify-center text-white font-bold font-mono text-xs">05</span>
+              <span class="min-w-0">
+                <p class="text-sm font-semibold text-slate-900">Agent AI</p>
+                <p class="text-xs text-slate-500 truncate">AI시대 협업 데이터 흐름</p>
+              </span>
+            </span>
+          </button>
+        </div>
+
       </div>
     </section>
 
-    <!-- ===== 문제의식: 학원 vs 연구소 ===== -->
-    <section class="mx-auto max-w-7xl px-6 lg:px-8 py-24 border-t border-white/5">
-      <div class="max-w-5xl">
-        <p class="text-sm font-mono text-brand-400">WHY RECODE CODING</p>
-        <h2 class="mt-3 text-3xl sm:text-4xl font-bold text-white tracking-tight">
-          왜 우리는 &ldquo;학원&rdquo;이길 거부하는가
-        </h2>
-        <p class="mt-4 text-slate-400 leading-relaxed">
-          일반적인 프로그래밍 학원은 1:多 형태로 정해진 지식만을 전달합니다.<br/>
-          리코드 코딩은 1:1 형태로 맞춤형 훈련을 합니다. Teaching이 아니라 Coaching을 합니다.
-        </p>
-      </div>
-
-      <div class="mt-12 grid md:grid-cols-2 gap-6">
-        <div class="rounded-2xl border border-white/10 bg-white/[0.02] p-8">
-          <p class="text-xs font-mono text-slate-500 mb-4">일반적인 학원</p>
-          <ul class="space-y-4 text-slate-400">
-            <li class="flex gap-3"><span class="text-slate-600">—</span> 1:多 형태의 일방적 지식 전달</li>
-            <li class="flex gap-3"><span class="text-slate-600">—</span> 정형화된 표준 커리큘럼</li>
-            <li class="flex gap-3"><span class="text-slate-600">—</span> 문법과 코드 작성법 중심</li>
-            <li class="flex gap-3"><span class="text-slate-600">—</span> 목표: 강의 수료</li>
-          </ul>
-        </div>
-        <div class="rounded-2xl border border-brand-500/30 bg-brand-500/[0.04] p-8 shadow-glow">
-          <p class="text-xs font-mono text-brand-400 mb-4">Recode Coding</p>
-          <ul class="space-y-4 text-slate-200">
-            <li class="flex gap-3"><span class="text-brand-400">✓</span> 1:1 상담 기반 맞춤 커리큘럼</li>
-            <li class="flex gap-3"><span class="text-brand-400">✓</span> 지식 기반 위의 &ldquo;훈련&rdquo;</li>
-            <li class="flex gap-3"><span class="text-brand-400">✓</span> 구조적 분석·설계, 데이터 흐름 중심</li>
-            <li class="flex gap-3"><span class="text-brand-400">✓</span> 목표: AI시대 신입 시니어로 성장</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== 핵심 철학 ===== -->
-    <section id="philosophy" class="mx-auto max-w-7xl px-6 lg:px-8 py-24 border-t border-white/5">
-      <div class="max-w-5xl">
-        <p class="text-sm font-mono text-brand-400">CORE PHILOSOPHY</p>
-        <h2 class="mt-3 text-3xl sm:text-4xl font-bold text-white tracking-tight">
-          중요한 건 코드가 아니라, <span class="text-gradient">데이터의 흐름</span>입니다.
-        </h2>
-        <p class="mt-4 text-slate-400 leading-relaxed">
-          코드와 문법은 도구일 뿐입니다.<br/>
-          리코드 코딩이 훈련시키는 것은 데이터가 어떻게 흐르고, 구조화되고, 변형되는가를 설계하는 능력입니다.
-        </p>
-      </div>
-
-      <div class="mt-12 grid md:grid-cols-3 gap-6">
-        <div class="card-hover rounded-2xl border border-white/10 bg-white/[0.02] p-8">
-          <div class="h-10 w-10 rounded-lg bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400 font-mono">01</div>
-          <h3 class="mt-6 text-lg font-semibold text-white">데이터 흐름 중심 사고</h3>
-          <p class="mt-3 text-sm text-slate-400 leading-relaxed">
-            코딩보다 구조화된 데이터의 흐름이 본질입니다. 이 관점 위에서 소프트웨어는 비로소
-            제대로 설계되고 구조화됩니다.
-          </p>
-        </div>
-        <div class="card-hover rounded-2xl border border-white/10 bg-white/[0.02] p-8">
-          <div class="h-10 w-10 rounded-lg bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400 font-mono">02</div>
-          <h3 class="mt-6 text-lg font-semibold text-white">구조와 알고리즘</h3>
-          <p class="mt-3 text-sm text-slate-400 leading-relaxed">
-            구조적 분석과 설계 능력이 코딩 교육의 본질입니다. 문법 암기가 아닌, 문제를
-            구조로 분해하는 힘을 훈련합니다.
-          </p>
-        </div>
-        <div class="card-hover rounded-2xl border border-white/10 bg-white/[0.02] p-8">
-          <div class="h-10 w-10 rounded-lg bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400 font-mono">03</div>
-          <h3 class="mt-6 text-lg font-semibold text-white">Agent Coding 지향</h3>
-          <p class="mt-3 text-sm text-slate-400 leading-relaxed">
-            AI시대 프로그래밍의 기술적 지향점은 Agent Coding입니다. 역설적이게도, 이를 위해서는
-            프로그래밍 언어에 대한 깊은 이해가 선행되어야 합니다.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== 훈련 프로세스 ===== -->
-    <section id="process" class="mx-auto max-w-7xl px-6 lg:px-8 py-24 border-t border-white/5">
+    <!-- ===== 01. Language ===== -->
+    <section id="lang" class="mx-auto max-w-[1440px] px-6 lg:px-10 py-16">
       <div class="max-w-2xl">
-        <p class="text-sm font-mono text-brand-400">TRAINING PROCESS</p>
-        <h2 class="mt-3 text-3xl sm:text-4xl font-bold text-white tracking-tight">
-          지식에서 훈련으로, 훈련에서 성장으로
-        </h2>
+        <p class="text-xs font-mono font-semibold text-brand-700 tracking-wide">01 · LANGUAGE</p>
+        <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">프로그래밍 언어를 깊게 이해한다</h2>
+        <p class="mt-2 text-slate-500 leading-relaxed text-sm">Agent Coding을 지시하려면 언어 자체에 대한 깊은 이해가 먼저입니다.</p>
       </div>
 
-      <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="relative rounded-2xl border border-white/10 bg-white/[0.02] p-6">
-          <span class="font-mono text-brand-400 text-sm">STEP 1</span>
-          <h3 class="mt-3 font-semibold text-white">1:1 상담</h3>
-          <p class="mt-2 text-sm text-slate-400 leading-relaxed">개인의 배경과 목표를 파악하는 1:1 심층 상담</p>
+      <!-- 좌우 이동 없이 5개 카드를 동일한 크기로 전체 너비에 맞춰 배치 -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-8">
+
+        <a href="src/lang-cp.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#d5f9e4;--to:#3ecf8e">
+            <img src="assets/image/cpp.png" alt="C++ 로고" class="h-24 w-auto object-contain drop-shadow-lg" />
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">C/C++</h3>
+            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">메모리를 직접 다루며 컴퓨터가 동작하는 물리적 원리를 체득</p>
+          </div>
+        </a>
+
+        <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#d5f9e4;--to:#3ecf8e">
+            <img src="assets/image/java.png" alt="Java 로고" class="h-28 w-auto object-contain drop-shadow-lg" />
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">Java</h3>
+            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">엄격한 타입 체계와 객체지향 설계로 대규모 시스템의 구조적 사고를 훈련</p>
+          </div>
         </div>
-        <div class="relative rounded-2xl border border-white/10 bg-white/[0.02] p-6">
-          <span class="font-mono text-brand-400 text-sm">STEP 2</span>
-          <h3 class="mt-3 font-semibold text-white">맞춤 커리큘럼 설계</h3>
-          <p class="mt-2 text-sm text-slate-400 leading-relaxed">구조·알고리즘·데이터 흐름 중심의 개별 커리큘럼 구성</p>
+
+        <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#d5f9e4;--to:#3ecf8e">
+            <img src="assets/image/python.png" alt="Python 로고" class="h-28 w-auto object-contain drop-shadow-lg" />
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">Python</h3>
+            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">쉬운 문법 덕분에 로직 자체에 집중하며, AI 시대 표준 언어로 확장되는 사고 훈련</p>
+          </div>
         </div>
-        <div class="relative rounded-2xl border border-white/10 bg-white/[0.02] p-6">
-          <span class="font-mono text-brand-400 text-sm">STEP 3</span>
-          <h3 class="mt-3 font-semibold text-white">지식 기반 훈련</h3>
-          <p class="mt-2 text-sm text-slate-400 leading-relaxed">전달이 아닌 체화. Agent Coding을 위한 언어 이해와 설계 훈련</p>
+
+        <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#d5f9e4;--to:#3ecf8e">
+            <img src="assets/image/javascript.png" alt="JavaScript 로고" class="h-24 w-auto object-contain rounded-xl drop-shadow-lg" />
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">JavaScript</h3>
+            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">브라우저에서 실행되는 유일한 언어로, 비동기 이벤트 흐름을 다루는 사고 훈련</p>
+          </div>
         </div>
-        <div class="relative rounded-2xl border border-brand-500/30 bg-brand-500/[0.04] p-6">
-          <span class="font-mono text-brand-400 text-sm">STEP 4</span>
-          <h3 class="mt-3 font-semibold text-white">신입 시니어</h3>
-          <p class="mt-2 text-sm text-slate-300 leading-relaxed">AI시대, 스스로 판단하고 지시할 수 있는 신입 시니어로 성장</p>
+
+        <div class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#d5f9e4;--to:#3ecf8e">
+            <img src="assets/image/dart.png" alt="Dart 로고" class="h-14 w-auto object-contain drop-shadow-lg" />
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">Dart</h3>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed flex-1">선언형 UI 문법으로 하나의 코드가 여러 플랫폼에 반영되는 흐름을 설계</p>
+          </div>
         </div>
+
       </div>
     </section>
 
-    <!-- ===== 대상 ===== -->
-    <section id="who" class="mx-auto max-w-7xl px-6 lg:px-8 py-24 border-t border-white/5">
-      <div class="rounded-3xl border border-white/10 bg-white/[0.02] p-10 sm:p-14 grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          <p class="text-sm font-mono text-brand-400">WHO WE TRAIN</p>
-          <h2 class="mt-3 text-3xl font-bold text-white tracking-tight">대학생을 위한<br />프로그래밍 종합 컨설팅</h2>
-          <p class="mt-4 text-slate-400 leading-relaxed">
-            Recode Coding은 대학생을 대상으로, 단순 코딩 강의를 넘어 커리어 전체를
-            바라보는 프로그래밍 교육 종합 컨설팅을 제공합니다.
+    <!-- ===== 02. Algorithm ===== -->
+    <section id="algo" class="mx-auto max-w-[1440px] px-6 lg:px-10 py-16 border-t border-slate-200">
+      <div class="flex items-end justify-between gap-6">
+        <div class="max-w-2xl">
+          <p class="text-xs font-mono font-semibold text-teal-700 tracking-wide">02 · ALGORITHM</p>
+          <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">구조와 알고리즘으로 문제를 분해한다</h2>
+          <p class="mt-2 text-slate-500 leading-relaxed text-sm">코딩보다 구조적 분석·설계 능력이 본질이라는 관점의 훈련 과정</p>
+        </div>
+        <div class="flex items-center gap-2 swiper-nav-group shrink-0">
+          <button type="button" class="swiper-nav-prev nav-arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="이전 카드">‹</button>
+          <button type="button" class="swiper-nav-next nav-arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="다음 카드">›</button>
+        </div>
+      </div>
+
+      <div class="swiper course-swiper mt-8">
+        <div class="swiper-wrapper">
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+                <span class="text-4xl font-bold text-white/90 font-mono">DS</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">입문</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">자료구조 기초</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">배열·스택·큐·트리로 데이터의 형태와 흐름을 체화</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+                <span class="text-4xl font-bold text-white/90 font-mono">Al</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">중급</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">알고리즘 문제 해결</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">완전탐색·그리디·DP 등 문제를 구조로 분해하는 훈련</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+                <span class="text-4xl font-bold text-white/90 font-mono">CT</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">중급</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">코딩테스트 대비</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">실전 문제풀이를 통한 구조적 사고의 반복 훈련</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+                <span class="text-4xl font-bold text-white/90 font-mono">Sys</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">심화</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">시스템 설계 기초</h3>
+                <p class="mt-2 text-sm text-slate-600 leading-relaxed flex-1">전체 시스템 단위에서 데이터 흐름을 설계하는 관점 훈련</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </section>
+
+    <!-- ===== 03. Web & WebApp ===== -->
+    <section id="web" class="mx-auto max-w-[1440px] px-6 lg:px-10 py-16 border-t border-slate-200">
+      <div class="flex items-end justify-between gap-6">
+        <div class="max-w-2xl">
+          <p class="text-xs font-mono font-semibold text-sky-700 tracking-wide">03 · WEB &amp; WEBAPP</p>
+          <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">구조를 실제 서비스로 흐르게 한다</h2>
+          <p class="mt-2 text-slate-500 leading-relaxed text-sm">프론트엔드부터 배포까지, 데이터가 실제로 흐르는 전체 파이프라인을 훈련</p>
+        </div>
+        <div class="flex items-center gap-2 swiper-nav-group shrink-0">
+          <button type="button" class="swiper-nav-prev nav-arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="이전 카드">‹</button>
+          <button type="button" class="swiper-nav-next nav-arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="다음 카드">›</button>
+        </div>
+      </div>
+
+      <div class="swiper course-swiper mt-8">
+        <div class="swiper-wrapper">
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#7dd3fc;--to:#075985">
+                <span class="text-4xl font-bold text-white/90 font-mono">FE</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">입문</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">Frontend 기초 (React)</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">컴포넌트와 상태 흐름 중심의 UI 데이터 흐름 설계</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#7dd3fc;--to:#075985">
+                <span class="text-4xl font-bold text-white/90 font-mono">BE</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">중급</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">Backend (Node / Spring)</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">API·DB 계층을 오가는 데이터 흐름의 구조적 설계</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#7dd3fc;--to:#075985">
+                <span class="text-4xl font-bold text-white/90 font-mono">FS</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">심화</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">Full-stack 프로젝트</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">기획부터 배포까지 전체 데이터 흐름을 스스로 설계·구현</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#7dd3fc;--to:#075985">
+                <span class="text-4xl font-bold text-white/90 font-mono">Ops</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">심화</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">배포 / 인프라 기초</h3>
+                <p class="mt-2 text-sm text-slate-600 leading-relaxed flex-1">서비스가 실제로 흐르는 인프라·CI/CD 관점의 이해</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </section>
+
+    <!-- ===== 04. Unity ===== -->
+    <section id="game" class="mx-auto max-w-[1440px] px-6 lg:px-10 py-16 border-t border-slate-200">
+      <div class="flex items-end justify-between gap-6">
+        <div class="max-w-2xl">
+          <p class="text-xs font-mono font-semibold text-amber-700 tracking-wide">04 · UNITY</p>
+          <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">인터랙티브한 데이터 흐름을 다룬다</h2>
+          <p class="mt-2 text-slate-500 leading-relaxed text-sm">실시간 렌더링·물리·상태 관리를 통해 데이터 흐름을 시각적으로 체화</p>
+        </div>
+        <div class="flex items-center gap-2 swiper-nav-group shrink-0">
+          <button type="button" class="swiper-nav-prev nav-arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="이전 카드">‹</button>
+          <button type="button" class="swiper-nav-next nav-arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="다음 카드">›</button>
+        </div>
+      </div>
+
+      <div class="swiper course-swiper mt-8">
+        <div class="swiper-wrapper">
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fcd34d;--to:#9a3412">
+                <span class="text-4xl font-bold text-white/90 font-mono">U3D</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">입문</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">Unity 2D / 3D 기초</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">씬·컴포넌트 구조 중심의 게임 데이터 흐름 이해</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fcd34d;--to:#9a3412">
+                <span class="text-4xl font-bold text-white/90 font-mono">UE</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">중급</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">Unreal Blueprint / C++</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">이벤트 기반 로직 설계로 실시간 데이터 흐름 제어</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fcd34d;--to:#9a3412">
+                <span class="text-4xl font-bold text-white/90 font-mono">Dev</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">심화</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">게임 프로젝트</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">기획부터 구현까지 하나의 게임 데이터 흐름을 완주</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fcd34d;--to:#9a3412">
+                <span class="text-4xl font-bold text-white/90 font-mono">XR</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">심화</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">XR / AR 기초</h3>
+                <p class="mt-2 text-sm text-slate-600 leading-relaxed flex-1">공간 데이터와 사용자 입력이 흐르는 새로운 인터페이스 탐구</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </section>
+
+    <!-- ===== 05. Agent AI ===== -->
+    <section id="agent-ai" class="mx-auto max-w-[1440px] px-6 lg:px-10 py-16 border-t border-slate-200">
+      <div class="flex items-end justify-between gap-6">
+        <div class="max-w-2xl">
+          <p class="text-xs font-mono font-semibold text-violet-700 tracking-wide">05 · AGENT AI</p>
+          <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">AI와 협업하는 구조를 설계한다</h2>
+          <p class="mt-2 text-slate-500 leading-relaxed text-sm">왼손은 사람, 오른손은 AI — 정확히 지시할 수 있는 능력을 훈련합니다.</p>
+        </div>
+        <div class="flex items-center gap-2 swiper-nav-group shrink-0">
+          <button type="button" class="swiper-nav-prev nav-arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="이전 카드">‹</button>
+          <button type="button" class="swiper-nav-next nav-arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="다음 카드">›</button>
+        </div>
+      </div>
+
+      <div class="swiper course-swiper mt-8">
+        <div class="swiper-wrapper">
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#c4b5fd;--to:#5b21b6">
+                <span class="text-4xl font-bold text-white/90 font-mono">AI</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">입문</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">Agent Coding 기초</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">AI에게 정확히 지시하는 프롬프트·컨텍스트 설계 훈련</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#c4b5fd;--to:#5b21b6">
+                <span class="text-4xl font-bold text-white/90 font-mono">MCP</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">중급</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">MCP · Tool Use 설계</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">에이전트가 도구를 호출하는 구조를 직접 설계</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#c4b5fd;--to:#5b21b6">
+                <span class="text-4xl font-bold text-white/90 font-mono">Flow</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">중급</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">멀티에이전트 워크플로우</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">여러 에이전트가 협업하는 데이터 흐름을 구성</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
+            <div class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#c4b5fd;--to:#5b21b6">
+                <span class="text-4xl font-bold text-white/90 font-mono">Ops</span>
+                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">심화</span>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">Agent 프로젝트 실전</h3>
+                <p class="mt-2 text-sm text-slate-600 leading-relaxed flex-1">기획부터 배포까지 AI와 협업해 완주하는 프로젝트</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </section>
+
+    <!-- ===== 핵심 철학: 프로모 타일(다크 액센트) + 컴팩트 리스트(라이트 카드) ===== -->
+    <section id="philosophy" class="mx-auto max-w-[1440px] px-6 lg:px-10 py-16 border-t border-slate-200">
+      <div class="grid lg:grid-cols-[1fr_1.4fr] gap-4">
+        <div class="rounded-2xl bg-gradient-to-br from-brand-600 via-brand-800 to-brand-950 p-8 flex flex-col justify-end min-h-[280px] border border-brand-900/40">
+          <p class="text-xs font-mono font-semibold text-brand-200 tracking-wide">CORE PHILOSOPHY</p>
+          <h2 class="mt-3 text-2xl font-bold text-white tracking-tight leading-snug">
+            1:1로 설계하는<br />맞춤 커리큘럼
+          </h2>
+          <p class="mt-3 text-sm text-slate-200/90 leading-relaxed">
+            지식 전달이 아닌 훈련. 데이터 흐름을 보는 눈을 기릅니다.
           </p>
         </div>
-        <ul class="space-y-4">
-          <li class="flex items-start gap-3 text-slate-300">
-            <span class="mt-1 h-1.5 w-1.5 rounded-full bg-brand-400 shrink-0"></span>
-            AI시대 프로그래밍의 올바른 방향을 제시받고 싶은 대학생
-          </li>
-          <li class="flex items-start gap-3 text-slate-300">
-            <span class="mt-1 h-1.5 w-1.5 rounded-full bg-brand-400 shrink-0"></span>
-            문법 암기가 아닌 구조적 사고를 훈련하고 싶은 대학생
-          </li>
-          <li class="flex items-start gap-3 text-slate-300">
-            <span class="mt-1 h-1.5 w-1.5 rounded-full bg-brand-400 shrink-0"></span>
-            표준화된 강의가 아닌 1:1 맞춤 커리큘럼을 원하는 대학생
-          </li>
-          <li class="flex items-start gap-3 text-slate-300">
-            <span class="mt-1 h-1.5 w-1.5 rounded-full bg-brand-400 shrink-0"></span>
-            AI시대 &ldquo;신입 시니어&rdquo;로 커리어를 시작하고 싶은 대학생
-          </li>
-        </ul>
+        <div class="rounded-2xl border border-slate-200 bg-white divide-y divide-slate-100 shadow-sm">
+          <div class="flex items-center gap-4 p-5">
+            <span class="h-9 w-9 shrink-0 rounded-md bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-700 font-mono text-sm">01</span>
+            <div>
+              <p class="text-sm font-semibold text-slate-900">데이터 흐름 중심 사고</p>
+              <p class="text-xs text-slate-500 mt-0.5">코딩보다 구조화된 데이터의 흐름이 본질입니다.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 p-5">
+            <span class="h-9 w-9 shrink-0 rounded-md bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-700 font-mono text-sm">02</span>
+            <div>
+              <p class="text-sm font-semibold text-slate-900">구조와 알고리즘</p>
+              <p class="text-xs text-slate-500 mt-0.5">문법 암기가 아닌 문제를 구조로 분해하는 힘을 훈련합니다.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 p-5">
+            <span class="h-9 w-9 shrink-0 rounded-md bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-700 font-mono text-sm">03</span>
+            <div>
+              <p class="text-sm font-semibold text-slate-900">Agent Coding 지향</p>
+              <p class="text-xs text-slate-500 mt-0.5">언어에 대한 깊은 이해 위에서 Agent Coding을 지시합니다.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 p-5">
+            <span class="h-9 w-9 shrink-0 rounded-md bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-700 font-mono text-sm">04</span>
+            <div>
+              <p class="text-sm font-semibold text-slate-900">신입 시니어로 성장</p>
+              <p class="text-xs text-slate-500 mt-0.5">AI시대, 작업을 지시할 수 있는 신입 시니어가 최종 목표입니다.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ===== CTA ===== -->
-    <section id="cta" class="relative overflow-hidden border-t border-white/5">
-      <div class="absolute -bottom-40 left-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-brand-500/20 blur-[140px]"></div>
-      <div class="mx-auto max-w-3xl px-6 lg:px-8 py-28 text-center">
-        <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-          지금, 1:1 상담으로 시작하세요.
-        </h2>
-        <p class="mt-4 text-slate-400 leading-relaxed">
-          당신에게 맞는 커리큘럼은 상담에서부터 시작됩니다.
-          Recode Coding과 함께 AI시대 신입 시니어로 성장하세요.
-        </p>
-        <div class="mt-8">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" class="inline-flex items-center rounded-full bg-brand-500 px-8 py-4 text-sm font-semibold text-slate-950 hover:bg-brand-400 shadow-glow transition-colors">
-            1:1 상담 신청하기
-          </a>
+    <!-- ===== 캠페인 배너 (풀블리드, 대각선 패널 — 다크 액센트) ===== -->
+    <section id="cta" class="mx-auto max-w-[1440px] px-6 lg:px-10 py-4">
+      <div class="relative rounded-2xl overflow-hidden min-h-[280px] border border-slate-200 bg-[#0c0c0f]">
+        <div class="absolute inset-0 flex">
+          <div class="diag-panel -ml-10 w-1/3 bg-gradient-to-br from-brand-500 to-brand-900"></div>
+          <div class="diag-panel -ml-10 w-1/3 bg-gradient-to-br from-teal-500 to-brand-950"></div>
+          <div class="diag-panel -ml-10 w-1/2 bg-gradient-to-br from-sky-500 to-slate-950"></div>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0c0c0f] via-[#0c0c0f]/40 to-transparent"></div>
+        <div class="relative flex flex-col justify-end h-full min-h-[280px] p-8 sm:p-12 max-w-xl">
+          <p class="text-xs font-mono font-semibold text-white/80 tracking-wide">1:1 정원제 · 상시 모집</p>
+          <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white tracking-tight">지금, 1:1 상담으로 시작하세요</h2>
+          <p class="mt-3 text-sm text-slate-200/90 leading-relaxed">
+            당신에게 맞는 커리큘럼은 상담에서부터 시작됩니다.
+          </p>
+          <div class="mt-6">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-200 transition-colors">
+              1:1 상담 신청하기
+            </a>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
   <!-- ===== Footer ===== -->
-  <footer class="border-t border-white/5">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2 font-mono text-sm text-slate-400">
-        <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-brand-500/15 text-brand-400 border border-brand-500/30 text-xs">R/</span>
-        Recode Coding
+  <footer class="border-t border-slate-200">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 pt-14 pb-8">
+      <p class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">RECODE</p>
+
+      <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-8 border-t border-slate-200 pt-10">
+        <div>
+          <p class="text-sm font-semibold text-slate-900">훈련 코스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="#lang" class="hover:text-slate-900 transition-colors">Language</a></li>
+            <li><a href="#algo" class="hover:text-slate-900 transition-colors">Algorithm</a></li>
+            <li><a href="#web" class="hover:text-slate-900 transition-colors">Web &amp; WebApp</a></li>
+            <li><a href="#game" class="hover:text-slate-900 transition-colors">Unity</a></li>
+            <li><a href="#agent-ai" class="hover:text-slate-900 transition-colors">Agent AI</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">회사</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="#philosophy" class="hover:text-slate-900 transition-colors">교육 철학</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">소개</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">모집</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="#cta" class="hover:text-slate-900 transition-colors">1:1 상담 신청</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">리소스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="#" class="hover:text-slate-900 transition-colors">블로그</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">문의</a></li>
+          </ul>
+        </div>
       </div>
-      <p class="text-xs text-slate-600">© 2026 Recode Coding. AI시대 프로그래밍 연구소.</p>
+
+      <p class="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 text-center">
+        © 2026 Recode Coding. AI시대 프로그래밍 연구소.
+      </p>
     </div>
   </footer>
 
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="assets/js/mobile-menu.js" defer></script>
+
+  <script>
+    // Swiper 초기화: 카테고리별 스와이퍼 각각 생성
+    document.querySelectorAll('.course-swiper').forEach((el) => {
+      const section = el.closest('section');
+      new Swiper(el, {
+        slidesPerView: 'auto',
+        spaceBetween: 20,
+        navigation: {
+          nextEl: section.querySelector('.swiper-nav-next'),
+          prevEl: section.querySelector('.swiper-nav-prev'),
+        },
+        pagination: {
+          el: el.querySelector('.swiper-pagination'),
+          clickable: true,
+        },
+      });
+    });
+
+    // AOS 초기화: 카드 reveal 애니메이션
+    if (window.AOS) {
+      AOS.init({
+        duration: 600,
+        easing: 'ease-out-cubic',
+        offset: 60,
+        once: true,
+      });
+      // Swiper가 슬라이드 너비/위치를 잡은 뒤 AOS 트리거 위치를 다시 계산
+      window.addEventListener('load', () => AOS.refresh());
+    }
+
+    // 히어로 배너 자동 전환 + 사이드 리스트 타이머 게이지
+    (function () {
+      const DURATION = 3000; // ms, 슬라이드 하나당 노출 시간
+      const CONTENT_SWAP_MS = 260; // ms, 슬라이드 아웃 애니메이션 도중 텍스트를 교체하는 시점
+
+      const SLIDES = [
+        {
+          eyebrow: '01 · LANGUAGE',
+          title: '언어의 구조를 보는<br>눈을 기르는 훈련',
+          desc: '문법이 아닌 데이터 흐름 관점에서 언어를 다시 배웁니다. Python, JS/TS, Java, C/C++, Go/Rust.',
+          cta: 'Language 코스 보기',
+          href: '#lang',
+          blob1: 'bg-brand-500/25',
+          blob2: 'bg-brand-300/20',
+        },
+        {
+          eyebrow: '02 · ALGORITHM',
+          title: '문제를 구조로<br>분해하는 훈련',
+          desc: '자료구조부터 시스템 설계까지, 코딩보다 구조적 분석·설계 능력을 훈련합니다.',
+          cta: 'Algorithm 코스 보기',
+          href: '#algo',
+          blob1: 'bg-teal-500/25',
+          blob2: 'bg-brand-300/15',
+        },
+        {
+          eyebrow: '03 · WEB & WEBAPP',
+          title: '구조를 실제 서비스로<br>흐르게 하는 훈련',
+          desc: '프론트엔드부터 배포까지, 전체 데이터 파이프라인을 직접 설계하고 구현합니다.',
+          cta: 'Web & WebApp 코스 보기',
+          href: '#web',
+          blob1: 'bg-sky-500/25',
+          blob2: 'bg-brand-300/15',
+        },
+        {
+          eyebrow: '04 · UNITY',
+          title: '인터랙티브한 데이터<br>흐름을 다루는 훈련',
+          desc: '실시간 렌더링·물리·상태 관리를 통해 데이터 흐름을 시각적으로 체화합니다.',
+          cta: 'Unity 코스 보기',
+          href: '#game',
+          blob1: 'bg-amber-500/25',
+          blob2: 'bg-brand-300/15',
+        },
+        {
+          eyebrow: '05 · AGENT AI',
+          title: 'AI와 협업하는<br>구조를 설계하는 훈련',
+          desc: '왼손은 사람, 오른손은 AI — 정확히 지시할 수 있는 능력을 훈련합니다.',
+          cta: 'Agent AI 코스 보기',
+          href: '#agent-ai',
+          blob1: 'bg-violet-500/25',
+          blob2: 'bg-brand-300/15',
+        },
+      ];
+
+      const sceneEl = document.getElementById('hero-scene');
+      const eyebrowEl = document.getElementById('hero-eyebrow');
+      const titleEl = document.getElementById('hero-title');
+      const descEl = document.getElementById('hero-desc');
+      const ctaEl = document.getElementById('hero-cta');
+      const blob1El = document.getElementById('hero-blob-1');
+      const blob2El = document.getElementById('hero-blob-2');
+      const sideItems = Array.from(document.querySelectorAll('#hero-side-list .side-item'));
+
+      if (!eyebrowEl || sideItems.length === 0) return;
+
+      let current = 0;
+      let intervalId = null;
+      let swapTimeoutId = null;
+
+      function applySlideContent(index) {
+        const s = SLIDES[index];
+        eyebrowEl.textContent = s.eyebrow;
+        titleEl.innerHTML = s.title;
+        descEl.textContent = s.desc;
+        ctaEl.textContent = s.cta;
+        ctaEl.setAttribute('href', s.href);
+
+        blob1El.className = `absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full blur-[120px] transition-colors duration-700 ${s.blob1}`;
+        blob2El.className = `absolute -bottom-24 -right-24 h-[420px] w-[420px] rounded-full blur-[120px] transition-colors duration-700 ${s.blob2}`;
+      }
+
+      function activateSlide(index, { skipAnimation = false } = {}) {
+        current = index;
+
+        if (swapTimeoutId) clearTimeout(swapTimeoutId);
+
+        if (skipAnimation) {
+          applySlideContent(index);
+        } else {
+          // 좌측 메인 배너: 게이지 완성 시 배경 블롭+텍스트(hero-scene 전체)가 좌측으로 슬라이드 아웃 → 콘텐츠 교체 → 우측에서 슬라이드 인
+          sceneEl.classList.remove('is-sliding-in');
+          sceneEl.classList.add('is-sliding-out');
+          swapTimeoutId = window.setTimeout(() => {
+            applySlideContent(index);
+            sceneEl.classList.remove('is-sliding-out');
+            void sceneEl.offsetWidth; // 강제 리플로우로 애니메이션 재시작 보장
+            sceneEl.classList.add('is-sliding-in');
+          }, CONTENT_SWAP_MS);
+        }
+
+        sideItems.forEach((item, i) => {
+          const gauge = item.querySelector('[data-gauge]');
+          item.classList.toggle('is-active', i === index);
+          // 게이지 애니메이션 리셋: 인라인 style로 직접 제어해야
+          // 이후에 다시 켤 때 CSS 클래스 규칙과 우선순위가 충돌하지 않는다.
+          gauge.style.animation = 'none';
+          gauge.style.width = '0%';
+          if (i === index) {
+            // 강제 리플로우 후 애니메이션 재적용 → 매번 처음부터 채워지도록 보장
+            void gauge.offsetWidth;
+            gauge.style.animation = `gaugeFill ${DURATION}ms linear forwards`;
+          }
+        });
+      }
+
+      function restartAutoplay() {
+        if (intervalId) clearInterval(intervalId);
+        intervalId = setInterval(() => {
+          activateSlide((current + 1) % SLIDES.length);
+        }, DURATION);
+      }
+
+      sideItems.forEach((item, i) => {
+        item.addEventListener('click', () => {
+          activateSlide(i);
+          restartAutoplay();
+        });
+      });
+
+      activateSlide(0, { skipAnimation: true });
+      restartAutoplay();
+    })();
+  </script>
 </body>
 </html>

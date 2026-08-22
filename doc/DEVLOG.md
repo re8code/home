@@ -53,3 +53,26 @@
 - Language 5개 카드 소개 문구를 언어별 고유 특징·학습적 의미 중심으로 재작성(C/C++ 메모리 직접 관리, Java 강타입·대규모 구조, Python AI 시대 표준어, JavaScript 브라우저 유일성·비동기, Dart 하나의 코드로 여러 플랫폼). 클로드 인 크롬으로 렌더링 확인, 콘솔 에러 없음.
 - `v0.16` 커밋(mockup.html Language 레이어 + 실사 로고) `dev` 브랜치에 push 완료.
 - 신규 `ARCHITECTURE.md` 작성: 메인 사이트(정적 GitHub Pages + Firebase 낙서장 백엔드) + 서브도메인 4개(oj/lms/business/studio, 별도 프로젝트) 구조를 mermaid 다이어그램과 함께 정리. 앞으로 아키텍처가 바뀔 때마다 계속 갱신하기로 함 — `CLAUDE.md`의 "작업 완료 후 문서 점검" 대상에 이 문서를 추가(4개→5개).
+- `v0.17` 커밋(ARCHITECTURE.md 신설) `dev` 브랜치에 push 완료.
+- Language 카드 클릭 시 이동할 언어별 코스 상세 페이지 신설 착수. 첫 번째로 `lang-cp.html`(C/C++)을 제작 — 벤치마크 대상은 korea-pass.kr 공지사항 목록 페이지(`/notice/noticeList.do`, 클로드 인 크롬으로 실제 접속해 레이아웃 확인: 브레드크럼+타이틀, 검색창, 분류 탭, 뱃지+메타+제목으로 구성된 카드 리스트, "더보기" 버튼).
+  - 헤더/푸터는 `mockup.html` 라이트 테마를 그대로 재사용하고, 벤치마크 레이아웃은 "커리큘럼 목록" 섹션에 적용: 검색창(제목 부분일치 필터) + 분류 탭(전체/기초/실습/프로젝트) + 카드 리스트(뱃지+주차+제목) + "더보기"(6개 → 전체 12개, 클릭 시 펼치고 버튼 숨김) 형태로 순수 JS(프레임워크 없이) 구현.
+  - C/C++ 12주차 분량의 커리큘럼 항목을 신규 작성(포인터·동적 메모리·구조체·STL·스마트 포인터·미니 프로젝트 등).
+  - `mockup.html`의 C/C++ 카드(`<div class="course-card">`)를 `<a href="lang-cp.html">`로 교체해 실제 연결(다른 4개 언어 카드는 아직 페이지가 없어 그대로 둠 — 후속 작업 예정).
+  - 클로드 인 크롬으로 로컬 서버 확인: mockup.html에서 C/C++ 카드 클릭 → lang-cp.html 정상 이동, 분류 탭 필터링·검색·더보기 모두 정상 동작, 콘솔 에러 없음.
+- 사용자 요청으로 "모든 html 페이지는 src 폴더로 이동" 진행. GitHub Pages branch 배포가 `/ (root)` 또는 `/docs`만 지원해(임의 폴더 불가) 그대로 옮기면 배포가 깨진다는 점을 먼저 안내 → 사용자가 "index.html만 루트에 남기고 나머지는 이동"으로 절충안 확정.
+  - `graffiti.html`/`graffiti-detail.html`/`graffiti-new.html`/`mockup.html`을 `git mv`로, 아직 커밋 전이던 `lang-cp.html`은 `mv`로 `src/`로 이동. `index.html`만 루트 유지.
+  - 이동한 5개 파일의 상대 경로 전수 수정: `assets/...` → `../assets/...`(이미지·`mobile-menu.js`), `href="index.html"`(앵커 포함) → `href="../index.html"`, `graffiti*.html`/`firebase-client.js`/`admin-auth.js` ES module import(`from './assets/js/...'`) → `from '../assets/js/...'`. `src/` 안 페이지끼리(graffiti↔graffiti-new↔graffiti-detail, mockup↔lang-cp)의 상호 링크는 같은 디렉터리라 그대로 둠. `assets/js/*.js` 파일끼리의 상호 import는 위치가 안 바뀌어 손대지 않음.
+  - `index.html`의 `graffiti.html` 링크 2곳만 `src/graffiti.html`로 수정.
+  - 클로드 인 크롬으로 전수 검증: index.html→src/graffiti.html(원장님의 낙서 nav 링크)→글 상세(`graffiti-detail.html?id=1`, Firestore 정상 로드)→로고 클릭으로 `../index.html` 복귀, 그리고 index.html→src/mockup.html(로고 이미지 `../assets/image/*.png` 정상 표시)→C/C++ 카드 클릭→src/lang-cp.html까지 전 구간 이동 확인, 매 단계 콘솔 에러 없음.
+  - `CLAUDE.md`(개요/개발 명령/배포/페이지 구조), `ARCHITECTURE.md`(mermaid 다이어그램에 `src/lang-cp.html` 노드 추가, §2/§3 경로 갱신), `DEV_PLAN.md`(§1 기술 스택에 파일 구조 결정 기록, Phase 2.5 경로 갱신)에 반영.
+- 사용자 지시로 `src/mockup.html` 내용을 `index.html`로 전면 이전하고 `mockup.html`은 삭제(`PRD.md` §8의 "디자인 톤 확정" 미결 사항에 대한 최종 결정, 상세: `report/2026-08-22-index-adopt-mockup.md`).
+  - 기존 `index.html`(다크 톤, 문제의식/훈련프로세스(`#process`)/대상(`#who`)/CTA 섹션)을 `mockup.html`의 라이트 톤 코스 카탈로그(히어로 자동전환 배너 + Language/Algorithm/Web & WebApp/Unity/Agent AI 5섹션 + 핵심철학 + CTA)로 완전 교체 — 두 파일 모두 자체 철학/CTA 섹션이 있어 병합 대신 전면 교체를 택함. 기존 문제의식/훈련프로세스/대상 콘텐츠는 이 교체로 사라짐(git 이력에서 복구 가능).
+  - mockup 특유의 "검토용" 표식 제거: MOCKUP 안내 배너, `<meta name="robots" content="noindex,nofollow">`, 하단 "도구 검토 노트" 섹션 삭제. `<title>`/푸터 최하단 문구는 기존 index.html의 실서비스용 문구로 복원.
+  - `src/`→루트로 위치가 바뀌며 상대경로 반전: `../assets/...` → `assets/...`, 로고 자기참조 링크 `../index.html` → `#`, `graffiti.html`/`lang-cp.html` 링크 → `src/graffiti.html`/`src/lang-cp.html`. 헤더 `sticky top-[26px]`→`top-0`, 서브바 `top-[90px]`→`top-16`(배너 제거로 오프셋 불필요).
+  - 연쇄 링크 수정: `src/lang-cp.html`의 `mockup.html#lang` 등 8곳 → `../index.html#lang` 등으로 치환. `src/graffiti*.html` 3개 파일 헤더 nav가 옛 `index.html`의 `#process`/`#who`(새 index.html엔 없음)를 가리키던 걸 발견 — "훈련 과정"(`#process`)은 "훈련 코스"(`#lang`)로 교체, "대상"(`#who`)은 대응 섹션이 없어 삭제.
+  - 클로드 인 크롬으로 전수 검증: index.html(배너 없음, 로고 정상)→C/C++ 카드→lang-cp.html→"훈련 코스" 링크로 index.html#lang 복귀(히어로 Language 탭 활성화 확인)→graffiti.html 직접 접속(nav "철학"/"훈련 코스" 정상, Firestore 로드 정상), 매 단계 콘솔 에러 없음.
+  - `PRD.md`(§1/§3/§8 — 디자인 톤 확정을 "완료"로), `DEV_PLAN.md`(§1 GSAP 미도입 확정, Phase 1 완료 표시, Phase 2.5/브랜치전략 문구 갱신), `CLAUDE.md`(페이지 구조 — index.html/graffiti 설명 갱신), `ARCHITECTURE.md`(mermaid에서 Mockup 노드 제거, §2/§3 갱신)에 반영.
+- 사용자 지시로 "CLAUDE.md를 제외한 major 4개 문서"(`PRD.md`/`DEV_PLAN.md`/`DEVLOG.md`/`ARCHITECTURE.md`)를 신규 `doc/` 폴더로 이동(`git mv`). `CLAUDE.md`는 Claude Code가 저장소 루트에서 자동으로 읽는 파일이라 루트 유지.
+  - `CLAUDE.md`의 "저장소 관례"(문서 점검 규칙 등)에서 4개 문서 경로를 `doc/PRD.md`처럼 `doc/` 접두사로 갱신, `doc/` 폴더 자체를 설명하는 문장 추가.
+  - `doc/ARCHITECTURE.md`·`doc/DEV_PLAN.md`(현재 상태를 설명하는 "살아있는" 문서)의 `report/*.md`·`tasks/*.md`·`CLAUDE.md` 상대경로를 `doc/`가 한 단계 들어간 만큼 `../report/...`/`../tasks/...`/`../CLAUDE.md`로 갱신. `doc/DEVLOG.md`(날짜별 이력 기록)와 `report/*.md`(작성 시점에 고정된 보고서) 안의 과거 항목들은 저장소 관례대로 손대지 않음(기존에도 `report/2026-07-29-deployment-guide.md`의 dothome 도메인 언급처럼 과거 기록은 재작성하지 않는 패턴).
+  - 이동 후 `doc/`·루트·`report/`·`tasks/`·`*.html` 전체를 grep해 4개 문서명에 대한 잔여 참조 없음 확인.
