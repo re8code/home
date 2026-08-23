@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>원장님의 낙서 — Recode Coding</title>
-<meta name="description" content="Recode Coding 원장님이 남기는 생각과 기록, 원장님의 낙서 게시판입니다." />
+<title>회사 소개 | Recode Coding</title>
+<meta name="description" content="Recode Coding은 지식을 전달하는 학원이 아니라, AI시대 프로그래밍의 올바른 방향을 제시하고 1:1 맞춤 훈련을 통해 신입 시니어를 길러내는 연구소입니다." />
 
 <style>
   @view-transition { navigation: auto; }
@@ -62,18 +62,11 @@
 
 <style>
   html { scroll-behavior: smooth; }
-  body { font-feature-settings: "tnum"; }
-  .card-hover {
-    transition: transform .35s ease, border-color .35s ease, background-color .35s ease;
-  }
-  .card-hover:hover {
-    transform: translateY(-2px);
-    border-color: rgba(62, 207, 142, 0.5);
-  }
+  body { font-feature-settings: "tnum"; background-color: #FBF7EE; }
 </style>
 </head>
 
-<body class="bg-[#FBF7EE] text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
+<body class="text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
 
   <!-- ===== Header (GNB) ===== -->
   <header class="fixed top-0 inset-x-0 z-[60] bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
@@ -147,163 +140,101 @@
   </header>
 
   <main class="pt-16">
-    <section class="mx-auto max-w-4xl px-6 lg:px-8 py-16">
 
-      <!-- ===== Breadcrumb ===== -->
-      <div class="flex items-center gap-2 text-xs text-slate-500">
-        <a href="../index.html" class="inline-flex items-center gap-1 hover:text-slate-800 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-3.5 w-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10" /></svg>
-          홈
+    <!-- ===== 상단 배너 — 실사진(assets/image/about-banner.jpg, 2400×1018≈2.36:1) + 텍스트 가독성용 다크 스크림 ===== -->
+    <section class="mx-auto max-w-[1440px] px-6 lg:px-10 pt-8">
+      <div id="about-banner" class="relative rounded-2xl overflow-hidden aspect-[7/3] border border-brand-900/40">
+        <img src="../assets/image/about-banner.jpg" alt="숲 전망 코워킹 공간에서 노트북으로 작업하는 모습" class="absolute inset-0 h-full w-full object-cover" />
+        <div id="about-banner-scene" class="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/45 to-slate-950/10">
+          <div class="absolute inset-0 flex flex-col justify-center p-8 sm:p-14 max-w-2xl">
+            <p class="text-xs font-mono font-semibold text-brand-300 tracking-wide">ABOUT US</p>
+            <h1 class="mt-4 text-3xl sm:text-5xl font-bold tracking-tight text-white !leading-[1.25]">
+              신입이 아니라,<br />
+              <span class="text-brand-300 text-4xl sm:text-6xl">시니어</span>를 키웁니다.
+            </h1>
+            <p class="mt-5 text-slate-300 leading-relaxed max-w-md">
+              Recode Coding은 연차가 아니라 구조를 보는 시야가 시니어를 만든다고 믿습니다.
+            </p>
+          </div>
+        </div>
+        <!-- CTA: 사진 우측 하단의 워터마크(반투명 스파클 아이콘)를 덮는 위치에 겹쳐 배치 -->
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header"
+          target="_blank"
+          rel="noopener"
+          class="absolute right-6 bottom-14 sm:right-10 sm:bottom-20 inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg hover:bg-slate-200 transition-colors"
+        >
+          1:1 상담 신청
         </a>
-        <span>/</span>
-        <span class="text-slate-600">원장님의 낙서</span>
       </div>
-
-      <div class="mt-4 flex items-center justify-between gap-4">
-        <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">원장님의 낙서</h1>
-        <a href="graffiti-new.html" class="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-brand-400 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-          새로운 낙서
-        </a>
-      </div>
-      <p class="mt-3 text-slate-600 leading-relaxed">
-        원장님 개똥 철학으로 혼자서 끄적거리는 낙서장입니다.
-      </p>
-
-      <div class="mt-8 border-t border-slate-900/10"></div>
-
-      <!-- ===== Search ===== -->
-      <div class="mt-6 relative">
-        <input
-          id="search-input"
-          type="text"
-          placeholder="검색어 입력"
-          class="w-full rounded-full border border-slate-900/10 bg-white pl-5 pr-11 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-brand-500/50"
-        />
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400">
-          <circle cx="11" cy="11" r="7" /><path stroke-linecap="round" d="M21 21l-4.3-4.3" />
-        </svg>
-      </div>
-
-      <p class="mt-5 text-xs font-mono text-slate-500">전체 <span id="total-count" class="text-brand-600">0</span>건</p>
-
-      <!-- ===== List ===== -->
-      <div id="post-list" class="mt-4 space-y-3"></div>
-      <p id="empty-state" class="hidden mt-16 text-center text-sm text-slate-500"></p>
-
-      <!-- ===== Pagination ===== -->
-      <div id="pagination" class="mt-10 flex items-center justify-center gap-1.5 font-mono text-sm"></div>
-
     </section>
+
+    <!-- ===== 소개 ===== -->
+    <section class="mx-auto max-w-[1440px] px-6 lg:px-10 py-16">
+      <div class="max-w-2xl">
+        <p class="text-xs font-mono font-semibold text-brand-700 tracking-wide">ABOUT US</p>
+        <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Recode Coding을 소개합니다</h2>
+      </div>
+
+      <div class="mt-8 max-w-2xl space-y-5 text-slate-600 leading-relaxed">
+        <p>
+          Recode Coding은 지식을 전달하는 학원이 아니라, AI시대 프로그래밍의 올바른 방향을 제시하는 연구소입니다.
+          문법을 외우게 하는 대신, 데이터가 흐르는 구조를 보는 눈을 기르는 1:1 맞춤 훈련을 합니다.
+        </p>
+        <p>
+          저희가 훈련하는 목표는 단 하나, 신입이지만 <strong class="font-bold text-brand-700">시니어</strong>처럼
+          구조를 보고 판단하는 사람입니다. 연차가 쌓여야만 얻을 수 있다고 여겨지던 <strong class="font-bold text-brand-700">시니어</strong>의
+          시야를, 데이터 흐름 중심의 훈련으로 신입 단계에서부터 갖추게 하는 것이 Recode Coding의 존재 이유입니다.
+        </p>
+      </div>
+    </section>
+
   </main>
 
   <!-- ===== Footer ===== -->
-  <footer class="border-t border-slate-900/10">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2 font-mono text-sm text-slate-600">
-        <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-brand-500/15 text-brand-600 border border-brand-500/30 text-xs">R/</span>
-        Recode Coding
+  <footer class="border-t border-slate-200">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 pt-14 pb-8">
+      <p class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">RECODE</p>
+
+      <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-8 border-t border-slate-200 pt-10">
+        <div>
+          <p class="text-sm font-semibold text-slate-900">훈련 코스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#lang" class="hover:text-slate-900 transition-colors">Language</a></li>
+            <li><a href="../index.html#algo" class="hover:text-slate-900 transition-colors">Algorithm</a></li>
+            <li><a href="../index.html#web" class="hover:text-slate-900 transition-colors">Web &amp; WebApp</a></li>
+            <li><a href="../index.html#game" class="hover:text-slate-900 transition-colors">Unity</a></li>
+            <li><a href="../index.html#agent-ai" class="hover:text-slate-900 transition-colors">Agent AI</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">회사</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#philosophy" class="hover:text-slate-900 transition-colors">교육 철학</a></li>
+            <li><a href="about.html" class="hover:text-slate-900 transition-colors">소개</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">모집</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#cta" class="hover:text-slate-900 transition-colors">1:1 상담 신청</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">리소스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="graffiti.html" class="hover:text-slate-900 transition-colors">원장님의 낙서</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">문의</a></li>
+          </ul>
+        </div>
       </div>
-      <p class="text-xs text-slate-500">© 2026 Recode Coding. AI시대 프로그래밍 연구소.</p>
+
+      <p class="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 text-center">
+        © 2026 Recode Coding. AI시대 프로그래밍 연구소.
+      </p>
     </div>
   </footer>
-
-  <script type="module">
-    import { fetchPosts } from '../assets/js/firebase-client.js';
-
-    const PAGE_SIZE = 10;
-    let currentPage = 1;
-    let allPosts = [];
-    let filteredPosts = [];
-    let fetchFailed = false;
-
-    const listEl = document.getElementById('post-list');
-    const paginationEl = document.getElementById('pagination');
-    const emptyStateEl = document.getElementById('empty-state');
-    const totalCountEl = document.getElementById('total-count');
-    const searchInput = document.getElementById('search-input');
-
-    function render() {
-      totalCountEl.textContent = filteredPosts.length;
-      emptyStateEl.classList.toggle('hidden', filteredPosts.length > 0);
-      if (filteredPosts.length === 0) {
-        emptyStateEl.textContent = fetchFailed
-          ? '게시글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.'
-          : searchInput.value.trim()
-            ? '검색 결과가 없습니다.'
-            : '아직 등록된 글이 없습니다.';
-      }
-
-      const totalPages = Math.max(1, Math.ceil(filteredPosts.length / PAGE_SIZE));
-      currentPage = Math.min(currentPage, totalPages);
-
-      const start = (currentPage - 1) * PAGE_SIZE;
-      const pagePosts = filteredPosts.slice(start, start + PAGE_SIZE);
-
-      listEl.innerHTML = pagePosts
-        .map(
-          (post) => `
-        <a href="graffiti-detail.html?id=${post.id}" class="card-hover flex items-center gap-4 rounded-2xl border border-slate-900/10 bg-white px-5 py-4">
-          <span class="font-mono text-sm text-brand-600 w-8 shrink-0">${post.id}</span>
-          <span class="flex-1 min-w-0 truncate text-slate-800 font-medium">${post.title}</span>
-          <span class="shrink-0 text-xs text-slate-500 font-mono hidden sm:inline">조회 ${post.views}</span>
-          <span class="shrink-0 text-xs text-slate-500 font-mono">${post.date}</span>
-        </a>`
-        )
-        .join('');
-
-      renderPagination(totalPages);
-    }
-
-    function renderPagination(totalPages) {
-      const groupSize = 5;
-      const groupStart = Math.floor((currentPage - 1) / groupSize) * groupSize + 1;
-      const groupEnd = Math.min(groupStart + groupSize - 1, totalPages);
-
-      let html = '';
-      html += pageButton('«', Math.max(1, groupStart - groupSize), groupStart === 1);
-      html += pageButton('‹', Math.max(1, currentPage - 1), currentPage === 1);
-      for (let p = groupStart; p <= groupEnd; p++) {
-        html += `<button data-page="${p}" class="page-btn h-8 w-8 rounded-full ${
-          p === currentPage ? 'bg-brand-500 text-slate-950 font-semibold' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-900/5'
-        }">${p}</button>`;
-      }
-      html += pageButton('›', Math.min(totalPages, currentPage + 1), currentPage === totalPages);
-      html += pageButton('»', Math.min(totalPages, groupEnd + 1), groupEnd === totalPages);
-
-      paginationEl.innerHTML = html;
-      paginationEl.querySelectorAll('.page-btn[data-page]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          currentPage = Number(btn.dataset.page);
-          render();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-      });
-    }
-
-    function pageButton(label, targetPage, disabled) {
-      return `<button data-page="${targetPage}" class="page-btn h-8 w-8 rounded-full text-slate-400 hover:text-slate-900 hover:bg-slate-900/5 ${
-        disabled ? 'opacity-30 pointer-events-none' : ''
-      }">${label}</button>`;
-    }
-
-    searchInput.addEventListener('input', () => {
-      const q = searchInput.value.trim().toLowerCase();
-      filteredPosts = allPosts.filter((post) => post.title.toLowerCase().includes(q));
-      currentPage = 1;
-      render();
-    });
-
-    async function init() {
-      const remote = await fetchPosts();
-      fetchFailed = remote === null;
-      allPosts = (remote || []).slice().sort((a, b) => b.id - a.id);
-      filteredPosts = allPosts;
-      render();
-    }
-
-    init();
-  </script>
 
   <script src="../assets/js/mobile-menu.js" defer></script>
 </body>
