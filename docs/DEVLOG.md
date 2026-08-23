@@ -240,3 +240,10 @@
   - 클로드 인 크롬으로 전수 검증: BFS/DFS 두 페이지 모두 그래프·큐/스택 패널·범례 렌더링 확인, 최종 단계에서 방문 순서 문자열이 손으로 미리 계산한 값과 정확히 일치함을 확인, 랜딩 페이지에서 8개 카드 전부(다음 화살표로 페이지 넘김) 노출과 BFS 카드 클릭 시 정상 이동 확인. 콘솔 에러 없음.
   - **Algorithm 코스 파일럿 8종(정렬 5 + 이진탐색 1 + 그래프탐색 2) 전부 완료** — `report/2026-08-22-algorithm-visualization-listup.md` §4에서 제안한 범위를 모두 구현.
   - `CLAUDE.md`(BFS/DFS 항목 신설, GNB 페이지 수 16→18개 갱신), `docs/ARCHITECTURE.md`(페이지 표에 BFS/DFS 행 추가, GNB·index.html 행·최종 갱신일 갱신), `docs/PRD.md`(§8을 파일럿 8종 전부 완료로 갱신), `docs/DEV_PLAN.md`(Phase 2.6을 파일럿 완료 + 남은 작업으로 갱신)에 반영.
+- 사용자 지시로 "카드 swiper 처리를 하나씩 스와이프 하던거를 5개 카드를 스와이프 하는 걸로 수정" — `index.html`의 Algorithm Swiper(`#algo-swiper`) 초기화 옵션에 `slidesPerGroup`이 빠져 있어(기본값 1) `slidesPerView`를 2/3/5로 반응형 지정해도 화살표 클릭 시 한 칸씩만 넘어가던 문제를 수정. `slidesPerView`와 동일한 값(2/3/5)으로 `slidesPerGroup`을 breakpoints에 함께 지정해 화면에 보이는 카드 묶음 단위로 한 번에 넘어가도록 변경. 클로드 인 크롬으로 데스크톱 폭에서 "다음" 클릭 시 5개 카드가 한 번에 교체됨(마지막 그룹은 남은 카드 수에 맞춰 자동 보정) 확인, 콘솔 에러 없음.
+- 사용자와 논의 후 Algorithm 파트에 자료구조(스택/큐/힙 등) 콘텐츠를 추가하기로 결정 — 대화로 범위를 좁혀감: 스택/큐/연결 리스트/해시 테이블/힙/이진 탐색 트리 6종으로 확정, 정렬·탐색 8종과 합치면 14장이라 배지 구분보다 섹션 분리가 낫겠다고 제안했고 사용자가 "그 방향으로 진행해줘"로 승인.
+  - `index.html` Algorithm 섹션(`#algo`)을 "정렬·탐색"(`#algo-swiper`, 기존 8장)과 "자료구조"(`#ds-swiper`, 신규 6장) 두 서브그룹으로 분리 — 각각 `.swiper-block`으로 감싸 자기 소제목·nav 화살표·pagination을 독립적으로 가짐. 히어로 5개 카테고리 구조는 건드리지 않고 Algorithm 섹션 내부만 재구성.
+  - nav 화살표 스코프를 `el.closest('section')`에서 `el.closest('.swiper-block') || el.closest('section')`로 좁혀, 같은 섹션 안 두 캐러셀의 nav 화살표가 서로 간섭하지 않도록 JS 수정. 카드 수 고정(2/3/5 고정 슬라이드) 대상 목록을 `algo-swiper` 단일값에서 `['algo-swiper', 'ds-swiper']` 배열로 일반화.
+  - 자료구조 6개 카드(스택/큐/연결 리스트/해시 테이블/힙/이진 탐색 트리)를 전용 SVG 아이콘(보라 계열 `--from:#ddd6fe;--to:#4338ca`, 정렬·탐색의 teal과 구분) + "준비중" 배지와 함께 `#ds-swiper`에 추가 — 상세 시각화 페이지는 아직 없어서 `<a>`가 아닌 비클릭 `<div>`로 처리(OJ/LMS 미오픈 배지 관례를 카드 단위로 재사용).
+  - 클로드 인 크롬으로 검증: 정렬·탐색/자료구조 두 캐러셀이 각자 5개/6개 카드로 정상 노출, "다음" 화살표가 서로 다른 캐러셀만 독립적으로 움직임(상대 캐러셀에 영향 없음) 확인, 콘솔 에러 없음.
+  - `CLAUDE.md`(Algorithm 섹션 항목에 slidesPerGroup 수정 이력 + 서브그룹 분리 내역 추가), `docs/ARCHITECTURE.md`(index.html 행에 서브그룹 구조 반영, 최종 갱신일 갱신), `docs/PRD.md`(§8에 자료구조 파일럿 착수 기록), `docs/DEV_PLAN.md`(Phase 2.7 신설)에 반영.
