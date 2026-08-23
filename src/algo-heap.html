@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>힙(Heap) 시각화 — 훈련 코스 | Recode Coding</title>
+<meta name="description" content="부모가 항상 자식보다 작은(최소 힙) 완전 이진트리 구조를 확인하는 시각화 페이지. insert의 sift-up, extractMin의 sift-down 과정을 트리와 배열로 동시에 보여주고, 마감일 스케줄러·힙 정렬 시나리오로 우선순위 큐의 원리를 체감. 리코드 코딩의 알고리즘 훈련 코스." />
+
+<style>
+  @view-transition { navigation: auto; }
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; background-color: rgba(12,12,15,.95); border-bottom: 1px solid rgba(255,255,255,.1); }
+  header > div:first-child { max-width: 1440px; margin: 0 auto; padding: 0 1.5rem; height: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  header nav { display: flex; align-items: center; gap: 1.5rem; }
+  header #mobile-menu { display: none; }
+  header a { color: #fff; text-decoration: none; }
+  header nav a { color: #94a3b8; }
+  header a[aria-disabled="true"] { color: #64748b; }
+  header nav + a { display: inline-flex; align-items: center; background-color: #18b476; color: #fff; padding: .5rem 1rem; border-radius: 9999px; font-weight: 600; font-size: .875rem; }
+  header span.rounded-lg { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: .5rem; background-color: rgba(24,180,118,.15); color: #3ecf8e; border: 1px solid rgba(24,180,118,.3); }
+  @media (min-width: 768px) { header #mobile-menu-btn { display: none; } }
+  main { padding-top: 4rem; }
+</style>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Pretendard', 'Pretendard Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        },
+        colors: {
+          brand: {
+            50: '#eefdf5',
+            100: '#d5f9e4',
+            200: '#aef1cd',
+            300: '#74e4ad',
+            400: '#3ecf8e',
+            500: '#18b476',
+            600: '#0e9261',
+            700: '#0c7550',
+            800: '#0d5d42',
+            900: '#0c4c38',
+            950: '#052b20',
+          },
+        },
+        boxShadow: {
+          glow: '0 0 60px -15px rgba(62, 207, 142, 0.45)',
+        },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link
+  rel="stylesheet"
+  as="style"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
+/>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-feature-settings: "tnum"; background-color: #FBF7EE; }
+  .cover-art {
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,0.10), transparent 55%),
+      linear-gradient(155deg, var(--from), var(--to));
+  }
+  .filter-tab.is-active {
+    background-color: #0f172a;
+    color: #fff;
+  }
+  .heap-box {
+    transition: background-color .25s ease, border-color .25s ease;
+  }
+  .code-line {
+    display: block;
+    border-radius: .375rem;
+    padding: .125rem .5rem;
+    transition: background-color .2s ease;
+  }
+  .code-line.is-active {
+    background-color: rgba(24, 180, 118, 0.28);
+  }
+  .viz-btn:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+  }
+</style>
+</head>
+
+<body class="text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
+
+  <!-- ===== Header (GNB) ===== -->
+  <header class="fixed top-0 inset-x-0 z-[60] bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 h-16 flex items-center justify-between gap-8">
+      <div class="flex items-center gap-6">
+        <a href="../index.html" class="flex items-center gap-2 font-mono font-semibold tracking-tight text-white">
+          <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400 border border-brand-500/30">R/</span>
+          <span class="hidden sm:inline">Recode Coding</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="hidden md:inline-flex items-center gap-1.5 text-sm text-slate-500 cursor-not-allowed">
+          회사 소개
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+      </div>
+      <div class="hidden md:flex items-center gap-8">
+        <nav class="flex items-center gap-6 text-sm text-slate-400">
+          <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+          <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            LMS
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            business
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            studio
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+        </nav>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-400 transition-colors">
+          1:1 상담 신청
+        </a>
+      </div>
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
+        aria-label="메뉴 열기"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg data-icon="open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-5 w-5">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg data-icon="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="hidden h-5 w-5">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-[#0c0c0f]/95 backdrop-blur">
+      <nav class="flex flex-col px-6 py-4 gap-4 text-sm text-slate-300">
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          회사 소개
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+        <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          LMS
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          business
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          studio
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-brand-500 px-4 py-2 font-semibold text-white hover:bg-brand-400 transition-colors">1:1 상담 신청</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pt-16">
+
+    <!-- ===== 페이지 헤더: 브레드크럼 + 타이틀 ===== -->
+    <section class="mx-auto max-w-5xl px-6 lg:px-8 pt-12">
+      <nav class="flex items-center gap-2 text-sm text-slate-500" aria-label="breadcrumb">
+        <a href="../index.html" class="inline-flex items-center hover:text-slate-900 transition-colors" aria-label="홈">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+        </a>
+        <span>/</span>
+        <span class="text-slate-900 font-medium">힙</span>
+      </nav>
+
+      <div class="mt-6 flex items-end gap-5">
+        <div class="cover-art h-16 w-16 shrink-0 rounded-2xl flex items-center justify-center" style="--from:#ddd6fe;--to:#4338ca">
+          <span class="text-lg font-bold text-white font-mono">Hp</span>
+        </div>
+        <div>
+          <p class="text-xs font-mono font-semibold text-indigo-700 tracking-wide">DATA STRUCTURE</p>
+          <h1 class="mt-1 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">힙 (Heap)</h1>
+        </div>
+      </div>
+      <p class="mt-5 max-w-2xl text-slate-500 leading-relaxed">
+        부모가 항상 자식보다 작은(최소 힙) 완전 이진트리를 확인하세요. 새 값을 넣으면 부모와 비교하며 위로 떠오르고(sift-up),
+        최솟값을 꺼내면 마지막 값이 루트로 내려와 자식과 비교하며 아래로 가라앉습니다(sift-down). 트리와 배열을 동시에 보여줘 "배열 하나로 트리를 표현한다"는 힙의 핵심을 체감할 수 있습니다.
+      </p>
+
+      <div class="mt-8 border-b border-slate-200"></div>
+    </section>
+
+    <!-- ===== 시각화 ===== -->
+    <section class="mx-auto max-w-5xl px-6 lg:px-8 mt-10">
+      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6 sm:p-8">
+
+        <!-- 동작 시나리오 -->
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" data-preset="basic" class="preset-btn filter-tab is-active rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">기본 삽입</button>
+            <button type="button" data-preset="scheduler" class="preset-btn filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">마감일 스케줄러</button>
+            <button type="button" data-preset="heapsort" class="preset-btn filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">힙 정렬 체감</button>
+            <button type="button" data-preset="bubbleToRoot" class="preset-btn filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">최솟값이 떠오르는 순간</button>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="number" id="custom-input" placeholder="값(숫자)" class="w-24 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+            <button type="button" id="btn-insert-custom" class="inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-slate-700 transition-colors">Insert</button>
+            <button type="button" id="btn-extract-custom" class="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-4 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">ExtractMin</button>
+          </div>
+        </div>
+
+        <!-- 힙 시각화: 트리 -->
+        <div id="heap-viz-wrap" class="mt-6 rounded-xl transition-shadow">
+          <svg id="heap-tree" viewBox="0 0 720 300" class="w-full h-64 sm:h-72" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+
+        <!-- 힙 시각화: 배열 -->
+        <div>
+          <p class="text-xs font-mono font-semibold text-slate-400 px-1 mb-2">배열 표현 (부모 i → 자식 2i+1, 2i+2)</p>
+          <div id="heap-array" class="flex flex-wrap items-center gap-1.5 border-y border-slate-200 py-3 px-1"></div>
+        </div>
+
+        <!-- 상태 표시 -->
+        <p id="viz-desc" class="mt-5 min-h-[2.5rem] rounded-lg bg-slate-50 border border-slate-100 px-4 py-2.5 text-sm text-slate-700 leading-relaxed">재생 버튼을 누르거나 다음 단계 버튼으로 힙 연산을 시작하세요.</p>
+
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
+          <p id="viz-stats" class="text-sm text-slate-500 font-mono">insert 0회 · extractMin 0회</p>
+          <p id="viz-progress" class="text-sm text-slate-400 font-mono">1 / 1</p>
+        </div>
+
+        <!-- 컨트롤 -->
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-2">
+            <button type="button" id="btn-first" class="viz-btn inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="처음으로">|◀</button>
+            <button type="button" id="btn-prev" class="viz-btn inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="이전 단계">◀</button>
+            <button type="button" id="btn-play" class="viz-btn inline-flex h-11 w-11 items-center justify-center rounded-full bg-brand-500 hover:bg-brand-400 text-white shadow-sm" aria-label="재생">▶</button>
+            <button type="button" id="btn-next" class="viz-btn inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="다음 단계">▶</button>
+            <button type="button" id="btn-last" class="viz-btn inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="마지막으로">▶|</button>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-400 mr-1">속도</span>
+            <button type="button" data-speed="1000" class="speed-btn filter-tab rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors">느리게</button>
+            <button type="button" data-speed="500" class="speed-btn filter-tab is-active rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors">보통</button>
+            <button type="button" data-speed="180" class="speed-btn filter-tab rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors">빠르게</button>
+          </div>
+        </div>
+
+        <!-- 범례 -->
+        <div class="mt-5 flex flex-wrap items-center gap-4 text-xs text-slate-500">
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded border border-slate-300 bg-white"></span>힙 내부 값</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded border-2 border-sky-400 bg-sky-50"></span>방금 삽입된 값</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded border-2 border-amber-400 bg-amber-50"></span>비교 중인 값</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded border-2 border-brand-500 bg-brand-50"></span>교환 후 정착 위치</span>
+        </div>
+      </div>
+
+      <!-- 의사코드 -->
+      <div class="mt-4 rounded-2xl border border-slate-200 bg-slate-950 shadow-sm p-6">
+        <p class="text-xs font-mono font-semibold text-slate-400 tracking-wide mb-3">PSEUDOCODE</p>
+        <pre class="text-sm font-mono text-slate-200 leading-relaxed overflow-x-auto"><code
+          ><span class="code-line" data-line="2">insert(value): 배열 끝에 추가</span
+          ><span class="code-line pl-6" data-line="3">  sift-up: 부모보다 작으면 교환하며 위로 이동</span
+          ><span class="code-line" data-line="5">extractMin(): 루트(최솟값)를 반환할 값으로 저장</span
+          ><span class="code-line pl-6" data-line="5">  마지막 값을 루트로 옮기고 배열 끝 제거</span
+          ><span class="code-line pl-6" data-line="6">  sift-down: 더 작은 자식과 비교해 교환하며 아래로 이동</span
+        ></code></pre>
+      </div>
+    </section>
+
+    <!-- ===== 설명 ===== -->
+    <section class="mx-auto max-w-5xl px-6 lg:px-8 mt-10">
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
+          <h2 class="font-semibold text-slate-900">어떻게 동작하나요</h2>
+          <p class="mt-2 text-sm text-slate-500 leading-relaxed">
+            힙은 "부모가 항상 자식보다 작다(최소 힙)"는 규칙만 지키는 완전 이진트리입니다 — 왼쪽/오른쪽 크기 순서는 정해져 있지 않아 BST보다 규칙이 느슨한 대신, 항상 균형 잡힌 모양을 유지해 삽입·삭제가 O(log n)으로 보장됩니다.
+            배열 하나로 트리 전체를 표현할 수 있는 것도 특징입니다 — 인덱스 i의 부모는 (i-1)/2, 왼쪽 자식은 2i+1, 오른쪽 자식은 2i+2로 계산되어 별도의 포인터가 필요 없습니다.
+            "최솟값을 항상 O(1)에 확인하고 O(log n)에 꺼낼 수 있다"는 성질 덕분에 우선순위 큐의 기본 구현으로 널리 쓰입니다.
+          </p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
+          <h2 class="font-semibold text-slate-900">시간·공간 복잡도</h2>
+          <dl class="mt-3 space-y-2 text-sm">
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">insert</dt>
+              <dd class="font-mono font-semibold text-brand-700">O(log n)</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">extractMin</dt>
+              <dd class="font-mono font-semibold text-brand-700">O(log n)</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">peek (최솟값 조회)</dt>
+              <dd class="font-mono font-semibold text-brand-700">O(1)</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">임의 값 검색</dt>
+              <dd class="font-mono font-semibold text-rose-600">O(n) (정렬 순서가 없음)</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">공간 복잡도</dt>
+              <dd class="font-mono font-semibold text-slate-900">O(n)</dd>
+            </div>
+          </dl>
+          <p class="mt-3 text-xs text-slate-400 leading-relaxed">"힙 정렬 체감" 시나리오에서 extractMin을 반복하면 값이 오름차순으로 하나씩 나옵니다 — 힙 정렬(Heap Sort)이 바로 이 원리를 이용합니다.</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-slate-400">
+        다른 자료구조(이진 탐색 트리)도 이어서 시각화할 예정입니다 —
+        <a href="../index.html#algo" class="text-brand-700 hover:text-brand-800 underline underline-offset-2">Algorithm 코스로 돌아가기</a>
+      </p>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="mx-auto max-w-5xl px-6 lg:px-8 py-16">
+      <div class="rounded-2xl border border-brand-900/40 bg-gradient-to-br from-brand-600 via-brand-800 to-brand-950 p-10 sm:p-12 text-center">
+        <p class="text-xs font-mono font-semibold text-brand-200 tracking-wide">1:1 정원제 · 상시 모집</p>
+        <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white tracking-tight">자료구조도 손으로 직접 다뤄봐야 오래 남습니다</h2>
+        <p class="mt-3 text-sm text-slate-200/90 leading-relaxed">
+          당신에게 맞는 커리큘럼은 1:1 상담에서부터 시작됩니다.
+        </p>
+        <div class="mt-7">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-slate-950 hover:bg-slate-200 transition-colors">
+            1:1 상담 신청하기
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="border-t border-slate-200">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 pt-14 pb-8">
+      <p class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">RECODE</p>
+
+      <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-8 border-t border-slate-200 pt-10">
+        <div>
+          <p class="text-sm font-semibold text-slate-900">훈련 코스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#lang" class="hover:text-slate-900 transition-colors">Language</a></li>
+            <li><a href="../index.html#algo" class="hover:text-slate-900 transition-colors">Algorithm</a></li>
+            <li><a href="../index.html#web" class="hover:text-slate-900 transition-colors">Web &amp; WebApp</a></li>
+            <li><a href="../index.html#game" class="hover:text-slate-900 transition-colors">Unity</a></li>
+            <li><a href="../index.html#agent-ai" class="hover:text-slate-900 transition-colors">Agent AI</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">회사</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#philosophy" class="hover:text-slate-900 transition-colors">교육 철학</a></li>
+            <li><a href="../index.html" class="hover:text-slate-900 transition-colors">소개</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">모집</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#cta" class="hover:text-slate-900 transition-colors">1:1 상담 신청</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">리소스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="graffiti.html" class="hover:text-slate-900 transition-colors">원장님의 낙서</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">문의</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 text-center">
+        © 2026 Recode Coding. AI시대 프로그래밍 연구소.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/mobile-menu.js" defer></script>
+  <script>
+    (function () {
+      const SCENARIOS = {
+        basic: [5, 3, 8, 1, 9, 2].map((v) => ({ op: 'insert', value: v })),
+        scheduler: [
+          { op: 'insert', value: 7, label: '보고서' },
+          { op: 'insert', value: 2, label: '회의준비' },
+          { op: 'insert', value: 5, label: '이메일' },
+          { op: 'insert', value: 1, label: '긴급패치' },
+          { op: 'extractMin' },
+          { op: 'extractMin' },
+          { op: 'extractMin' },
+          { op: 'extractMin' },
+        ],
+        heapsort: [9, 4, 7, 1, 6, 3, 8, 2].map((v) => ({ op: 'insert', value: v }))
+          .concat(Array(8).fill(0).map(() => ({ op: 'extractMin' }))),
+        bubbleToRoot: [
+          { op: 'insert', value: 10 },
+          { op: 'insert', value: 20 },
+          { op: 'insert', value: 30 },
+          { op: 'insert', value: 40 },
+          { op: 'insert', value: 50 },
+          { op: 'insert', value: 1 },
+        ],
+      };
+
+      const state = {
+        steps: [],
+        stepIndex: 0,
+        playing: false,
+        timer: null,
+        speedMs: 500,
+        mode: 'preset',
+      };
+      let customOps = [];
+
+      const svgNS = 'http://www.w3.org/2000/svg';
+      const treeEl = document.getElementById('heap-tree');
+      const arrEl = document.getElementById('heap-array');
+      const wrapEl = document.getElementById('heap-viz-wrap');
+      const descEl = document.getElementById('viz-desc');
+      const statsEl = document.getElementById('viz-stats');
+      const progressEl = document.getElementById('viz-progress');
+      const btnFirst = document.getElementById('btn-first');
+      const btnPrev = document.getElementById('btn-prev');
+      const btnPlay = document.getElementById('btn-play');
+      const btnNext = document.getElementById('btn-next');
+      const btnLast = document.getElementById('btn-last');
+      const customInput = document.getElementById('custom-input');
+      const btnInsertCustom = document.getElementById('btn-insert-custom');
+      const btnExtractCustom = document.getElementById('btn-extract-custom');
+
+      function buildSteps(ops) {
+        const heap = [];
+        let insertCount = 0;
+        let extractCount = 0;
+        const steps = [];
+
+        const snap = (op, indices, line, desc) => {
+          steps.push({ heap: heap.map((h) => ({ value: h.value, label: h.label })), op, indices: indices || [], line, desc, insertCount, extractCount });
+        };
+
+        snap('init', [], null, '재생 버튼을 누르거나 다음 단계 버튼으로 힙 연산을 시작하세요.');
+
+        function label(entry) {
+          return entry.label ? `${entry.value}(${entry.label})` : `${entry.value}`;
+        }
+
+        function siftUp(startIdx) {
+          let i = startIdx;
+          while (i > 0) {
+            const parent = Math.floor((i - 1) / 2);
+            const childVal = heap[i].value;
+            const parentVal = heap[parent].value;
+            snap('compare', [i, parent], 3, `인덱스 ${i}(${label(heap[i])})와 부모 인덱스 ${parent}(${label(heap[parent])})를 비교합니다.`);
+            if (childVal < parentVal) {
+              const tmp = heap[i]; heap[i] = heap[parent]; heap[parent] = tmp;
+              snap('swap', [parent, i], 3, `${childVal}이(가) 부모(${parentVal})보다 작아 자리를 바꿉니다.`);
+              i = parent;
+            } else {
+              snap('settle', [i], null, '부모가 더 작거나 같아 sift-up을 멈춥니다 — 힙 속성이 유지됩니다.');
+              return;
+            }
+          }
+          snap('settle', [0], null, '루트까지 올라와 sift-up이 끝났습니다.');
+        }
+
+        function siftDown(startIdx) {
+          let i = startIdx;
+          const n = heap.length;
+          while (true) {
+            const l = 2 * i + 1;
+            const r = 2 * i + 2;
+            let smallest = i;
+            if (l < n && heap[l].value < heap[smallest].value) smallest = l;
+            if (r < n && heap[r].value < heap[smallest].value) smallest = r;
+            if (smallest === i) {
+              snap('settle', [i], null, '자식이 더 크거나 같아 sift-down을 멈춥니다 — 힙 속성이 유지됩니다.');
+              return;
+            }
+            const idxList = [i, l, r].filter((x) => x < n);
+            snap('compare', idxList, 6, `자식들과 비교해 더 작은 자식(인덱스 ${smallest}, 값 ${heap[smallest].value})을 찾았습니다.`);
+            const tmp = heap[i]; heap[i] = heap[smallest]; heap[smallest] = tmp;
+            snap('swap', [i, smallest], 6, `부모와 더 작은 자식을 교환합니다.`);
+            i = smallest;
+          }
+        }
+
+        ops.forEach((o) => {
+          if (o.op === 'insert') {
+            heap.push({ value: o.value, label: o.label });
+            insertCount++;
+            const idx = heap.length - 1;
+            snap('insert', [idx], 2, `${label(heap[idx])}을(를) 배열 끝(인덱스 ${idx})에 추가합니다.`);
+            siftUp(idx);
+          } else if (o.op === 'extractMin') {
+            if (heap.length === 0) {
+              snap('error', [], null, 'extractMin() 실패 — 힙이 비어 있습니다.');
+            } else {
+              const min = heap[0];
+              const last = heap.pop();
+              if (heap.length > 0) {
+                heap[0] = last;
+                snap('replace', [0], 5, `루트(최솟값 ${label(min)})를 제거하고 마지막 값(${label(last)})을 루트로 옮깁니다.`);
+                siftDown(0);
+              } else {
+                snap('replace', [], 5, `루트(최솟값 ${label(min)})를 제거했습니다 — 힙이 비었습니다.`);
+              }
+              extractCount++;
+              snap('extracted', [], null, `extractMin() → ${label(min)} 반환.`);
+            }
+          }
+        });
+
+        return steps;
+      }
+
+      function heapPos(i, n) {
+        const level = Math.floor(Math.log2(i + 1));
+        const levelStart = Math.pow(2, level) - 1;
+        const posInLevel = i - levelStart;
+        const levelWidth = Math.pow(2, level);
+        const xFrac = (posInLevel + 0.5) / levelWidth;
+        return { x: 40 + xFrac * 640, y: 36 + level * 62 };
+      }
+
+      function svgEl(tag, attrs) {
+        const el = document.createElementNS(svgNS, tag);
+        Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+        return el;
+      }
+
+      function renderHeap(heap, op, indices) {
+        treeEl.innerHTML = '';
+        arrEl.innerHTML = '';
+        wrapEl.classList.toggle('ring-2', op === 'error');
+        wrapEl.classList.toggle('ring-rose-300', op === 'error');
+
+        const n = heap.length;
+
+        if (n === 0) {
+          const text = svgEl('text', { x: 360, y: 150, 'text-anchor': 'middle', fill: '#94a3b8', 'font-size': '14' });
+          text.textContent = '힙이 비어 있습니다';
+          treeEl.appendChild(text);
+        }
+
+        // edges first (so nodes draw on top)
+        for (let i = 0; i < n; i++) {
+          const l = 2 * i + 1;
+          const r = 2 * i + 2;
+          const p = heapPos(i, n);
+          if (l < n) {
+            const cp = heapPos(l, n);
+            treeEl.appendChild(svgEl('line', { x1: p.x, y1: p.y, x2: cp.x, y2: cp.y, stroke: '#cbd5e1', 'stroke-width': 2 }));
+          }
+          if (r < n) {
+            const cp = heapPos(r, n);
+            treeEl.appendChild(svgEl('line', { x1: p.x, y1: p.y, x2: cp.x, y2: cp.y, stroke: '#cbd5e1', 'stroke-width': 2 }));
+          }
+        }
+
+        for (let i = 0; i < n; i++) {
+          const p = heapPos(i, n);
+          const isIdx = indices.includes(i);
+          let fill = '#ffffff';
+          let stroke = '#cbd5e1';
+          let textColor = '#334155';
+          if (isIdx && op === 'insert') { fill = '#f0f9ff'; stroke = '#38bdf8'; textColor = '#0369a1'; }
+          else if (isIdx && op === 'swap') { fill = '#eefdf5'; stroke = '#18b476'; textColor = '#0c7550'; }
+          else if (isIdx && op === 'compare') { fill = '#fffbeb'; stroke = '#fbbf24'; textColor = '#b45309'; }
+          else if (isIdx && (op === 'settle' || op === 'replace')) { fill = '#eefdf5'; stroke = '#18b476'; textColor = '#0c7550'; }
+
+          const g = svgEl('g', {});
+          g.appendChild(svgEl('circle', { cx: p.x, cy: p.y, r: 22, fill, stroke, 'stroke-width': 2.5 }));
+          const t = svgEl('text', { x: p.x, y: p.y + 5, 'text-anchor': 'middle', fill: textColor, 'font-size': '13', 'font-weight': '700', 'font-family': 'monospace' });
+          t.textContent = heap[i].value;
+          g.appendChild(t);
+          treeEl.appendChild(g);
+        }
+
+        heap.forEach((entry, i) => {
+          const isIdx = indices.includes(i);
+          const col = document.createElement('div');
+          col.className = 'flex flex-col items-center gap-1';
+
+          const idxLabel = document.createElement('span');
+          idxLabel.className = 'text-[10px] font-mono text-slate-400';
+          idxLabel.textContent = i;
+          col.appendChild(idxLabel);
+
+          const box = document.createElement('div');
+          box.className = 'heap-box inline-flex items-center justify-center rounded-lg border px-3 py-2 font-mono text-sm font-semibold min-w-[48px] text-center ' + (
+            isIdx && op === 'insert' ? 'bg-sky-50 border-sky-400 text-sky-700' :
+            isIdx && op === 'compare' ? 'bg-amber-50 border-amber-400 text-amber-700' :
+            isIdx && (op === 'swap' || op === 'settle' || op === 'replace') ? 'bg-brand-50 border-brand-500 text-brand-800' :
+            'bg-white border-slate-200 text-slate-700'
+          );
+          box.textContent = entry.value;
+          col.appendChild(box);
+
+          arrEl.appendChild(col);
+        });
+
+        if (heap.length === 0) {
+          const empty = document.createElement('span');
+          empty.className = 'text-xs text-slate-300 font-mono';
+          empty.textContent = '(비어 있음)';
+          arrEl.appendChild(empty);
+        }
+      }
+
+      function render() {
+        const step = state.steps[state.stepIndex];
+        renderHeap(step.heap, step.op, step.indices);
+
+        descEl.textContent = step.desc;
+        statsEl.textContent = `insert ${step.insertCount}회 · extractMin ${step.extractCount}회`;
+        progressEl.textContent = `${state.stepIndex + 1} / ${state.steps.length}`;
+
+        document.querySelectorAll('.code-line').forEach((el) => {
+          el.classList.toggle('is-active', Number(el.dataset.line) === step.line);
+        });
+
+        const atStart = state.stepIndex === 0;
+        const atEnd = state.stepIndex === state.steps.length - 1;
+        btnFirst.disabled = atStart;
+        btnPrev.disabled = atStart;
+        btnNext.disabled = atEnd;
+        btnLast.disabled = atEnd;
+        if (atEnd && state.playing) pause();
+      }
+
+      function goTo(index) {
+        state.stepIndex = Math.max(0, Math.min(state.steps.length - 1, index));
+        render();
+      }
+
+      function updatePlayButton() {
+        btnPlay.textContent = state.playing ? '❚❚' : '▶';
+        btnPlay.setAttribute('aria-label', state.playing ? '일시정지' : '재생');
+      }
+
+      function play() {
+        if (state.stepIndex >= state.steps.length - 1) state.stepIndex = 0;
+        state.playing = true;
+        updatePlayButton();
+        clearInterval(state.timer);
+        state.timer = setInterval(() => {
+          if (state.stepIndex >= state.steps.length - 1) {
+            pause();
+            return;
+          }
+          state.stepIndex++;
+          render();
+        }, state.speedMs);
+      }
+
+      function pause() {
+        state.playing = false;
+        clearInterval(state.timer);
+        updatePlayButton();
+      }
+
+      function loadScenario(name) {
+        pause();
+        state.mode = 'preset';
+        state.steps = buildSteps(SCENARIOS[name]);
+        state.stepIndex = 0;
+        render();
+      }
+
+      function runCustomOp(op, value) {
+        pause();
+        if (state.mode !== 'custom') {
+          state.mode = 'custom';
+          customOps = [];
+          document.querySelectorAll('.preset-btn').forEach((b) => b.classList.remove('is-active'));
+        }
+        customOps.push(op === 'insert' ? { op: 'insert', value } : { op: 'extractMin' });
+        state.steps = buildSteps(customOps);
+        goTo(state.steps.length - 1);
+      }
+
+      btnFirst.addEventListener('click', () => goTo(0));
+      btnPrev.addEventListener('click', () => goTo(state.stepIndex - 1));
+      btnNext.addEventListener('click', () => goTo(state.stepIndex + 1));
+      btnLast.addEventListener('click', () => goTo(state.steps.length - 1));
+      btnPlay.addEventListener('click', () => (state.playing ? pause() : play()));
+
+      document.querySelectorAll('.preset-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.preset-btn').forEach((b) => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          loadScenario(btn.dataset.preset);
+        });
+      });
+
+      document.querySelectorAll('.speed-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.speed-btn').forEach((b) => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          state.speedMs = Number(btn.dataset.speed);
+          if (state.playing) play();
+        });
+      });
+
+      btnInsertCustom.addEventListener('click', () => {
+        const v = Number(customInput.value);
+        if (!customInput.value || Number.isNaN(v)) { customInput.focus(); return; }
+        runCustomOp('insert', v);
+        customInput.value = '';
+        customInput.focus();
+      });
+      btnExtractCustom.addEventListener('click', () => {
+        runCustomOp('extractMin');
+      });
+      customInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') btnInsertCustom.click();
+      });
+
+      loadScenario('basic');
+    })();
+  </script>
+</body>
+</html>

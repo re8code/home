@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>스택(Stack) 시각화 — 훈련 코스 | Recode Coding</title>
+<meta name="description" content="push와 pop, 두 연산만으로 마지막에 넣은 값을 가장 먼저 꺼내는 LIFO 구조를 확인하는 시각화 페이지. 함수 호출 스택·실행 취소·괄호 검사 시나리오와 직접 조작 모드 제공. 리코드 코딩의 알고리즘 훈련 코스." />
+
+<style>
+  @view-transition { navigation: auto; }
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; background-color: rgba(12,12,15,.95); border-bottom: 1px solid rgba(255,255,255,.1); }
+  header > div:first-child { max-width: 1440px; margin: 0 auto; padding: 0 1.5rem; height: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  header nav { display: flex; align-items: center; gap: 1.5rem; }
+  header #mobile-menu { display: none; }
+  header a { color: #fff; text-decoration: none; }
+  header nav a { color: #94a3b8; }
+  header a[aria-disabled="true"] { color: #64748b; }
+  header nav + a { display: inline-flex; align-items: center; background-color: #18b476; color: #fff; padding: .5rem 1rem; border-radius: 9999px; font-weight: 600; font-size: .875rem; }
+  header span.rounded-lg { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: .5rem; background-color: rgba(24,180,118,.15); color: #3ecf8e; border: 1px solid rgba(24,180,118,.3); }
+  @media (min-width: 768px) { header #mobile-menu-btn { display: none; } }
+  main { padding-top: 4rem; }
+</style>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Pretendard', 'Pretendard Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        },
+        colors: {
+          brand: {
+            50: '#eefdf5',
+            100: '#d5f9e4',
+            200: '#aef1cd',
+            300: '#74e4ad',
+            400: '#3ecf8e',
+            500: '#18b476',
+            600: '#0e9261',
+            700: '#0c7550',
+            800: '#0d5d42',
+            900: '#0c4c38',
+            950: '#052b20',
+          },
+        },
+        boxShadow: {
+          glow: '0 0 60px -15px rgba(62, 207, 142, 0.45)',
+        },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link
+  rel="stylesheet"
+  as="style"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
+/>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-feature-settings: "tnum"; background-color: #FBF7EE; }
+  .cover-art {
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,0.10), transparent 55%),
+      linear-gradient(155deg, var(--from), var(--to));
+  }
+  .filter-tab.is-active {
+    background-color: #0f172a;
+    color: #fff;
+  }
+  .stack-box {
+    transition: background-color .25s ease, border-color .25s ease, transform .2s ease;
+  }
+  .code-line {
+    display: block;
+    border-radius: .375rem;
+    padding: .125rem .5rem;
+    transition: background-color .2s ease;
+  }
+  .code-line.is-active {
+    background-color: rgba(24, 180, 118, 0.28);
+  }
+  .viz-btn:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+  }
+</style>
+</head>
+
+<body class="text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
+
+  <!-- ===== Header (GNB) ===== -->
+  <header class="fixed top-0 inset-x-0 z-[60] bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 h-16 flex items-center justify-between gap-8">
+      <div class="flex items-center gap-6">
+        <a href="../index.html" class="flex items-center gap-2 font-mono font-semibold tracking-tight text-white">
+          <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400 border border-brand-500/30">R/</span>
+          <span class="hidden sm:inline">Recode Coding</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="hidden md:inline-flex items-center gap-1.5 text-sm text-slate-500 cursor-not-allowed">
+          회사 소개
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+      </div>
+      <div class="hidden md:flex items-center gap-8">
+        <nav class="flex items-center gap-6 text-sm text-slate-400">
+          <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+          <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            LMS
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            business
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            studio
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+        </nav>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-400 transition-colors">
+          1:1 상담 신청
+        </a>
+      </div>
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
+        aria-label="메뉴 열기"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg data-icon="open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-5 w-5">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg data-icon="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="hidden h-5 w-5">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-[#0c0c0f]/95 backdrop-blur">
+      <nav class="flex flex-col px-6 py-4 gap-4 text-sm text-slate-300">
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          회사 소개
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+        <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          LMS
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          business
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          studio
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-brand-500 px-4 py-2 font-semibold text-white hover:bg-brand-400 transition-colors">1:1 상담 신청</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pt-16">
+
+    <!-- ===== 페이지 헤더: 브레드크럼 + 타이틀 ===== -->
+    <section class="mx-auto max-w-5xl px-6 lg:px-8 pt-12">
+      <nav class="flex items-center gap-2 text-sm text-slate-500" aria-label="breadcrumb">
+        <a href="../index.html" class="inline-flex items-center hover:text-slate-900 transition-colors" aria-label="홈">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+        </a>
+        <span>/</span>
+        <span class="text-slate-900 font-medium">스택</span>
+      </nav>
+
+      <div class="mt-6 flex items-end gap-5">
+        <div class="cover-art h-16 w-16 shrink-0 rounded-2xl flex items-center justify-center" style="--from:#ddd6fe;--to:#4338ca">
+          <span class="text-lg font-bold text-white font-mono">Stk</span>
+        </div>
+        <div>
+          <p class="text-xs font-mono font-semibold text-indigo-700 tracking-wide">DATA STRUCTURE</p>
+          <h1 class="mt-1 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">스택 (Stack)</h1>
+        </div>
+      </div>
+      <p class="mt-5 max-w-2xl text-slate-500 leading-relaxed">
+        push와 pop, 두 가지 연산만으로 마지막에 넣은 값을 가장 먼저 꺼내는 LIFO(Last In, First Out) 구조를 확인하세요.
+        함수 호출, 실행 취소(Undo), 괄호 검사 같은 실제 시나리오를 단계별로 재생하거나, 직접 값을 넣고 빼며 규칙을 몸으로 익힐 수 있습니다.
+      </p>
+
+      <div class="mt-8 border-b border-slate-200"></div>
+    </section>
+
+    <!-- ===== 시각화 ===== -->
+    <section class="mx-auto max-w-5xl px-6 lg:px-8 mt-10">
+      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6 sm:p-8">
+
+        <!-- 동작 시나리오 -->
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" data-preset="basic" class="preset-btn filter-tab is-active rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">기본 Push/Pop</button>
+            <button type="button" data-preset="callstack" class="preset-btn filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">함수 호출 스택</button>
+            <button type="button" data-preset="brackets" class="preset-btn filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">괄호 검사</button>
+            <button type="button" data-preset="undo" class="preset-btn filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">실행 취소(Undo)</button>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="text" id="custom-input" placeholder="직접 값 입력" maxlength="14" class="w-32 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+            <button type="button" id="btn-push-custom" class="inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-slate-700 transition-colors">Push</button>
+            <button type="button" id="btn-pop-custom" class="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-4 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">Pop</button>
+          </div>
+        </div>
+
+        <!-- 스택 시각화 -->
+        <div id="stack-viz-wrap" class="mt-6 rounded-xl transition-shadow">
+          <div id="stack-viz" class="h-72 sm:h-80 flex flex-col-reverse items-center gap-2 border-b-4 border-slate-300 pb-1"></div>
+        </div>
+
+        <!-- 상태 표시 -->
+        <p id="viz-desc" class="mt-5 min-h-[2.5rem] rounded-lg bg-slate-50 border border-slate-100 px-4 py-2.5 text-sm text-slate-700 leading-relaxed">재생 버튼을 누르거나 다음 단계 버튼으로 스택 연산을 시작하세요.</p>
+
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
+          <p id="viz-stats" class="text-sm text-slate-500 font-mono">push 0회 · pop 0회</p>
+          <p id="viz-progress" class="text-sm text-slate-400 font-mono">1 / 1</p>
+        </div>
+
+        <!-- 컨트롤 -->
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-2">
+            <button type="button" id="btn-first" class="viz-btn inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="처음으로">|◀</button>
+            <button type="button" id="btn-prev" class="viz-btn inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="이전 단계">◀</button>
+            <button type="button" id="btn-play" class="viz-btn inline-flex h-11 w-11 items-center justify-center rounded-full bg-brand-500 hover:bg-brand-400 text-white shadow-sm" aria-label="재생">▶</button>
+            <button type="button" id="btn-next" class="viz-btn inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="다음 단계">▶</button>
+            <button type="button" id="btn-last" class="viz-btn inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="마지막으로">▶|</button>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-400 mr-1">속도</span>
+            <button type="button" data-speed="1000" class="speed-btn filter-tab rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors">느리게</button>
+            <button type="button" data-speed="500" class="speed-btn filter-tab is-active rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors">보통</button>
+            <button type="button" data-speed="180" class="speed-btn filter-tab rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors">빠르게</button>
+          </div>
+        </div>
+
+        <!-- 범례 -->
+        <div class="mt-5 flex flex-wrap items-center gap-4 text-xs text-slate-500">
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded border border-slate-300 bg-white"></span>스택 내부 값</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded border-2 border-brand-500 bg-brand-50"></span>최상단 (TOP)</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded border-2 border-sky-400 bg-sky-50"></span>방금 push된 값</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded border-2 border-dashed border-rose-400"></span>pop 실패 (언더플로우)</span>
+        </div>
+      </div>
+
+      <!-- 의사코드 -->
+      <div class="mt-4 rounded-2xl border border-slate-200 bg-slate-950 shadow-sm p-6">
+        <p class="text-xs font-mono font-semibold text-slate-400 tracking-wide mb-3">PSEUDOCODE</p>
+        <pre class="text-sm font-mono text-slate-200 leading-relaxed overflow-x-auto"><code
+          ><span class="code-line" data-line="1">push(value):</span
+          ><span class="code-line pl-6" data-line="2">  array.append(value)</span
+          ><span class="code-line" data-line="3">pop():</span
+          ><span class="code-line pl-6" data-line="4">  if array가 비어있음: return 오류 (언더플로우)</span
+          ><span class="code-line pl-6" data-line="5">  value ← array.pop()</span
+          ><span class="code-line pl-6" data-line="6">  return value</span
+        ></code></pre>
+      </div>
+    </section>
+
+    <!-- ===== 설명 ===== -->
+    <section class="mx-auto max-w-5xl px-6 lg:px-8 mt-10">
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
+          <h2 class="font-semibold text-slate-900">어떻게 동작하나요</h2>
+          <p class="mt-2 text-sm text-slate-500 leading-relaxed">
+            스택은 마지막에 넣은 데이터가 가장 먼저 나오는 LIFO(Last In, First Out) 구조입니다. push는 맨 위에 값을 하나 쌓고, pop은 맨 위 값 하나만 꺼내 제거합니다.
+            중간에 있는 값에는 직접 접근할 수 없다는 제약이 오히려 "가장 최근 것부터 되돌린다"는 문제 — 함수 호출 스택, 실행 취소(Undo), 괄호 짝 검사 — 를 자연스럽게 표현합니다.
+            스택이 비어 있을 때 pop을 시도하면 꺼낼 값이 없는 "언더플로우" 상태가 됩니다.
+          </p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6">
+          <h2 class="font-semibold text-slate-900">시간·공간 복잡도</h2>
+          <dl class="mt-3 space-y-2 text-sm">
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">push</dt>
+              <dd class="font-mono font-semibold text-brand-700">O(1)</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">pop</dt>
+              <dd class="font-mono font-semibold text-brand-700">O(1)</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">peek (최상단 조회)</dt>
+              <dd class="font-mono font-semibold text-brand-700">O(1)</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">임의 위치 접근</dt>
+              <dd class="font-mono font-semibold text-rose-600">불가 (전부 pop 필요)</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-slate-500">공간 복잡도</dt>
+              <dd class="font-mono font-semibold text-slate-900">O(n)</dd>
+            </div>
+          </dl>
+          <p class="mt-3 text-xs text-slate-400 leading-relaxed">모든 연산이 맨 위 한 곳에서만 일어나기 때문에 push/pop/peek 모두 O(1) — 중간 값에 접근하려면 그 위의 값을 전부 pop해야 합니다.</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-slate-400">
+        다른 자료구조(큐·연결 리스트·해시 테이블·힙·이진 탐색 트리)도 이어서 시각화할 예정입니다 —
+        <a href="../index.html#algo" class="text-brand-700 hover:text-brand-800 underline underline-offset-2">Algorithm 코스로 돌아가기</a>
+      </p>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="mx-auto max-w-5xl px-6 lg:px-8 py-16">
+      <div class="rounded-2xl border border-brand-900/40 bg-gradient-to-br from-brand-600 via-brand-800 to-brand-950 p-10 sm:p-12 text-center">
+        <p class="text-xs font-mono font-semibold text-brand-200 tracking-wide">1:1 정원제 · 상시 모집</p>
+        <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white tracking-tight">자료구조도 손으로 직접 다뤄봐야 오래 남습니다</h2>
+        <p class="mt-3 text-sm text-slate-200/90 leading-relaxed">
+          당신에게 맞는 커리큘럼은 1:1 상담에서부터 시작됩니다.
+        </p>
+        <div class="mt-7">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-slate-950 hover:bg-slate-200 transition-colors">
+            1:1 상담 신청하기
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="border-t border-slate-200">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 pt-14 pb-8">
+      <p class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">RECODE</p>
+
+      <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-8 border-t border-slate-200 pt-10">
+        <div>
+          <p class="text-sm font-semibold text-slate-900">훈련 코스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#lang" class="hover:text-slate-900 transition-colors">Language</a></li>
+            <li><a href="../index.html#algo" class="hover:text-slate-900 transition-colors">Algorithm</a></li>
+            <li><a href="../index.html#web" class="hover:text-slate-900 transition-colors">Web &amp; WebApp</a></li>
+            <li><a href="../index.html#game" class="hover:text-slate-900 transition-colors">Unity</a></li>
+            <li><a href="../index.html#agent-ai" class="hover:text-slate-900 transition-colors">Agent AI</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">회사</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#philosophy" class="hover:text-slate-900 transition-colors">교육 철학</a></li>
+            <li><a href="../index.html" class="hover:text-slate-900 transition-colors">소개</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">모집</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#cta" class="hover:text-slate-900 transition-colors">1:1 상담 신청</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">리소스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="graffiti.html" class="hover:text-slate-900 transition-colors">원장님의 낙서</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">문의</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 text-center">
+        © 2026 Recode Coding. AI시대 프로그래밍 연구소.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/mobile-menu.js" defer></script>
+  <script>
+    (function () {
+      const SCENARIOS = {
+        basic: [
+          { op: 'push', value: '10' },
+          { op: 'push', value: '20' },
+          { op: 'push', value: '30' },
+          { op: 'pop' },
+          { op: 'push', value: '40' },
+          { op: 'pop' },
+          { op: 'pop' },
+          { op: 'pop' },
+          { op: 'pop' },
+        ],
+        callstack: [
+          { op: 'push', value: 'main()', label: '함수 호출' },
+          { op: 'push', value: 'calculateTotal()', label: '함수 호출' },
+          { op: 'push', value: 'validate()', label: '함수 호출' },
+          { op: 'pop', label: 'validate() 반환' },
+          { op: 'push', value: 'formatOutput()', label: '함수 호출' },
+          { op: 'pop', label: 'formatOutput() 반환' },
+          { op: 'pop', label: 'calculateTotal() 반환' },
+          { op: 'pop', label: 'main() 종료' },
+        ],
+        brackets: [
+          { op: 'push', value: '{', label: "문자 '{' — 여는 괄호" },
+          { op: 'push', value: '[', label: "문자 '[' — 여는 괄호" },
+          { op: 'push', value: '(', label: "문자 '(' — 여는 괄호" },
+          { op: 'pop', label: "문자 ')' — 꺼낸 '('과 정확히 짝이 맞습니다" },
+          { op: 'pop', label: "문자 ']' — 꺼낸 '['과 정확히 짝이 맞습니다" },
+          { op: 'pop', label: "문자 '}' — 꺼낸 '{'과 정확히 짝이 맞아 스택이 비었습니다 → 유효한 괄호 문자열!" },
+        ],
+        undo: [
+          { op: 'push', value: 'R', label: '타이핑' },
+          { op: 'push', value: 'Re', label: '타이핑' },
+          { op: 'push', value: 'Rec', label: '타이핑' },
+          { op: 'push', value: 'Recode', label: '타이핑' },
+          { op: 'pop', label: '실행 취소 (Ctrl+Z)' },
+          { op: 'pop', label: '실행 취소 (Ctrl+Z)' },
+          { op: 'pop', label: '실행 취소 (Ctrl+Z)' },
+          { op: 'pop', label: '실행 취소 (Ctrl+Z)' },
+          { op: 'pop', label: '실행 취소 (Ctrl+Z)' },
+        ],
+      };
+
+      const state = {
+        steps: [],
+        stepIndex: 0,
+        playing: false,
+        timer: null,
+        speedMs: 500,
+        mode: 'preset',
+      };
+      let customOps = [];
+
+      const stackEl = document.getElementById('stack-viz');
+      const stackWrapEl = document.getElementById('stack-viz-wrap');
+      const descEl = document.getElementById('viz-desc');
+      const statsEl = document.getElementById('viz-stats');
+      const progressEl = document.getElementById('viz-progress');
+      const btnFirst = document.getElementById('btn-first');
+      const btnPrev = document.getElementById('btn-prev');
+      const btnPlay = document.getElementById('btn-play');
+      const btnNext = document.getElementById('btn-next');
+      const btnLast = document.getElementById('btn-last');
+      const customInput = document.getElementById('custom-input');
+      const btnPushCustom = document.getElementById('btn-push-custom');
+      const btnPopCustom = document.getElementById('btn-pop-custom');
+
+      function buildSteps(ops) {
+        const stack = [];
+        let pushCount = 0;
+        let popCount = 0;
+        const steps = [];
+
+        steps.push({ stack: stack.slice(), op: 'init', line: null, desc: '재생 버튼을 누르거나 다음 단계 버튼으로 스택 연산을 시작하세요.', pushCount, popCount });
+
+        ops.forEach((o) => {
+          const prefix = o.label ? `${o.label}: ` : '';
+          if (o.op === 'push') {
+            stack.push(o.value);
+            pushCount++;
+            steps.push({
+              stack: stack.slice(),
+              op: 'push',
+              line: 2,
+              desc: `${prefix}push(${o.value}) — 스택 맨 위에 값을 추가합니다.`,
+              pushCount,
+              popCount,
+            });
+          } else if (o.op === 'pop') {
+            if (stack.length === 0) {
+              steps.push({
+                stack: stack.slice(),
+                op: 'error',
+                line: 4,
+                desc: `${prefix}pop() 실패 — 스택이 비어 있어 꺼낼 값이 없습니다 (언더플로우).`,
+                pushCount,
+                popCount,
+              });
+            } else {
+              const v = stack.pop();
+              popCount++;
+              steps.push({
+                stack: stack.slice(),
+                op: 'pop',
+                line: 5,
+                desc: `${prefix}pop() → "${v}" 반환 — 맨 위 값을 꺼내 스택에서 제거합니다.`,
+                pushCount,
+                popCount,
+              });
+            }
+          }
+        });
+
+        return steps;
+      }
+
+      function renderStack(stack, op) {
+        stackEl.innerHTML = '';
+        stackWrapEl.classList.toggle('ring-2', op === 'error');
+        stackWrapEl.classList.toggle('ring-rose-300', op === 'error');
+
+        if (stack.length === 0) {
+          const empty = document.createElement('div');
+          empty.className = 'flex items-center justify-center text-slate-400 text-sm border border-dashed border-slate-300 rounded-lg px-6 py-4';
+          empty.textContent = '스택이 비어 있습니다';
+          stackEl.appendChild(empty);
+          return;
+        }
+
+        stack.forEach((val, i) => {
+          const isTop = i === stack.length - 1;
+          const isJustPushed = isTop && op === 'push';
+
+          const row = document.createElement('div');
+          row.className = 'flex items-center gap-2';
+
+          const box = document.createElement('div');
+          box.className = 'stack-box inline-flex items-center justify-center rounded-lg border px-4 py-3 font-mono text-sm font-semibold min-w-[140px] text-center ' + (
+            isJustPushed ? 'bg-sky-50 border-sky-400 text-sky-700' :
+            isTop ? 'bg-brand-50 border-brand-500 text-brand-800 ring-2 ring-brand-400/40' :
+            'bg-white border-slate-200 text-slate-700'
+          );
+          box.textContent = val;
+          row.appendChild(box);
+
+          if (isTop) {
+            const tag = document.createElement('span');
+            tag.className = 'text-xs font-mono font-semibold ' + (isJustPushed ? 'text-sky-600' : 'text-brand-600');
+            tag.textContent = '◀ TOP';
+            row.appendChild(tag);
+          }
+
+          stackEl.appendChild(row);
+        });
+      }
+
+      function render() {
+        const step = state.steps[state.stepIndex];
+        renderStack(step.stack, step.op);
+
+        descEl.textContent = step.desc;
+        statsEl.textContent = `push ${step.pushCount}회 · pop ${step.popCount}회`;
+        progressEl.textContent = `${state.stepIndex + 1} / ${state.steps.length}`;
+
+        document.querySelectorAll('.code-line').forEach((el) => {
+          el.classList.toggle('is-active', Number(el.dataset.line) === step.line);
+        });
+
+        const atStart = state.stepIndex === 0;
+        const atEnd = state.stepIndex === state.steps.length - 1;
+        btnFirst.disabled = atStart;
+        btnPrev.disabled = atStart;
+        btnNext.disabled = atEnd;
+        btnLast.disabled = atEnd;
+        if (atEnd && state.playing) pause();
+      }
+
+      function goTo(index) {
+        state.stepIndex = Math.max(0, Math.min(state.steps.length - 1, index));
+        render();
+      }
+
+      function updatePlayButton() {
+        btnPlay.textContent = state.playing ? '❚❚' : '▶';
+        btnPlay.setAttribute('aria-label', state.playing ? '일시정지' : '재생');
+      }
+
+      function play() {
+        if (state.stepIndex >= state.steps.length - 1) state.stepIndex = 0;
+        state.playing = true;
+        updatePlayButton();
+        clearInterval(state.timer);
+        state.timer = setInterval(() => {
+          if (state.stepIndex >= state.steps.length - 1) {
+            pause();
+            return;
+          }
+          state.stepIndex++;
+          render();
+        }, state.speedMs);
+      }
+
+      function pause() {
+        state.playing = false;
+        clearInterval(state.timer);
+        updatePlayButton();
+      }
+
+      function loadScenario(name) {
+        pause();
+        state.mode = 'preset';
+        state.steps = buildSteps(SCENARIOS[name]);
+        state.stepIndex = 0;
+        render();
+      }
+
+      function runCustomOp(op, value) {
+        pause();
+        if (state.mode !== 'custom') {
+          state.mode = 'custom';
+          customOps = [];
+          document.querySelectorAll('.preset-btn').forEach((b) => b.classList.remove('is-active'));
+        }
+        customOps.push(op === 'push' ? { op: 'push', value } : { op: 'pop' });
+        state.steps = buildSteps(customOps);
+        goTo(state.steps.length - 1);
+      }
+
+      btnFirst.addEventListener('click', () => goTo(0));
+      btnPrev.addEventListener('click', () => goTo(state.stepIndex - 1));
+      btnNext.addEventListener('click', () => goTo(state.stepIndex + 1));
+      btnLast.addEventListener('click', () => goTo(state.steps.length - 1));
+      btnPlay.addEventListener('click', () => (state.playing ? pause() : play()));
+
+      document.querySelectorAll('.preset-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.preset-btn').forEach((b) => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          loadScenario(btn.dataset.preset);
+        });
+      });
+
+      document.querySelectorAll('.speed-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.speed-btn').forEach((b) => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          state.speedMs = Number(btn.dataset.speed);
+          if (state.playing) play();
+        });
+      });
+
+      btnPushCustom.addEventListener('click', () => {
+        const v = customInput.value.trim();
+        if (!v) { customInput.focus(); return; }
+        runCustomOp('push', v);
+        customInput.value = '';
+        customInput.focus();
+      });
+      btnPopCustom.addEventListener('click', () => {
+        runCustomOp('pop');
+      });
+      customInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') btnPushCustom.click();
+      });
+
+      loadScenario('basic');
+    })();
+  </script>
+</body>
+</html>
