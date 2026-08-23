@@ -300,3 +300,10 @@
   - 검증: 5개 파일 전부 HTML 태그 밸런스 검사 통과, CI/CD 페이지 인라인 스크립트 3개 전부 `node --check` 통과, 로컬 서버로 `index.html`+5개 페이지 전부 200 확인. claude-in-chrome 연결이 계속 끊긴 상태라 실제 브라우저 렌더링(아코디언 펼침, 파이프라인 재생 애니메이션)은 미확인 — 연결 복구 시 확인 필요.
   - `CLAUDE.md`(Web & WebApp 상세 페이지 항목 신설, GNB 페이지 수 24→29개 갱신)에 반영.
 - 사용자 지적 — "web 섹션 마지막 카드 테두리가 혼자 연두색이네" — Full-stack 통합 프로젝트 카드의 "마지막 카드 하이라이트"가 다른 섹션과 동일하게 브랜드 그린(`border-brand-400/60 ring-brand-400/40`)이었는데, Web & WebApp만 노란 톤 카드라 유독 튀어 보였음. `border-yellow-500/60 ring-1 ring-yellow-500/40`로 교체해 섹션 톤에 맞춤(다른 섹션의 브랜드 그린 하이라이트는 그대로 유지 — Web & WebApp만의 예외 처리).
+- 히어로 배너(`#hero-banner`) 레이아웃·콘텐츠를 사용자 요청으로 단계적으로 개편:
+  - 상단 라인 정렬: `#hero-content`를 `justify-end`(전체 하단 정렬)에서 자연스러운 상단 흐름(eyebrow → title → desc → CTA)으로 바꿔, eyebrow 라벨이 우측 `#hero-side-list` 첫 항목과 같은 높이에서 시작하도록 수정.
+  - 타이틀 상단 라인 고정: desc 줄 수(1~2줄)가 슬라이드마다 달라도 title의 시작 y좌표(177px)가 5개 슬라이드 전부 동일하게 유지되도록, title을 desc/CTA 높이 변화와 무관한 위치에 배치.
+  - CTA 버튼을 `mt-auto pt-10`으로 배너 하단 쪽으로 이동(desc 바로 아래 붙지 않고 여백을 두고 하단에 배치).
+  - **랜덤 카드 노출**: 히어로 버튼(게이지)이 포커싱될 때마다, 해당 섹션의 실제 `.course-card`(Language 5·Algorithm 14·Web & WebApp 5·Unity 4·Agent AI 4 = 총 32개) 중 하나를 랜덤으로 뽑아 title/desc를 히어로 타이틀·설명 자리에 노출하도록 `hero-content` 스크립트에 `SLIDES[i].cards` 수집·`pickRandomCard()` 로직 추가. eyebrow·CTA·배경색은 섹션 고정값 유지.
+  - **3줄 설명 확장**: 카드 그리드용 1줄 요약(`<p>`)은 그대로 두고, 히어로 전용 3줄 분량 설명을 32개 카드 전부에 `data-hero-desc` 속성으로 추가 작성(JS는 `data-hero-desc` 우선, 없으면 `<p>` 텍스트로 폴백). 실제 렌더 너비(576px)·줄바꿈 지점은 텍스트마다 달라 char count만으로는 예측이 부정확해, 브라우저에서 `Range` 대신 오프스크린 `<p>` 프로브 엘리먼트의 `getBoundingClientRect().height / line-height`로 실제 줄 수를 측정하며 32개 전부가 정확히 3줄이 될 때까지 반복 보정.
+  - 검증: 로컬 서버 + claude-in-chrome으로 히어로 버튼 5개를 반복 클릭해 실제 카드 콘텐츠가 무작위로 노출되는지, 32개 설명이 전부 3줄로 렌더되는지, HTML 태그 밸런스까지 직접 확인 완료.

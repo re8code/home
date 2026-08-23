@@ -198,7 +198,7 @@
           <div id="hero-scene" class="absolute inset-0">
             <div id="hero-blob-1" class="absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-brand-500/25 blur-[120px] transition-colors duration-700"></div>
             <div id="hero-blob-2" class="absolute -bottom-24 -right-24 h-[420px] w-[420px] rounded-full bg-brand-300/20 blur-[120px] transition-colors duration-700"></div>
-            <div id="hero-content" class="absolute inset-0 flex flex-col justify-end p-8 sm:p-12 max-w-2xl">
+            <div id="hero-content" class="absolute inset-0 flex flex-col p-8 sm:p-12 max-w-2xl">
               <p id="hero-eyebrow" class="text-xs font-mono font-semibold text-brand-300 tracking-wide">LANGUAGE</p>
               <h1 id="hero-title" class="mt-4 text-3xl sm:text-5xl font-bold tracking-tight text-white !leading-[1.25]">
                 언어의 구조를 보는<br /> 눈을 기르는 훈련
@@ -206,7 +206,7 @@
               <p id="hero-desc" class="mt-4 text-slate-300 leading-relaxed">
                 문법이 아닌 데이터 흐름 관점에서 언어를 다시 배웁니다. Python, JS/TS, Java, C/C++, Go/Rust.
               </p>
-              <div class="mt-7">
+              <div class="mt-auto pt-10">
                 <a id="hero-cta" href="#lang" class="inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-200 transition-colors">
                   Language 코스 보기
                 </a>
@@ -283,7 +283,7 @@
       <!-- 좌우 이동 없이 5개 카드를 동일한 크기로 전체 너비에 맞춰 배치 -->
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-8">
 
-        <a href="src/lang-cp.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+        <a href="src/lang-cp.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="포인터로 메모리 주소를 직접 다루며 변수가 실제로 어디에 저장되고 옮겨지는지 확인합니다. 코드가 기계어로 번역되는 과정과 스택·힙의 차이까지 함께 살펴보며, 컴퓨터가 실제로 동작하는 물리적 원리를 처음부터 끝까지 체득합니다.">
           <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#d5f9e4;--to:#3ecf8e">
             <img src="assets/image/cpp.png" alt="C++ 로고" class="h-24 w-auto object-contain drop-shadow-lg" />
           </div>
@@ -293,7 +293,7 @@
           </div>
         </a>
 
-        <a href="src/lang-jv.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+        <a href="src/lang-jv.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="엄격한 타입 체계와 클래스·인터페이스로 설계된 객체지향 구조를 통해 값이 아니라 책임과 역할이 흐르는 방식을 배웁니다. 상속과 다형성, 예외 처리까지 다루며 대규모 시스템에 왜 구조적 설계가 필요한지 직접 체감합니다.">
           <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#d5f9e4;--to:#3ecf8e">
             <img src="assets/image/java.png" alt="Java 로고" class="h-28 w-auto object-contain drop-shadow-lg" />
           </div>
@@ -303,7 +303,7 @@
           </div>
         </a>
 
-        <a href="src/lang-py.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+        <a href="src/lang-py.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="간결한 문법 덕분에 문법 자체보다 로직의 흐름과 알고리즘 설계에 더 집중할 수 있습니다. 데이터 분석, 자동화 스크립트, AI 모델 학습까지 폭넓게 다루며, 시대를 대표하는 언어로 확장되는 사고를 함께 훈련합니다.">
           <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#d5f9e4;--to:#3ecf8e">
             <img src="assets/image/python.png" alt="Python 로고" class="h-28 w-auto object-contain drop-shadow-lg" />
           </div>
@@ -313,7 +313,7 @@
           </div>
         </a>
 
-        <a href="src/lang-js.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+        <a href="src/lang-js.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="브라우저에서 실행되는 유일한 언어로서 이벤트 루프와 비동기 처리가 데이터를 어떻게 흘려보내는지 다룹니다. 콜백부터 Promise, async/await까지 흐름 제어 방식이 진화해온 과정을 직접 구현하며 비교합니다.">
           <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#d5f9e4;--to:#3ecf8e">
             <img src="assets/image/javascript.png" alt="JavaScript 로고" class="h-24 w-auto object-contain rounded-xl drop-shadow-lg" />
           </div>
@@ -323,7 +323,7 @@
           </div>
         </a>
 
-        <a href="src/lang-dt.html" class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40" data-aos="fade-up">
+        <a href="src/lang-dt.html" class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40" data-aos="fade-up" data-hero-desc="하나의 선언형 코드가 iOS·Android·웹까지 동시에 반영되는 흐름을 설계합니다. 위젯 트리 구조로 상태가 UI 전체에 전파되는 원리를 익히며, 하나의 코드베이스로 여러 플랫폼을 다루는 개발 사고를 함께 훈련합니다.">
           <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#d5f9e4;--to:#3ecf8e">
             <img src="assets/image/dart.png" alt="Dart 로고" class="h-14 w-auto object-contain drop-shadow-lg" />
           </div>
@@ -357,7 +357,7 @@
         <div class="swiper-wrapper">
 
           <div class="swiper-slide">
-            <a href="src/algo-bubble-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+            <a href="src/algo-bubble-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="인접한 두 값을 비교하고 교환하는 가장 단순한 정렬입니다. 매 순회마다 큰 값이 뒤로 밀려나는 과정을 눈으로 직접 확인하며, 왜 O(n²)이 느린지 몸으로 체감하는 알고리즘 학습의 첫 걸음입니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
                 <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
                   <rect x="12" y="224" width="40" height="40" rx="6" fill="#ffffff" fill-opacity="0.28"/>
@@ -381,7 +381,7 @@
           </div>
 
           <div class="swiper-slide">
-            <a href="src/algo-selection-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+            <a href="src/algo-selection-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="매 순회마다 남은 값 중 최솟값을 찾아 앞자리로 보냅니다. 교환 횟수는 최소지만 비교 횟수는 줄지 않는다는 사실을 통해, 최선의 경우에도 왜 O(n²)을 벗어날 수 없는지 데이터로 직접 확인합니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
                 <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
                   <rect x="12" y="224" width="40" height="40" rx="6" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="6 5"/>
@@ -403,7 +403,7 @@
           </div>
 
           <div class="swiper-slide">
-            <a href="src/algo-insertion-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+            <a href="src/algo-insertion-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="이미 정렬된 자리에 새 값을 하나씩 끼워 넣는 방식입니다. 데이터가 거의 정렬돼 있을수록 훨씬 빨라지는 성질을 통해, 알고리즘의 성능이 입력 상태에 따라 크게 달라짐을 직접 체감합니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
                 <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
                   <rect x="16" y="224" width="44" height="40" rx="6" fill="#ffffff" fill-opacity="0.28"/>
@@ -425,7 +425,7 @@
           </div>
 
           <div class="swiper-slide">
-            <a href="src/algo-merge-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+            <a href="src/algo-merge-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="배열을 절반씩 계속 나눠 각각 정렬한 뒤 다시 하나로 합치는 분할 정복 전략입니다. 데이터의 초기 상태와 무관하게 항상 O(n log n)을 보장하는 안정적인 정렬로, 재귀 호출 과정을 단계별로 직접 확인합니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
                 <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
                   <rect x="30" y="77" width="22" height="18" rx="4" fill="#ffffff" fill-opacity="0.4"/>
@@ -452,7 +452,7 @@
           </div>
 
           <div class="swiper-slide">
-            <a href="src/algo-quick-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+            <a href="src/algo-quick-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="기준값(pivot)을 중심으로 좌우를 나누는 분할 정복 정렬입니다. 평균적으로는 가장 빠른 정렬이지만, pivot을 어떻게 고르느냐에 따라 최악의 경우가 발생하는 이유를 데이터로 직접 확인합니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
                 <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
                   <line x1="172" y1="26" x2="172" y2="264" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.5" stroke-dasharray="7 6"/>
@@ -474,7 +474,7 @@
           </div>
 
           <div class="swiper-slide">
-            <a href="src/algo-binary-search.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+            <a href="src/algo-binary-search.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="정렬된 배열에서 중간값과 비교하며 탐색 범위를 절반씩 계속 좁혀갑니다. 순차 탐색과 비교해 O(log n)이 실제로 얼마나 빠른지, 정렬해두는 것의 가치를 데이터와 시각화로 직접 체감하며 확인합니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
                 <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
                   <rect x="12" y="224" width="40" height="40" rx="6" fill="#ffffff" fill-opacity="0.18"/>
@@ -498,7 +498,7 @@
           </div>
 
           <div class="swiper-slide">
-            <a href="src/algo-bfs.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+            <a href="src/algo-bfs.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="큐를 이용해 시작점에서 가까운 노드부터 층층이 순서대로 방문합니다. 가까운 경로부터 차례로 확장되기 때문에 최단 경로가 항상 보장된다는 사실을 그래프 시각화로 단계별로 직접 확인합니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
                 <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
                   <line x1="200" y1="40" x2="100" y2="140" stroke="#ffffff" stroke-opacity="0.4" stroke-width="3"/>
@@ -524,7 +524,7 @@
           </div>
 
           <div class="swiper-slide">
-            <a href="src/algo-dfs.html" class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40" data-aos="fade-up">
+            <a href="src/algo-dfs.html" class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40" data-aos="fade-up" data-hero-desc="스택을 이용해 한 갈래를 끝까지 파고든 뒤 되돌아오며 다음 갈래를 탐색합니다. BFS와 똑같은 그래프를 전혀 다른 순서로 방문하며, 자료구조 선택이 결과를 어떻게 바꾸는지 직접 비교합니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
                 <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
                   <line x1="200" y1="40" x2="100" y2="140" stroke="#fb7185" stroke-width="4"/>
@@ -570,7 +570,7 @@
           <div class="swiper-wrapper">
 
             <div class="swiper-slide">
-              <a href="src/algo-stack.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+              <a href="src/algo-stack.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="마지막에 넣은 값이 가장 먼저 나오는 LIFO 구조입니다. 함수 호출 스택, 실행 취소(Undo), 괄호 검사 등 실제 프로그램 곳곳에서 어디에 쓰이는지 여러 시나리오로 직접 체감하며 확인합니다.">
                 <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#ddd6fe;--to:#4338ca">
                   <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
                     <rect x="160" y="204" width="80" height="46" rx="6" fill="#ffffff" fill-opacity="0.28"/>
@@ -591,7 +591,7 @@
             </div>
 
             <div class="swiper-slide">
-              <a href="src/algo-queue.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+              <a href="src/algo-queue.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="먼저 넣은 값이 먼저 나오는 FIFO 구조입니다. 프린터 작업열, 대기열 처리부터 BFS 탐색까지, 순서를 반드시 지켜야 하는 다양한 문제에서 왜 큐가 쓰이는지 여러 시나리오로 직접 확인하며 체감합니다.">
                 <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#ddd6fe;--to:#4338ca">
                   <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
                     <rect x="24" y="130" width="60" height="60" rx="6" fill="#ffffff"/>
@@ -612,7 +612,7 @@
             </div>
 
             <div class="swiper-slide">
-              <a href="src/algo-linked-list.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+              <a href="src/algo-linked-list.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="노드가 다음 노드를 가리키며 이어지는 구조로, 배열과 달리 인덱스로 값에 곧바로 접근할 수 없습니다. 삽입·삭제는 빠르지만 탐색은 순회가 필요한 트레이드오프를 재생목록 같은 예시로 직접 체감합니다.">
                 <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#ddd6fe;--to:#4338ca">
                   <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
                     <circle cx="60" cy="150" r="30" fill="#ffffff"/>
@@ -636,7 +636,7 @@
             </div>
 
             <div class="swiper-slide">
-              <a href="src/algo-hash-table.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+              <a href="src/algo-hash-table.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="키를 해시 함수로 변환해 평균 O(1)에 가깝게 값을 저장하고 조회합니다. 서로 다른 키가 같은 자리로 충돌할 때 이를 처리하는 방식까지 학번·사물함 같은 예시로 직접 구현하며 확인합니다.">
                 <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#ddd6fe;--to:#4338ca">
                   <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
                     <rect x="30" y="40" width="70" height="40" rx="6" fill="none" stroke="#ffffff" stroke-width="3"/>
@@ -662,7 +662,7 @@
             </div>
 
             <div class="swiper-slide">
-              <a href="src/algo-heap.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+              <a href="src/algo-heap.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="부모가 항상 자식보다 크거나 작은 완전 이진트리입니다. 배열 하나만으로 트리 전체를 표현하는 원리를 익히고, 우선순위 큐와 힙 정렬이 여기서 어떻게 파생되는지 트리와 배열을 함께 보며 살펴봅니다.">
                 <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#ddd6fe;--to:#4338ca">
                   <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
                     <line x1="200" y1="50" x2="120" y2="140" stroke="#ffffff" stroke-opacity="0.5" stroke-width="3"/>
@@ -688,7 +688,7 @@
             </div>
 
             <div class="swiper-slide">
-              <a href="src/algo-bst.html" class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40" data-aos="fade-up">
+              <a href="src/algo-bst.html" class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40" data-aos="fade-up" data-hero-desc="왼쪽은 작게, 오른쪽은 크게 — 정렬된 구조를 유지하며 탐색과 삽입을 O(log n)에 수행합니다. 같은 값이라도 삽입 순서에 따라 트리 모양이 완전히 달라지는 것도 직접 비교하며 확인합니다.">
                 <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#ddd6fe;--to:#4338ca">
                   <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
                     <line x1="220" y1="50" x2="120" y2="130" stroke="#38bdf8" stroke-opacity="0.7" stroke-width="3"/>
@@ -728,7 +728,7 @@
       <!-- 좌우 이동 없이 5개 카드를 동일한 크기로 전체 너비에 맞춰 배치 -->
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-8">
 
-        <a href="src/web-frontend.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+        <a href="src/web-frontend.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="컴포넌트 단위로 UI를 쪼개고 상태(state)가 화면에 어떻게 반영되는지를 다룹니다. 데이터는 부모에서 자식으로, 이벤트는 자식에서 부모로 흐르는 단방향 구조를 직접 설계하고 구현합니다.">
           <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fde047;--to:#854d0e">
             <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
               <rect x="30" y="30" width="340" height="240" rx="14" fill="#ffffff" fill-opacity="0.16"/>
@@ -752,7 +752,7 @@
           </div>
         </a>
 
-        <a href="src/web-backend.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+        <a href="src/web-backend.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="클라이언트의 요청이 API를 거쳐 데이터베이스까지 오가는 흐름을 설계합니다. 데이터가 어떤 계층을 거쳐 저장되고 다시 응답으로 돌아오는지, 서버의 구조를 처음부터 끝까지 직접 설계하며 훈련합니다.">
           <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fde047;--to:#854d0e">
             <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
               <rect x="40" y="90" width="120" height="34" rx="6" fill="#ffffff" fill-opacity="0.9"/>
@@ -776,7 +776,7 @@
           </div>
         </a>
 
-        <a href="src/web-devops.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+        <a href="src/web-devops.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="애플리케이션을 컨테이너로 패키징해 어디서든 동일하게 실행되는 환경을 구성합니다. 코드가 로컬 환경을 벗어나 실제 서버 인프라 위에서 안정적으로 돌아가기까지의 전체 흐름을 직접 다루며 익힙니다.">
           <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fde047;--to:#854d0e">
             <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
               <circle cx="200" cy="58" r="26" fill="none" stroke="#ffffff" stroke-opacity="0.75" stroke-width="7"/>
@@ -797,7 +797,7 @@
           </div>
         </a>
 
-        <a href="src/web-cicd.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+        <a href="src/web-cicd.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up" data-hero-desc="코드를 Push하면 빌드·테스트·배포가 자동으로 이어지는 파이프라인을 구성합니다. 테스트가 실패하면 배포가 자동으로 차단되는 원리까지 포함해 안정적인 릴리즈 흐름을 직접 설계합니다.">
           <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fde047;--to:#854d0e">
             <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
               <circle cx="60" cy="150" r="28" fill="#ffffff" fill-opacity="0.9"/>
@@ -818,7 +818,7 @@
           </div>
         </a>
 
-        <a href="src/web-fullstack.html" class="course-card rounded-xl overflow-hidden border border-yellow-500/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-yellow-500/40" data-aos="fade-up">
+        <a href="src/web-fullstack.html" class="course-card rounded-xl overflow-hidden border border-yellow-500/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-yellow-500/40" data-aos="fade-up" data-hero-desc="기획부터 설계·구현·배포·회고까지, 앞선 4개 코스에서 배운 프론트·백엔드·인프라를 하나로 엮어냅니다. 전체 데이터 파이프라인을 처음부터 끝까지 스스로 설계하고 완주하는 캡스톤 코스입니다.">
           <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fde047;--to:#854d0e">
             <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
               <rect x="70" y="36" width="260" height="56" rx="10" fill="#ffffff"/>
@@ -863,7 +863,7 @@
         <div class="swiper-wrapper">
 
           <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-hero-desc="씬(Scene)과 게임 오브젝트, 컴포넌트가 조합되는 구조를 익힙니다. 사용자의 입력이 게임 로직으로 전달되고, 로직이 다시 화면으로 반영되는 전체 과정을 단계별로 직접 구현하며 훈련합니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fcd34d;--to:#9a3412">
                 <span class="text-4xl font-bold text-white/90 font-mono">U3D</span>
                 <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">입문</span>
@@ -876,7 +876,7 @@
           </div>
 
           <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-hero-desc="이벤트가 발생하면 그에 맞는 로직이 실행되는 이벤트 기반 설계를 다룹니다. 시각적인 블루프린트와 C++ 코드가 함께 실시간으로 데이터 흐름을 제어하는 구조를 예제를 통해 직접 익힙니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fcd34d;--to:#9a3412">
                 <span class="text-4xl font-bold text-white/90 font-mono">UE</span>
                 <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">중급</span>
@@ -889,7 +889,7 @@
           </div>
 
           <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-hero-desc="기획서 한 장에서 시작해 실제로 플레이 가능한 하나의 게임을 완성합니다. 데이터가 기획부터 구현까지 어떻게 이어지는지, 전체 흐름을 처음부터 끝까지 스스로 계획하고 직접 완주해봅니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fcd34d;--to:#9a3412">
                 <span class="text-4xl font-bold text-white/90 font-mono">Dev</span>
                 <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">심화</span>
@@ -902,7 +902,7 @@
           </div>
 
           <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40">
+            <div class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40" data-hero-desc="3차원 공간 데이터와 센서·컨트롤러 입력이 어떻게 흘러 화면에 반영되는지를 다룹니다. 기존의 평면적인 2D 화면과는 전혀 다른, 공간을 직접 다루는 새로운 인터페이스 설계를 예제로 함께 탐구합니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fcd34d;--to:#9a3412">
                 <span class="text-4xl font-bold text-white/90 font-mono">XR</span>
                 <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">심화</span>
@@ -937,7 +937,7 @@
         <div class="swiper-wrapper">
 
           <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-hero-desc="AI에게 모호하지 않게 지시하는 프롬프트와 컨텍스트 설계 방법을 훈련합니다. 같은 요청이라도 어떻게 구조화해서 전달하느냐에 따라 결과물의 품질이 크게 달라짐을 직접 체감하며 훈련합니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#c4b5fd;--to:#5b21b6">
                 <span class="text-4xl font-bold text-white/90 font-mono">AI</span>
                 <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">입문</span>
@@ -950,7 +950,7 @@
           </div>
 
           <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-hero-desc="에이전트가 필요한 순간에 외부 도구를 스스로 판단해 호출하는 구조를 설계합니다. 모델과 도구 사이를 오가는 데이터가 어떤 규격으로 흐르는지 직접 설계하며 실제 호출 구조까지 훈련합니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#c4b5fd;--to:#5b21b6">
                 <span class="text-4xl font-bold text-white/90 font-mono">MCP</span>
                 <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">중급</span>
@@ -963,7 +963,7 @@
           </div>
 
           <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-hero-desc="여러 에이전트가 역할을 나눠 맡고 결과물을 주고받으며 함께 협업하는 흐름을 구성합니다. 한 에이전트의 출력이 다음 에이전트의 입력으로 이어지는 구조를 실제 시나리오로 직접 설계해봅니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#c4b5fd;--to:#5b21b6">
                 <span class="text-4xl font-bold text-white/90 font-mono">Flow</span>
                 <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">중급</span>
@@ -976,7 +976,7 @@
           </div>
 
           <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40">
+            <div class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40" data-hero-desc="기획부터 구현, 배포까지 AI와 실제로 협업하며 하나의 프로젝트를 처음부터 끝까지 완주합니다. 왼손은 사람, 오른손은 AI라는 이 코스 전체의 철학을 하나의 프로젝트로 직접 증명하고 정리합니다.">
               <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#c4b5fd;--to:#5b21b6">
                 <span class="text-4xl font-bold text-white/90 font-mono">Ops</span>
                 <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">심화</span>
@@ -1219,15 +1219,37 @@
 
       if (!eyebrowEl || sideItems.length === 0) return;
 
+      // 섹션별 실제 카드(.course-card) 목록을 미리 수집 — 게이지 포커싱마다 이 중 하나를 랜덤 표시
+      SLIDES.forEach((s) => {
+        const section = document.querySelector(s.href);
+        s.cards = section
+          ? Array.from(section.querySelectorAll('.course-card'))
+              .map((card) => ({
+                title: card.querySelector('h3')?.textContent.trim(),
+                desc: card.dataset.heroDesc?.trim() || card.querySelector('p')?.textContent.trim(),
+              }))
+              .filter((c) => c.title && c.desc)
+          : [];
+      });
+
+      function pickRandomCard(index) {
+        const cards = SLIDES[index].cards;
+        if (!cards || cards.length === 0) {
+          return { title: SLIDES[index].title.replace(/<br\s*\/?>/gi, ' '), desc: SLIDES[index].desc };
+        }
+        return cards[Math.floor(Math.random() * cards.length)];
+      }
+
       let current = 0;
       let intervalId = null;
       let swapTimeoutId = null;
 
       function applySlideContent(index) {
         const s = SLIDES[index];
+        const card = pickRandomCard(index);
         eyebrowEl.textContent = s.eyebrow;
-        titleEl.innerHTML = s.title;
-        descEl.textContent = s.desc;
+        titleEl.textContent = card.title;
+        descEl.textContent = card.desc;
         ctaEl.textContent = s.cta;
         ctaEl.setAttribute('href', s.href);
 
