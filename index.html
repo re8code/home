@@ -338,122 +338,216 @@
 
     <!-- ===== 02. Algorithm ===== -->
     <section id="algo" class="mx-auto max-w-[1440px] px-6 lg:px-10 py-16 border-t border-slate-200">
-      <div class="max-w-2xl">
-        <p class="text-xs font-mono font-semibold text-teal-700 tracking-wide">ALGORITHM</p>
-        <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">구조와 알고리즘으로 문제를 분해한다</h2>
-        <p class="mt-2 text-slate-500 leading-relaxed text-sm">같은 문제를 푸는 다섯 가지 정렬로, 시간복잡도를 눈으로 비교하는 훈련부터 시작합니다.</p>
+      <div class="flex items-end justify-between gap-6">
+        <div class="max-w-2xl">
+          <p class="text-xs font-mono font-semibold text-teal-700 tracking-wide">ALGORITHM</p>
+          <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">구조와 알고리즘으로 문제를 분해한다</h2>
+          <p class="mt-2 text-slate-500 leading-relaxed text-sm">정렬과 탐색, 같은 문제를 푸는 여러 알고리즘으로 시간복잡도를 눈으로 비교하는 훈련부터 시작합니다.</p>
+        </div>
+        <div class="flex items-center gap-2 swiper-nav-group shrink-0">
+          <button type="button" class="swiper-nav-prev nav-arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="이전 카드">‹</button>
+          <button type="button" class="swiper-nav-next nav-arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="다음 카드">›</button>
+        </div>
       </div>
 
-      <!-- 좌우 이동 없이 5개 카드를 동일한 크기로 전체 너비에 맞춰 배치 -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-8">
+      <div id="algo-swiper" class="swiper course-swiper mt-8">
+        <div class="swiper-wrapper">
 
-        <a href="src/algo-bubble-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
-          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
-            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
-              <rect x="12" y="224" width="40" height="40" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="68" y="194" width="40" height="70" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="124" y="164" width="40" height="100" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="180" y="104" width="40" height="160" rx="6" fill="#fb7185"/>
-              <rect x="236" y="134" width="40" height="130" rx="6" fill="#fb7185"/>
-              <rect x="292" y="89" width="40" height="175" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="348" y="64" width="40" height="200" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <line x1="204" y1="38" x2="246" y2="38" stroke="#fb7185" stroke-width="4" stroke-linecap="round"/>
-              <polygon points="250,38 240,32 240,44" fill="#fb7185"/>
-              <line x1="250" y1="58" x2="208" y2="58" stroke="#fb7185" stroke-width="4" stroke-linecap="round"/>
-              <polygon points="204,58 214,52 214,64" fill="#fb7185"/>
-            </svg>
+          <div class="swiper-slide" data-aos="fade-up">
+            <a href="src/algo-bubble-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+                <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+                  <rect x="12" y="224" width="40" height="40" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="68" y="194" width="40" height="70" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="124" y="164" width="40" height="100" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="180" y="104" width="40" height="160" rx="6" fill="#fb7185"/>
+                  <rect x="236" y="134" width="40" height="130" rx="6" fill="#fb7185"/>
+                  <rect x="292" y="89" width="40" height="175" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="348" y="64" width="40" height="200" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <line x1="204" y1="38" x2="246" y2="38" stroke="#fb7185" stroke-width="4" stroke-linecap="round"/>
+                  <polygon points="250,38 240,32 240,44" fill="#fb7185"/>
+                  <line x1="250" y1="58" x2="208" y2="58" stroke="#fb7185" stroke-width="4" stroke-linecap="round"/>
+                  <polygon points="204,58 214,52 214,64" fill="#fb7185"/>
+                </svg>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">버블 정렬</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">인접한 두 값을 비교·교환하며 O(n²)이 왜 느린지 체감하는 첫 정렬</p>
+              </div>
+            </a>
           </div>
-          <div class="p-5 flex-1 flex flex-col">
-            <h3 class="font-semibold text-slate-900">버블 정렬</h3>
-            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">인접한 두 값을 비교·교환하며 O(n²)이 왜 느린지 체감하는 첫 정렬</p>
-          </div>
-        </a>
 
-        <a href="src/algo-selection-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
-          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
-            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
-              <rect x="12" y="224" width="40" height="40" rx="6" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="6 5"/>
-              <rect x="68" y="134" width="40" height="130" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="124" y="114" width="40" height="150" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="180" y="94" width="40" height="170" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="236" y="224" width="40" height="40" rx="6" fill="#38bdf8"/>
-              <rect x="292" y="74" width="40" height="190" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="348" y="54" width="40" height="210" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <path d="M256,214 C200,140 90,140 34,212" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 10"/>
-              <polygon points="34,212 22,204 38,198" fill="#38bdf8"/>
-            </svg>
+          <div class="swiper-slide" data-aos="fade-up">
+            <a href="src/algo-selection-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+                <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+                  <rect x="12" y="224" width="40" height="40" rx="6" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="6 5"/>
+                  <rect x="68" y="134" width="40" height="130" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="124" y="114" width="40" height="150" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="180" y="94" width="40" height="170" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="236" y="224" width="40" height="40" rx="6" fill="#38bdf8"/>
+                  <rect x="292" y="74" width="40" height="190" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="348" y="54" width="40" height="210" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <path d="M256,214 C200,140 90,140 34,212" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 10"/>
+                  <polygon points="34,212 22,204 38,198" fill="#38bdf8"/>
+                </svg>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">선택 정렬</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">매 순회마다 최솟값을 찾아 앞으로 보내며 비교와 교환 비용을 구분</p>
+              </div>
+            </a>
           </div>
-          <div class="p-5 flex-1 flex flex-col">
-            <h3 class="font-semibold text-slate-900">선택 정렬</h3>
-            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">매 순회마다 최솟값을 찾아 앞으로 보내며 비교와 교환 비용을 구분</p>
-          </div>
-        </a>
 
-        <a href="src/algo-insertion-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
-          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
-            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
-              <rect x="16" y="224" width="44" height="40" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="80" y="184" width="44" height="80" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="144" y="144" width="44" height="120" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="208" y="104" width="44" height="160" rx="6" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="6 5"/>
-              <rect x="272" y="84" width="44" height="180" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="336" y="54" width="44" height="210" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="208" y="22" width="44" height="55" rx="6" fill="#38bdf8"/>
-              <line x1="230" y1="82" x2="230" y2="96" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
-              <polygon points="230,102 220,88 240,88" fill="#38bdf8"/>
-            </svg>
+          <div class="swiper-slide" data-aos="fade-up">
+            <a href="src/algo-insertion-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+                <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+                  <rect x="16" y="224" width="44" height="40" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="80" y="184" width="44" height="80" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="144" y="144" width="44" height="120" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="208" y="104" width="44" height="160" rx="6" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="6 5"/>
+                  <rect x="272" y="84" width="44" height="180" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="336" y="54" width="44" height="210" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="208" y="22" width="44" height="55" rx="6" fill="#38bdf8"/>
+                  <line x1="230" y1="82" x2="230" y2="96" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
+                  <polygon points="230,102 220,88 240,88" fill="#38bdf8"/>
+                </svg>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">삽입 정렬</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">정렬된 자리에 값을 끼워 넣으며 데이터 상태에 따른 성능 차이를 확인</p>
+              </div>
+            </a>
           </div>
-          <div class="p-5 flex-1 flex flex-col">
-            <h3 class="font-semibold text-slate-900">삽입 정렬</h3>
-            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">정렬된 자리에 값을 끼워 넣으며 데이터 상태에 따른 성능 차이를 확인</p>
-          </div>
-        </a>
 
-        <a href="src/algo-merge-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
-          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
-            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
-              <rect x="30" y="77" width="22" height="18" rx="4" fill="#ffffff" fill-opacity="0.4"/>
-              <rect x="62" y="65" width="22" height="30" rx="4" fill="#ffffff" fill-opacity="0.4"/>
-              <rect x="94" y="53" width="22" height="42" rx="4" fill="#ffffff" fill-opacity="0.4"/>
-              <rect x="306" y="77" width="22" height="18" rx="4" fill="#ffffff" fill-opacity="0.4"/>
-              <rect x="338" y="65" width="22" height="30" rx="4" fill="#ffffff" fill-opacity="0.4"/>
-              <rect x="370" y="53" width="22" height="42" rx="4" fill="#ffffff" fill-opacity="0.4"/>
-              <path d="M62,92 C90,140 150,148 195,153" stroke="#ffffff" stroke-opacity="0.65" stroke-width="3" stroke-linecap="round"/>
-              <path d="M338,92 C310,140 250,148 205,153" stroke="#ffffff" stroke-opacity="0.65" stroke-width="3" stroke-linecap="round"/>
-              <rect x="16" y="234" width="44" height="30" rx="6" fill="#aef1cd"/>
-              <rect x="80" y="209" width="44" height="55" rx="6" fill="#aef1cd"/>
-              <rect x="144" y="184" width="44" height="80" rx="6" fill="#aef1cd"/>
-              <rect x="208" y="159" width="44" height="105" rx="6" fill="#aef1cd"/>
-              <rect x="272" y="134" width="44" height="130" rx="6" fill="#aef1cd"/>
-              <rect x="336" y="114" width="44" height="150" rx="6" fill="#aef1cd"/>
-            </svg>
+          <div class="swiper-slide" data-aos="fade-up">
+            <a href="src/algo-merge-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+                <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+                  <rect x="30" y="77" width="22" height="18" rx="4" fill="#ffffff" fill-opacity="0.4"/>
+                  <rect x="62" y="65" width="22" height="30" rx="4" fill="#ffffff" fill-opacity="0.4"/>
+                  <rect x="94" y="53" width="22" height="42" rx="4" fill="#ffffff" fill-opacity="0.4"/>
+                  <rect x="306" y="77" width="22" height="18" rx="4" fill="#ffffff" fill-opacity="0.4"/>
+                  <rect x="338" y="65" width="22" height="30" rx="4" fill="#ffffff" fill-opacity="0.4"/>
+                  <rect x="370" y="53" width="22" height="42" rx="4" fill="#ffffff" fill-opacity="0.4"/>
+                  <path d="M62,92 C90,140 150,148 195,153" stroke="#ffffff" stroke-opacity="0.65" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M338,92 C310,140 250,148 205,153" stroke="#ffffff" stroke-opacity="0.65" stroke-width="3" stroke-linecap="round"/>
+                  <rect x="16" y="234" width="44" height="30" rx="6" fill="#aef1cd"/>
+                  <rect x="80" y="209" width="44" height="55" rx="6" fill="#aef1cd"/>
+                  <rect x="144" y="184" width="44" height="80" rx="6" fill="#aef1cd"/>
+                  <rect x="208" y="159" width="44" height="105" rx="6" fill="#aef1cd"/>
+                  <rect x="272" y="134" width="44" height="130" rx="6" fill="#aef1cd"/>
+                  <rect x="336" y="114" width="44" height="150" rx="6" fill="#aef1cd"/>
+                </svg>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">병합 정렬</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">절반씩 나눠 정렬한 뒤 합치는 분할 정복으로 안정적인 O(n log n)을 보장</p>
+              </div>
+            </a>
           </div>
-          <div class="p-5 flex-1 flex flex-col">
-            <h3 class="font-semibold text-slate-900">병합 정렬</h3>
-            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">절반씩 나눠 정렬한 뒤 합치는 분할 정복으로 안정적인 O(n log n)을 보장</p>
-          </div>
-        </a>
 
-        <a href="src/algo-quick-sort.html" class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40" data-aos="fade-up">
-          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
-            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
-              <line x1="172" y1="26" x2="172" y2="264" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.5" stroke-dasharray="7 6"/>
-              <line x1="228" y1="26" x2="228" y2="264" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.5" stroke-dasharray="7 6"/>
-              <rect x="12" y="214" width="40" height="50" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="68" y="194" width="40" height="70" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="124" y="174" width="40" height="90" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="180" y="134" width="40" height="130" rx="6" fill="#a78bfa"/>
-              <rect x="236" y="104" width="40" height="160" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="292" y="74" width="40" height="190" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-              <rect x="348" y="44" width="40" height="220" rx="6" fill="#ffffff" fill-opacity="0.28"/>
-            </svg>
+          <div class="swiper-slide" data-aos="fade-up">
+            <a href="src/algo-quick-sort.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+                <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+                  <line x1="172" y1="26" x2="172" y2="264" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.5" stroke-dasharray="7 6"/>
+                  <line x1="228" y1="26" x2="228" y2="264" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.5" stroke-dasharray="7 6"/>
+                  <rect x="12" y="214" width="40" height="50" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="68" y="194" width="40" height="70" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="124" y="174" width="40" height="90" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="180" y="134" width="40" height="130" rx="6" fill="#a78bfa"/>
+                  <rect x="236" y="104" width="40" height="160" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="292" y="74" width="40" height="190" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                  <rect x="348" y="44" width="40" height="220" rx="6" fill="#ffffff" fill-opacity="0.28"/>
+                </svg>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">퀵 정렬</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">기준값으로 좌우를 나누는 분할 정복 — 평균은 빠르지만 최악의 경우가 존재</p>
+              </div>
+            </a>
           </div>
-          <div class="p-5 flex-1 flex flex-col">
-            <h3 class="font-semibold text-slate-900">퀵 정렬</h3>
-            <p class="mt-2 text-sm text-slate-600 leading-relaxed flex-1">기준값으로 좌우를 나누는 분할 정복 — 평균은 빠르지만 최악의 경우가 존재</p>
-          </div>
-        </a>
 
+          <div class="swiper-slide" data-aos="fade-up">
+            <a href="src/algo-binary-search.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+                <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+                  <rect x="12" y="224" width="40" height="40" rx="6" fill="#ffffff" fill-opacity="0.18"/>
+                  <rect x="68" y="194" width="40" height="70" rx="6" fill="#ffffff" fill-opacity="0.18"/>
+                  <rect x="124" y="164" width="40" height="100" rx="6" fill="#ffffff" fill-opacity="0.5"/>
+                  <rect x="180" y="134" width="40" height="130" rx="6" fill="#fbbf24"/>
+                  <rect x="236" y="104" width="40" height="160" rx="6" fill="#ffffff" fill-opacity="0.5"/>
+                  <rect x="292" y="74" width="40" height="190" rx="6" fill="#ffffff" fill-opacity="0.18"/>
+                  <rect x="348" y="44" width="40" height="220" rx="6" fill="#ffffff" fill-opacity="0.18"/>
+                  <line x1="110" y1="26" x2="110" y2="264" stroke="#ffffff" stroke-opacity="0.55" stroke-width="2.5" stroke-dasharray="7 6"/>
+                  <line x1="282" y1="26" x2="282" y2="264" stroke="#ffffff" stroke-opacity="0.55" stroke-width="2.5" stroke-dasharray="7 6"/>
+                  <line x1="200" y1="14" x2="200" y2="28" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+                  <polygon points="200,34 190,20 210,20" fill="#fbbf24"/>
+                </svg>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">이진 탐색</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">정렬된 배열의 중간값과 비교하며 탐색 범위를 절반씩 좁혀 O(log n)을 체감</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="swiper-slide" data-aos="fade-up">
+            <a href="src/algo-bfs.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+                <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+                  <line x1="200" y1="40" x2="100" y2="140" stroke="#ffffff" stroke-opacity="0.4" stroke-width="3"/>
+                  <line x1="200" y1="40" x2="300" y2="140" stroke="#ffffff" stroke-opacity="0.4" stroke-width="3"/>
+                  <line x1="100" y1="140" x2="60" y2="230" stroke="#ffffff" stroke-opacity="0.4" stroke-width="3"/>
+                  <line x1="100" y1="140" x2="160" y2="230" stroke="#ffffff" stroke-opacity="0.4" stroke-width="3"/>
+                  <line x1="300" y1="140" x2="280" y2="230" stroke="#ffffff" stroke-opacity="0.4" stroke-width="3"/>
+                  <line x1="300" y1="140" x2="340" y2="230" stroke="#fb7185" stroke-width="4"/>
+                  <circle cx="200" cy="40" r="22" fill="#18b476"/>
+                  <circle cx="100" cy="140" r="22" fill="#18b476"/>
+                  <circle cx="300" cy="140" r="22" fill="#fbbf24"/>
+                  <circle cx="60" cy="230" r="20" fill="#38bdf8"/>
+                  <circle cx="160" cy="230" r="20" fill="#38bdf8"/>
+                  <circle cx="280" cy="230" r="20" fill="#38bdf8"/>
+                  <circle cx="340" cy="230" r="20" fill="#38bdf8"/>
+                </svg>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">너비 우선 탐색</h3>
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">큐로 가까운 노드부터 층층이 방문하며 최단 경로가 보장되는 이유를 확인</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="swiper-slide" data-aos="fade-up">
+            <a href="src/algo-dfs.html" class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40">
+              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#5eead4;--to:#115e59">
+                <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+                  <line x1="200" y1="40" x2="100" y2="140" stroke="#fb7185" stroke-width="4"/>
+                  <line x1="200" y1="40" x2="300" y2="140" stroke="#ffffff" stroke-opacity="0.28" stroke-width="3"/>
+                  <line x1="100" y1="140" x2="60" y2="230" stroke="#fb7185" stroke-width="4"/>
+                  <line x1="100" y1="140" x2="160" y2="230" stroke="#ffffff" stroke-opacity="0.28" stroke-width="3"/>
+                  <line x1="300" y1="140" x2="280" y2="230" stroke="#ffffff" stroke-opacity="0.28" stroke-width="3"/>
+                  <line x1="300" y1="140" x2="340" y2="230" stroke="#ffffff" stroke-opacity="0.28" stroke-width="3"/>
+                  <circle cx="200" cy="40" r="22" fill="#18b476"/>
+                  <circle cx="100" cy="140" r="22" fill="#18b476"/>
+                  <circle cx="300" cy="140" r="22" fill="#ffffff" fill-opacity="0.28"/>
+                  <circle cx="60" cy="230" r="20" fill="#fbbf24"/>
+                  <circle cx="160" cy="230" r="20" fill="#ffffff" fill-opacity="0.28"/>
+                  <circle cx="280" cy="230" r="20" fill="#ffffff" fill-opacity="0.28"/>
+                  <circle cx="340" cy="230" r="20" fill="#ffffff" fill-opacity="0.28"/>
+                </svg>
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="font-semibold text-slate-900">깊이 우선 탐색</h3>
+                <p class="mt-2 text-sm text-slate-600 leading-relaxed flex-1">스택으로 한 갈래를 끝까지 파고든 뒤 되돌아오며 같은 그래프의 다른 얼굴을 확인</p>
+              </div>
+            </a>
+          </div>
+
+        </div>
+        <div class="swiper-pagination"></div>
       </div>
     </section>
 
@@ -804,9 +898,16 @@
     // Swiper 초기화: 카테고리별 스와이퍼 각각 생성
     document.querySelectorAll('.course-swiper').forEach((el) => {
       const section = el.closest('section');
+      const isAlgoSwiper = el.id === 'algo-swiper';
       new Swiper(el, {
-        slidesPerView: 'auto',
-        spaceBetween: 20,
+        // Algorithm 섹션은 카드 수가 계속 늘어나므로(정렬 5종 + 탐색…) 한 화면에 정확히 5개만 보이도록 슬라이드 폭을 고정하고,
+        // 나머지 섹션은 카드가 4개로 고정이라 기존처럼 카드 자체 너비(!w-[240px] 등)에 맞춰 자동으로 개수를 채운다.
+        slidesPerView: isAlgoSwiper ? 2 : 'auto',
+        spaceBetween: isAlgoSwiper ? 16 : 20,
+        breakpoints: isAlgoSwiper ? {
+          640: { slidesPerView: 3 },
+          1024: { slidesPerView: 5 },
+        } : undefined,
         navigation: {
           nextEl: section.querySelector('.swiper-nav-next'),
           prevEl: section.querySelector('.swiper-nav-prev'),

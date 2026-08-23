@@ -2,7 +2,7 @@
 
 이 문서는 "Recode Coding" 서비스 전체(이 저장소 + 외부 연동 서브도메인)의 아키텍처를 정리한다. 구조가 바뀔 때마다(신규 서브도메인 오픈, 백엔드 교체, 배포 방식 변경 등) 이 문서를 함께 갱신한다. 특정 시점의 상세 작업 근거는 `../report/*.md`, 요구사항 변화는 `PRD.md`/`DEV_PLAN.md`(같은 `docs/` 폴더)를 참고.
 
-- 최종 갱신: 2026-08-22 (정렬 5종 시각화 페이지 전부 완료 — Algorithm 코스 카드 5개가 모두 실제 페이지로 연결됨)
+- 최종 갱신: 2026-08-23 (BFS/DFS 그래프 탐색 시각화 페이지 추가 — Algorithm 코스 파일럿 8종 전부 완료)
 
 ## 1. 한눈에 보기
 
@@ -46,13 +46,15 @@ graph TD
 
 | 페이지 | 역할 | 비고 |
 | --- | --- | --- |
-| `index.html` (루트) | 랜딩 / 5갈래 내비게이션 허브 + 훈련 코스 5개 섹션(Language/Algorithm/Web & WebApp/Unity/Agent AI) + 핵심 철학 + CTA | OJ/낙서장/LMS/business/studio 진입점 + 1:1 상담 CTA(Google Forms 직결). Epic Games Store 레이아웃 참고 시안(`src/mockup.html`)을 2026-08-22 최종안으로 채택해 전면 교체, `mockup.html`은 삭제. Swiper·AOS를 CDN으로 추가 로드하는 유일한 페이지. `src/` 페이지로는 `src/` 접두사로 링크. Algorithm 섹션은 2026-08-22 Swiper 캐러셀 4카드에서 Language와 동일한 정적 그리드 5카드(정렬 알고리즘)로 개편 |
+| `index.html` (루트) | 랜딩 / 5갈래 내비게이션 허브 + 훈련 코스 5개 섹션(Language/Algorithm/Web & WebApp/Unity/Agent AI) + 핵심 철학 + CTA | OJ/낙서장/LMS/business/studio 진입점 + 1:1 상담 CTA(Google Forms 직결). Epic Games Store 레이아웃 참고 시안(`src/mockup.html`)을 2026-08-22 최종안으로 채택해 전면 교체, `mockup.html`은 삭제. Swiper·AOS를 CDN으로 추가 로드하는 유일한 페이지. `src/` 페이지로는 `src/` 접두사로 링크. Algorithm 섹션은 2026-08-22 Swiper 캐러셀 4카드→Language와 동일한 정적 그리드 5카드(정렬 알고리즘)로 개편했다가, 2026-08-23 이진 탐색·BFS·DFS 3장이 추가되며(최종 8카드) 다시 Swiper 캐러셀(`slidesPerView` 화면 폭별 2/3/5 고정, 한 번에 정확히 5개만 노출)로 전환 |
 | `src/graffiti.html` / `src/graffiti-detail.html` / `src/graffiti-new.html` | "원장님의 낙서" 게시판 (목록/상세·수정·삭제/작성) | 유일하게 Firebase와 통신하는 페이지군. 헤더는 GNB로 통일됐지만 본문 디자인 톤 조정(`docs/DEV_PLAN.md` Phase 2)은 아직 미착수 |
 | `src/lang-cp.html` / `lang-jv.html` / `lang-py.html` / `lang-js.html` / `lang-dt.html` | Language 코스 언어별 상세 페이지 (C/C++ · Java · Python · JavaScript · Dart, 5개) | `index.html` Language 카드에서 연결되는 실제 페이지. 커리큘럼 목록 UI는 korea-pass.kr 공지사항 목록 페이지를 벤치마크. 각 페이지 상단 언어 바로가기 탭으로 5개 페이지가 서로 연결됨(2026-08-22 전부 제작 완료) |
 | `src/algo-sort.html` | **미사용 파일** (2026-08-22 제작 후 같은 날 방향 수정, 삭제하지 않고 보류) | "정렬 5개를 Language처럼 구성"이라는 지시를 lang-cp.html류 12주형 커리큘럼 상세 페이지로 오해해 제작 — 실제 의도는 랜딩 페이지 카드 구성이었음이 확인되어 현재 어디서도 링크되지 않음. 재사용 여부 미정 |
 | `src/algo-bubble-sort.html` / `src/algo-selection-sort.html` / `src/algo-insertion-sort.html` / `src/algo-merge-sort.html` / `src/algo-quick-sort.html` | Algorithm 코스 정렬 5종 전부의 시각화 상세 페이지 (2026-08-22, visualgo.net 스타일) | `index.html` Algorithm 섹션 5개 카드(버블/선택/삽입/병합/퀵 정렬) 전부에서 연결 — Algorithm 코스가 Language처럼 카드 전부 실제 페이지를 가리키는 상태 완료. 막대그래프 시각화 + 재생/단계 이동 컨트롤 + 의사코드 하이라이트 + 배열 프리셋(무작위/정렬됨/역순/거의정렬)으로 최선·평균·최악 시간복잡도를 직접 비교 가능. 정렬 진행 상태 표현(뒤에서/앞에서 자라는 경계, 재귀적 구간, 조각난 확정 인덱스)이 알고리즘마다 다르게 구현됨. 브레드크럼 `홈 / {알고리즘명}` 2단, `max-w-5xl`(다른 상세 페이지보다 넓음) |
+| `src/algo-binary-search.html` | Algorithm 코스 파일럿 2순위(탐색) 첫 번째 — 이진 탐색 시각화 상세 페이지 (2026-08-23, 정렬 5종과 동일한 막대그래프 엔진 재사용) | `index.html` Algorithm 섹션 6번째 카드로 연결. 정렬 페이지와 달리 배열은 항상 정렬된 고정 배열이고, 대신 "목표값" 프리셋(중앙값 적중=최선/일반/존재하지 않음=최악/첫 값=경계) 4종 + 직접 값 입력으로 최선 O(1)·평균·최악 O(log n)을 비교. 탐색 범위 밖은 흐리게(제외됨), mid는 amber로 표시하고 막대 아래에 L/M/R 포인터 행을 추가해 visualgo류 표현을 강화 |
+| `src/algo-bfs.html` / `src/algo-dfs.html` | Algorithm 코스 파일럿 2순위(탐색) 나머지 — 너비/깊이 우선 탐색 시각화 상세 페이지 (2026-08-23, 새로운 노드-엣지 그래프 렌더링 엔진) | `index.html` Algorithm 섹션 7·8번째(DFS가 마지막) 카드로 연결 완료 — Algorithm 코스 파일럿 8종(정렬 5 + 탐색 3) 전부 완료. 두 파일이 동일한 9노드·12간선 그래프(`ADJ`/`POS` 상수, 각 파일에 중복 정의)를 공유해 "같은 그래프, 다른 순서"를 대비시킨다 — BFS(큐, visited-at-enqueue)는 A 시작 시 A→B→C→D→E→F→G→H→I로 레벨별로 퍼지고, DFS(스택, visited-at-pop, 이웃을 역순 push해 재귀 DFS와 동일한 순서 재현)는 A→B→E→I→G→C→F→D→H로 한 갈래를 깊게 파고든다. 노드 상태 색상(미방문/대기/처리중/완료)·간선 강조·방문 순서 배지·큐/스택 패널로 시각화하며, "시작 노드" 프리셋(A/E/G/I + 커스텀 선택)이 배열 프리셋을 대체 |
 
-- **GNB**: `index.html` / `src/graffiti*.html`(3개) / `src/lang-*.html`(5개) / `src/algo-sort.html` / `src/algo-{bubble,selection,insertion,merge,quick}-sort.html`(5개) 총 15개 페이지 전부 헤더(`<header>` 전체 — 로고/nav/CTA/모바일 메뉴)가 동일한 마크업(페이지별 커스텀 nav 링크 없음, 2026-08-22 통일). 상세: `../CLAUDE.md` "페이지 구조".
+- **GNB**: `index.html` / `src/graffiti*.html`(3개) / `src/lang-*.html`(5개) / `src/algo-sort.html` / `src/algo-{bubble,selection,insertion,merge,quick}-sort.html`(5개) / `src/algo-binary-search.html` / `src/algo-bfs.html` / `src/algo-dfs.html` 총 18개 페이지 전부 헤더(`<header>` 전체 — 로고/nav/CTA/모바일 메뉴)가 동일한 마크업(페이지별 커스텀 nav 링크 없음, 2026-08-22 통일). 상세: `../CLAUDE.md` "페이지 구조".
 - `src/` 안의 페이지끼리는 파일명만으로 상호 링크하고, 루트(`index.html`)나 `assets/`를 가리킬 때는 `../`를 붙인다.
 - `assets/js/mobile-menu.js` — 모든 페이지 하단에서 `defer` 로드, 모바일 내비게이션 토글 공통 처리.
 - `assets/image/` — 외부에서 가져온 로고·아이콘 리소스(예: `index.html` Language 카드의 언어별 로고 PNG). 출처/라이선스는 도입 시점 `../report/*.md`에 기록.
