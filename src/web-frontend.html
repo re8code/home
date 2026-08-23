@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Frontend (React) — 훈련 코스 | Recode Coding</title>
+<meta name="description" content="컴포넌트와 상태 흐름 중심의 UI 데이터 흐름을 설계하는 Frontend(React) 훈련 코스. 리코드 코딩의 1:1 맞춤 커리큘럼을 확인하세요." />
+
+<style>
+  @view-transition { navigation: auto; }
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; background-color: rgba(12,12,15,.95); border-bottom: 1px solid rgba(255,255,255,.1); }
+  header > div:first-child { max-width: 1440px; margin: 0 auto; padding: 0 1.5rem; height: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  header nav { display: flex; align-items: center; gap: 1.5rem; }
+  header #mobile-menu { display: none; }
+  header a { color: #fff; text-decoration: none; }
+  header nav a { color: #94a3b8; }
+  header a[aria-disabled="true"] { color: #64748b; }
+  header nav + a { display: inline-flex; align-items: center; background-color: #18b476; color: #fff; padding: .5rem 1rem; border-radius: 9999px; font-weight: 600; font-size: .875rem; }
+  header span.rounded-lg { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: .5rem; background-color: rgba(24,180,118,.15); color: #3ecf8e; border: 1px solid rgba(24,180,118,.3); }
+  @media (min-width: 768px) { header #mobile-menu-btn { display: none; } }
+  main { padding-top: 4rem; }
+</style>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Pretendard', 'Pretendard Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        },
+        colors: {
+          brand: {
+            50: '#eefdf5',
+            100: '#d5f9e4',
+            200: '#aef1cd',
+            300: '#74e4ad',
+            400: '#3ecf8e',
+            500: '#18b476',
+            600: '#0e9261',
+            700: '#0c7550',
+            800: '#0d5d42',
+            900: '#0c4c38',
+            950: '#052b20',
+          },
+        },
+        boxShadow: {
+          glow: '0 0 60px -15px rgba(62, 207, 142, 0.45)',
+        },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link
+  rel="stylesheet"
+  as="style"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
+/>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-feature-settings: "tnum"; background-color: #FBF7EE; }
+  .cover-art {
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,0.10), transparent 55%),
+      linear-gradient(155deg, var(--from), var(--to));
+  }
+  .curriculum-card {
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .curriculum-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(24, 180, 118, 0.4);
+    box-shadow: 0 16px 32px -18px rgba(15, 23, 42, 0.2);
+  }
+  .filter-tab.is-active {
+    background-color: #0f172a;
+    color: #fff;
+  }
+  .curriculum-detail {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .25s ease;
+  }
+  .curriculum-detail > div {
+    overflow: hidden;
+  }
+  [data-expanded="true"] .curriculum-detail {
+    grid-template-rows: 1fr;
+  }
+  .curriculum-chevron {
+    transition: transform .2s ease;
+  }
+  [data-expanded="true"] .curriculum-chevron {
+    transform: rotate(180deg);
+  }
+</style>
+</head>
+
+<body class="text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
+
+  <!-- ===== Header (GNB) ===== -->
+  <header class="fixed top-0 inset-x-0 z-[60] bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 h-16 flex items-center justify-between gap-8">
+      <div class="flex items-center gap-6">
+        <a href="../index.html" class="flex items-center gap-2 font-mono font-semibold tracking-tight text-white">
+          <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400 border border-brand-500/30">R/</span>
+          <span class="hidden sm:inline">Recode Coding</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="hidden md:inline-flex items-center gap-1.5 text-sm text-slate-500 cursor-not-allowed">
+          회사 소개
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+      </div>
+      <div class="hidden md:flex items-center gap-8">
+        <nav class="flex items-center gap-6 text-sm text-slate-400">
+          <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+          <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            LMS
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            business
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            studio
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+        </nav>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-400 transition-colors">
+          1:1 상담 신청
+        </a>
+      </div>
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
+        aria-label="메뉴 열기"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg data-icon="open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-5 w-5">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg data-icon="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="hidden h-5 w-5">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-[#0c0c0f]/95 backdrop-blur">
+      <nav class="flex flex-col px-6 py-4 gap-4 text-sm text-slate-300">
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          회사 소개
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+        <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          LMS
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          business
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          studio
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-brand-500 px-4 py-2 font-semibold text-white hover:bg-brand-400 transition-colors">1:1 상담 신청</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pt-16">
+
+    <!-- ===== 페이지 헤더: 브레드크럼 + 타이틀 ===== -->
+    <section class="mx-auto max-w-4xl px-6 lg:px-8 pt-12">
+      <nav class="flex items-center gap-2 text-sm text-slate-500" aria-label="breadcrumb">
+        <a href="../index.html" class="inline-flex items-center hover:text-slate-900 transition-colors" aria-label="홈">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+        </a>
+        <span>/</span>
+        <span class="text-slate-900 font-medium">Frontend</span>
+      </nav>
+
+      <div class="mt-6 flex items-end gap-5">
+        <div class="cover-art h-16 w-16 shrink-0 rounded-2xl flex items-center justify-center" style="--from:#fde047;--to:#854d0e">
+          <span class="text-lg font-bold text-white font-mono">FE</span>
+        </div>
+        <div>
+          <p class="text-xs font-mono font-semibold text-yellow-700 tracking-wide">WEB &amp; WEBAPP</p>
+          <h1 class="mt-1 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">Frontend (React)</h1>
+        </div>
+      </div>
+      <p class="mt-5 max-w-2xl text-slate-500 leading-relaxed">
+        브라우저가 코드를 화면으로 그려내는 과정부터, 컴포넌트가 상태를 받아 다시 그려지는 흐름까지 데이터가 흐르는 방향을 눈으로 좇는 훈련입니다.
+        React 문법을 외우는 것이 아니라 &ldquo;왜 이 시점에 리렌더링이 일어나는가&rdquo;를 스스로 설명할 수 있게 되는 것이 목표입니다.
+      </p>
+
+      <div class="mt-8 border-b border-slate-200"></div>
+    </section>
+
+    <!-- ===== Web & WebApp 코스 바로가기 ===== -->
+    <section class="mx-auto max-w-4xl px-6 lg:px-8 mt-10">
+      <nav class="flex flex-wrap items-center gap-2" aria-label="Web & WebApp 코스 바로가기">
+        <a href="web-frontend.html" aria-current="page" class="filter-tab is-active rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">Frontend</a>
+        <a href="web-backend.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">Backend</a>
+        <a href="web-devops.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">DevOps</a>
+        <a href="web-cicd.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">CI/CD</a>
+        <a href="web-fullstack.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">Full-stack 통합 프로젝트</a>
+      </nav>
+
+      <p id="curriculum-count" class="mt-5 text-sm text-slate-500">전체 <span class="font-semibold text-slate-900">12</span>건</p>
+
+      <!-- ===== 커리큘럼 목록 ===== -->
+      <div id="curriculum-list" class="mt-3 flex flex-col gap-3">
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">1. OT — 브라우저 렌더링과 데이터 흐름 개요</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">HTML/CSS/JS가 화면이 되기까지의 파이프라인을 먼저 그리고 12주 로드맵을 확인합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">브라우저가 HTML을 DOM 트리로, CSS를 CSSOM 트리로 파싱한 뒤 이 둘을 합쳐 렌더 트리를 만들고 화면에 그리는 전체 파이프라인을 다이어그램으로 살펴봅니다. 앞으로 12주 동안 어떤 순서로 개념이 쌓이는지 미리 확인해 학습 방향을 잡습니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">2. HTML/CSS 구조화 — 시맨틱 마크업과 레이아웃</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">의미를 담은 태그 선택과 Flexbox/Grid로 레이아웃을 구성하는 기초를 다집니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">div만으로 쌓은 마크업과 header/nav/main/section 같은 시맨틱 태그를 비교하며 왜 의미 있는 구조가 접근성·SEO에 영향을 주는지 확인합니다. Flexbox의 주축/교차축 개념과 Grid의 2차원 배치를 실습으로 익혀 박스 모델을 완전히 통제하는 감각을 기릅니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">3. JavaScript 핵심 문법과 이벤트 루프</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">클로저와 비동기 처리, 이벤트 루프가 UI를 막지 않고 동작하는 원리를 이해합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">함수가 자신이 정의된 스코프를 기억하는 클로저의 동작을 직접 확인하고, 콜백·프로미스·async/await로 비동기 코드를 다루는 세 가지 방식을 비교합니다. 콜스택·태스크 큐·마이크로태스크 큐가 이벤트 루프 안에서 어떻게 실행 순서를 결정하는지 시각 자료로 추적합니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">4. DOM 조작과 이벤트 처리</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">순수 JS로 DOM 트리를 직접 다루고, 이벤트 위임 패턴으로 효율적으로 처리합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">createElement/appendChild 같은 DOM API로 화면을 직접 조작해보며 React가 내부적으로 무엇을 대신 해주는지 체감합니다. 자식 요소마다 리스너를 다는 대신 부모에서 이벤트를 위임받아 처리하는 패턴으로 리스너 수를 줄이는 이유도 함께 다룹니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">5. 네트워크 요청과 데이터 흐름 (fetch)</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">클라이언트와 서버가 데이터를 주고받는 왕복 과정과 로딩·에러 상태 관리를 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">fetch로 서버에 요청을 보내고 응답을 받는 과정을 네트워크 탭으로 직접 관찰하며, 요청이 진행 중일 때와 실패했을 때 화면에 무엇을 보여줘야 하는지 상태별로 설계합니다. 이 흐름이 이후 React의 데이터 페칭 패턴의 기초가 됩니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">6. React 컴포넌트와 JSX</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">컴포넌트 기반으로 UI를 나누고, props로 데이터를 아래로 흘려보내는 단방향 흐름을 익힙니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">화면을 재사용 가능한 컴포넌트 단위로 쪼개는 기준을 세우고, JSX가 실제로는 React.createElement 호출로 컴파일된다는 사실을 확인합니다. 부모가 props로 자식에게 데이터를 전달하는 단방향 데이터 흐름이 왜 예측 가능한 UI를 만드는지 다룹니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">7. 상태 관리 (useState / useReducer)</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">상태 변화가 리렌더링을 트리거하는 원리와 불변성을 지켜야 하는 이유를 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">setState 호출이 왜 즉시 값을 바꾸지 않고 다음 렌더링을 예약하는 방식으로 동작하는지 확인하고, 객체·배열 상태를 직접 수정하지 않고 새로 만들어야 하는 이유(불변성)를 버그 재현으로 체감합니다. 복잡한 상태 전이는 useReducer로 옮겨 액션 기반으로 관리하는 패턴도 다룹니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">8. 사이드 이펙트와 useEffect</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">컴포넌트 생명주기에 맞춰 구독·타이머·데이터 페칭 같은 부수효과를 안전하게 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">useEffect의 의존성 배열이 언제 이펙트를 다시 실행할지 결정하는 원리를 직접 실험하고, 클린업 함수로 구독을 해제하지 않아 발생하는 메모리 누수를 재현해봅니다. 렌더링 로직과 부수효과를 분리해야 컴포넌트가 예측 가능해지는 이유를 정리합니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">9. 전역 상태와 Context</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">prop drilling 문제를 확인하고 Context API로 여러 컴포넌트가 상태를 공유하는 법을 익힙니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">깊은 컴포넌트 트리에 props를 계속 전달해야 하는 prop drilling의 불편함을 직접 겪어본 뒤, Context API로 중간 단계를 건너뛰고 상태를 공유하는 방법을 익힙니다. Context 남용이 리렌더링 범위를 넓힐 수 있다는 트레이드오프도 함께 다룹니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">10. 라우팅과 페이지 구조 (React Router)</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">SPA에서 URL과 화면 상태를 동기화하는 방법과 페이지 단위 코드 분할을 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">페이지 전체를 새로고침하지 않고 URL만 바뀌는 SPA 라우팅의 원리(History API)를 이해하고, 라우트별로 컴포넌트를 지연 로딩해 초기 번들 크기를 줄이는 코드 분할까지 실습합니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20 cursor-pointer" data-curriculum-card data-category="project" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">11. 폼 처리와 검증</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">제어 컴포넌트 패턴으로 입력을 관리하고, 사용자 입력을 검증해 에러를 표시합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">input의 value를 상태로 제어하는 제어 컴포넌트 패턴을 익히고, 제출 시점과 입력 중 실시간으로 검증 결과를 보여주는 두 가지 전략의 UX 차이를 비교합니다. 에러 메시지를 접근성 있게 노출하는 방법도 함께 다룹니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20 cursor-pointer" data-curriculum-card data-category="project" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">12. 미니 프로젝트 — 데이터 흐름 대시보드</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">API에서 받은 데이터를 컴포넌트 트리로 흘려보내는 대시보드 UI를 직접 설계·구현합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">12주 동안 배운 컴포넌트 설계·상태 관리·비동기 데이터 페칭·라우팅을 하나로 엮어, 외부 API 데이터를 여러 위젯 컴포넌트로 나눠 보여주는 대시보드를 처음부터 구현합니다. 로딩·에러·빈 상태까지 빠짐없이 설계해 실전 감각을 기릅니다.</p>
+          </div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="mx-auto max-w-4xl px-6 lg:px-8 py-16">
+      <div class="rounded-2xl border border-brand-900/40 bg-gradient-to-br from-brand-600 via-brand-800 to-brand-950 p-10 sm:p-12 text-center">
+        <p class="text-xs font-mono font-semibold text-brand-200 tracking-wide">1:1 정원제 · 상시 모집</p>
+        <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white tracking-tight">Frontend, 데이터 흐름의 눈으로 다시 배우세요</h2>
+        <p class="mt-3 text-sm text-slate-200/90 leading-relaxed">
+          당신에게 맞는 커리큘럼은 1:1 상담에서부터 시작됩니다.
+        </p>
+        <div class="mt-7">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-slate-950 hover:bg-slate-200 transition-colors">
+            1:1 상담 신청하기
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="border-t border-slate-200">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 pt-14 pb-8">
+      <p class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">RECODE</p>
+
+      <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-8 border-t border-slate-200 pt-10">
+        <div>
+          <p class="text-sm font-semibold text-slate-900">훈련 코스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#lang" class="hover:text-slate-900 transition-colors">Language</a></li>
+            <li><a href="../index.html#algo" class="hover:text-slate-900 transition-colors">Algorithm</a></li>
+            <li><a href="../index.html#web" class="hover:text-slate-900 transition-colors">Web &amp; WebApp</a></li>
+            <li><a href="../index.html#game" class="hover:text-slate-900 transition-colors">Unity</a></li>
+            <li><a href="../index.html#agent-ai" class="hover:text-slate-900 transition-colors">Agent AI</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">회사</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#philosophy" class="hover:text-slate-900 transition-colors">교육 철학</a></li>
+            <li><a href="../index.html" class="hover:text-slate-900 transition-colors">소개</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">모집</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#cta" class="hover:text-slate-900 transition-colors">1:1 상담 신청</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">리소스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="graffiti.html" class="hover:text-slate-900 transition-colors">원장님의 낙서</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">문의</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 text-center">
+        © 2026 Recode Coding. AI시대 프로그래밍 연구소.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/mobile-menu.js" defer></script>
+  <script>
+    document.querySelectorAll('[data-curriculum-card]').forEach((card) => {
+      const toggle = () => {
+        const expanded = card.getAttribute('data-expanded') === 'true';
+        card.setAttribute('data-expanded', String(!expanded));
+        card.setAttribute('aria-expanded', String(!expanded));
+      };
+      card.addEventListener('click', toggle);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+      card.addEventListener('blur', () => {
+        card.setAttribute('data-expanded', 'false');
+        card.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
+</body>
+</html>

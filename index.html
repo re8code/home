@@ -719,75 +719,129 @@
 
     <!-- ===== 03. Web & WebApp ===== -->
     <section id="web" class="mx-auto max-w-[1440px] px-6 lg:px-10 py-16 border-t border-slate-200">
-      <div class="flex items-end justify-between gap-6">
-        <div class="max-w-2xl">
-          <p class="text-xs font-mono font-semibold text-sky-700 tracking-wide">WEB &amp; WEBAPP</p>
-          <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">구조를 실제 서비스로 흐르게 한다</h2>
-          <p class="mt-2 text-slate-500 leading-relaxed text-sm">프론트엔드부터 배포까지, 데이터가 실제로 흐르는 전체 파이프라인을 훈련</p>
-        </div>
-        <div class="flex items-center gap-2 swiper-nav-group shrink-0">
-          <button type="button" class="swiper-nav-prev nav-arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="이전 카드">‹</button>
-          <button type="button" class="swiper-nav-next nav-arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" aria-label="다음 카드">›</button>
-        </div>
+      <div class="max-w-2xl">
+        <p class="text-xs font-mono font-semibold text-yellow-700 tracking-wide">WEB &amp; WEBAPP</p>
+        <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">구조를 실제 서비스로 흐르게 한다</h2>
+        <p class="mt-2 text-slate-500 leading-relaxed text-sm">프론트엔드부터 배포까지, 데이터가 실제로 흐르는 전체 파이프라인을 훈련</p>
       </div>
 
-      <div class="swiper course-swiper mt-8">
-        <div class="swiper-wrapper">
+      <!-- 좌우 이동 없이 5개 카드를 동일한 크기로 전체 너비에 맞춰 배치 -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-8">
 
-          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
-              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#7dd3fc;--to:#075985">
-                <span class="text-4xl font-bold text-white/90 font-mono">FE</span>
-                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">입문</span>
-              </div>
-              <div class="p-5 flex-1 flex flex-col">
-                <h3 class="font-semibold text-slate-900">Frontend 기초 (React)</h3>
-                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">컴포넌트와 상태 흐름 중심의 UI 데이터 흐름 설계</p>
-              </div>
-            </div>
+        <a href="src/web-frontend.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fde047;--to:#854d0e">
+            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+              <rect x="30" y="30" width="340" height="240" rx="14" fill="#ffffff" fill-opacity="0.16"/>
+              <rect x="30" y="30" width="340" height="34" rx="14" fill="#ffffff" fill-opacity="0.24"/>
+              <circle cx="52" cy="47" r="5" fill="#ffffff" fill-opacity="0.55"/>
+              <circle cx="70" cy="47" r="5" fill="#ffffff" fill-opacity="0.55"/>
+              <circle cx="88" cy="47" r="5" fill="#ffffff" fill-opacity="0.55"/>
+              <g transform="translate(200,155)">
+                <ellipse cx="0" cy="0" rx="68" ry="25" fill="none" stroke="#61dafb" stroke-width="7"/>
+                <ellipse cx="0" cy="0" rx="68" ry="25" fill="none" stroke="#61dafb" stroke-width="7" transform="rotate(60)"/>
+                <ellipse cx="0" cy="0" rx="68" ry="25" fill="none" stroke="#61dafb" stroke-width="7" transform="rotate(120)"/>
+                <circle cx="0" cy="0" r="13" fill="#61dafb"/>
+              </g>
+              <rect x="52" y="232" width="90" height="14" rx="7" fill="#ffffff" fill-opacity="0.4"/>
+              <rect x="152" y="232" width="60" height="14" rx="7" fill="#ffffff" fill-opacity="0.24"/>
+            </svg>
           </div>
-
-          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
-              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#7dd3fc;--to:#075985">
-                <span class="text-4xl font-bold text-white/90 font-mono">BE</span>
-                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">중급</span>
-              </div>
-              <div class="p-5 flex-1 flex flex-col">
-                <h3 class="font-semibold text-slate-900">Backend (Node / Spring)</h3>
-                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">API·DB 계층을 오가는 데이터 흐름의 구조적 설계</p>
-              </div>
-            </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">Frontend (React)</h3>
+            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">컴포넌트와 상태 흐름 중심의 UI 데이터 흐름 설계</p>
           </div>
+        </a>
 
-          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col">
-              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#7dd3fc;--to:#075985">
-                <span class="text-4xl font-bold text-white/90 font-mono">FS</span>
-                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">심화</span>
-              </div>
-              <div class="p-5 flex-1 flex flex-col">
-                <h3 class="font-semibold text-slate-900">Full-stack 프로젝트</h3>
-                <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">기획부터 배포까지 전체 데이터 흐름을 스스로 설계·구현</p>
-              </div>
-            </div>
+        <a href="src/web-backend.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fde047;--to:#854d0e">
+            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+              <rect x="40" y="90" width="120" height="34" rx="6" fill="#ffffff" fill-opacity="0.9"/>
+              <rect x="40" y="133" width="120" height="34" rx="6" fill="#ffffff" fill-opacity="0.6"/>
+              <rect x="40" y="176" width="120" height="34" rx="6" fill="#ffffff" fill-opacity="0.35"/>
+              <circle cx="56" cy="107" r="4" fill="#68a063"/>
+              <circle cx="56" cy="150" r="4" fill="#68a063"/>
+              <circle cx="56" cy="193" r="4" fill="#68a063"/>
+              <line x1="172" y1="130" x2="228" y2="130" stroke="#68a063" stroke-width="5" stroke-linecap="round"/>
+              <polygon points="236,130 222,122 222,138" fill="#68a063"/>
+              <line x1="228" y1="172" x2="172" y2="172" stroke="#ffffff" stroke-opacity="0.6" stroke-width="5" stroke-linecap="round"/>
+              <polygon points="164,172 178,164 178,180" fill="#ffffff" fill-opacity="0.6"/>
+              <ellipse cx="300" cy="112" rx="56" ry="18" fill="#ffffff" fill-opacity="0.85"/>
+              <path d="M244,112 v66 a56,18 0 0 0 112,0 v-66" fill="#ffffff" fill-opacity="0.5"/>
+              <ellipse cx="300" cy="178" rx="56" ry="18" fill="#ffffff" fill-opacity="0.3"/>
+            </svg>
           </div>
-
-          <div class="swiper-slide !w-[240px] sm:!w-[280px]" data-aos="fade-up">
-            <div class="course-card rounded-xl overflow-hidden border border-brand-400/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-brand-400/40">
-              <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#7dd3fc;--to:#075985">
-                <span class="text-4xl font-bold text-white/90 font-mono">Ops</span>
-                <span class="absolute top-3 left-3 rounded bg-slate-950/70 backdrop-blur px-2 py-1 text-[10px] font-semibold text-brand-200">심화</span>
-              </div>
-              <div class="p-5 flex-1 flex flex-col">
-                <h3 class="font-semibold text-slate-900">배포 / 인프라 기초</h3>
-                <p class="mt-2 text-sm text-slate-600 leading-relaxed flex-1">서비스가 실제로 흐르는 인프라·CI/CD 관점의 이해</p>
-              </div>
-            </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">Backend (Node / Spring)</h3>
+            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">API·DB 계층을 오가는 데이터 흐름의 구조적 설계</p>
           </div>
+        </a>
 
-        </div>
-        <div class="swiper-pagination"></div>
+        <a href="src/web-devops.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fde047;--to:#854d0e">
+            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+              <circle cx="200" cy="58" r="26" fill="none" stroke="#ffffff" stroke-opacity="0.75" stroke-width="7"/>
+              <circle cx="200" cy="58" r="9" fill="#ffffff" fill-opacity="0.75"/>
+              <rect x="46" y="160" width="96" height="80" rx="8" fill="#ffffff" fill-opacity="0.3"/>
+              <rect x="152" y="130" width="96" height="110" rx="8" fill="#2496ed"/>
+              <rect x="258" y="160" width="96" height="80" rx="8" fill="#ffffff" fill-opacity="0.55"/>
+              <line x1="152" y1="163" x2="248" y2="163" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2"/>
+              <line x1="152" y1="196" x2="248" y2="196" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2"/>
+              <line x1="152" y1="219" x2="248" y2="219" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2"/>
+              <line x1="184" y1="130" x2="184" y2="240" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2"/>
+              <line x1="216" y1="130" x2="216" y2="240" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">DevOps (Docker)</h3>
+            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">컨테이너와 서버 인프라로 서비스가 실제로 돌아가는 환경을 구성</p>
+          </div>
+        </a>
+
+        <a href="src/web-cicd.html" class="course-card rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm h-full flex flex-col" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fde047;--to:#854d0e">
+            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+              <circle cx="60" cy="150" r="28" fill="#ffffff" fill-opacity="0.9"/>
+              <circle cx="160" cy="150" r="28" fill="#ffffff" fill-opacity="0.55"/>
+              <circle cx="260" cy="150" r="28" fill="#2088ff"/>
+              <circle cx="360" cy="150" r="28" fill="#ffffff" fill-opacity="0.3"/>
+              <line x1="88" y1="150" x2="130" y2="150" stroke="#ffffff" stroke-opacity="0.6" stroke-width="5" stroke-linecap="round"/>
+              <polygon points="138,150 126,142 126,158" fill="#ffffff" fill-opacity="0.6"/>
+              <line x1="188" y1="150" x2="230" y2="150" stroke="#2088ff" stroke-width="5" stroke-linecap="round"/>
+              <polygon points="238,150 226,142 226,158" fill="#2088ff"/>
+              <line x1="288" y1="150" x2="330" y2="150" stroke="#ffffff" stroke-opacity="0.4" stroke-width="5" stroke-linecap="round"/>
+              <polygon points="338,150 326,142 326,158" fill="#ffffff" fill-opacity="0.4"/>
+            </svg>
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">CI/CD (GitHub Actions)</h3>
+            <p class="mt-2 text-sm text-slate-500 leading-relaxed flex-1">빌드·테스트·배포를 자동화해 안정적으로 릴리즈하는 흐름 설계</p>
+          </div>
+        </a>
+
+        <a href="src/web-fullstack.html" class="course-card rounded-xl overflow-hidden border border-yellow-500/60 bg-white shadow-sm h-full flex flex-col ring-1 ring-yellow-500/40" data-aos="fade-up">
+          <div class="cover-art relative aspect-[4/3] flex items-center justify-center" style="--from:#fde047;--to:#854d0e">
+            <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+              <rect x="70" y="36" width="260" height="56" rx="10" fill="#ffffff"/>
+              <rect x="90" y="54" width="60" height="10" rx="5" fill="#854d0e" fill-opacity="0.55"/>
+              <rect x="160" y="54" width="36" height="10" rx="5" fill="#854d0e" fill-opacity="0.35"/>
+              <line x1="200" y1="92" x2="200" y2="118" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+              <polygon points="200,126 190,112 210,112" fill="#ffffff"/>
+              <rect x="70" y="132" width="260" height="56" rx="10" fill="#ffffff" fill-opacity="0.65"/>
+              <rect x="90" y="150" width="44" height="10" rx="5" fill="#854d0e" fill-opacity="0.55"/>
+              <rect x="144" y="150" width="80" height="10" rx="5" fill="#854d0e" fill-opacity="0.35"/>
+              <line x1="200" y1="188" x2="200" y2="214" stroke="#ffffff" stroke-opacity="0.85" stroke-width="4" stroke-linecap="round"/>
+              <polygon points="200,222 190,208 210,208" fill="#ffffff" fill-opacity="0.85"/>
+              <rect x="70" y="228" width="260" height="56" rx="10" fill="#ffffff" fill-opacity="0.35"/>
+              <rect x="90" y="246" width="72" height="10" rx="5" fill="#854d0e" fill-opacity="0.45"/>
+              <rect x="172" y="246" width="52" height="10" rx="5" fill="#854d0e" fill-opacity="0.3"/>
+            </svg>
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="font-semibold text-slate-900">Full-stack 통합 프로젝트</h3>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed flex-1">기획부터 배포까지, 프론트·백엔드·인프라를 하나로 엮어 스스로 설계·구현</p>
+          </div>
+        </a>
+
       </div>
     </section>
 

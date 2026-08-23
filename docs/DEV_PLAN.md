@@ -53,7 +53,14 @@
 - **힙 완료(2026-08-23)**: `src/algo-heap.html` — Algorithm 코스 최초의 동적 좌표 계산 SVG 트리 엔진. 최소 힙 insert(sift-up)/extractMin(sift-down), 트리와 배열을 동시에 표시. 시나리오 4종(기본·마감일 스케줄러·힙 정렬 체감·최솟값이 떠오르는 순간).
 - **BST 완료(2026-08-23)**: `src/algo-bst.html` — 중위 순회 순서로 좌표를 매기는 SVG 트리 엔진. 삭제는 범위 제외하고 insert+search만 구현. 시나리오 4종(기본·정렬된 순서 삽입=편향 트리·균형 잡힌 삽입·검색 시연).
 - `#ds-swiper` 6개 카드 전부 실제 링크로 전환 완료, 마지막 카드(BST)에 "마지막 카드 하이라이트" 적용. **자료구조 파일럿 6종 전부 완료 — Algorithm 코스 파일럿(정렬 5 + 탐색 3 + 자료구조 6) 총 14종 전부 완료.**
-- 남은 작업: 없음(자료구조 6종 전부 완료). 다음 결정은 사용자 지시에 따름 — 카테고리 간 이동 구조 설계, 또는 다른 코스(Web & WebApp/Unity/Agent AI) 착수 등.
+- 남은 작업: 없음(자료구조 6종 전부 완료).
+
+### Phase 2.8 — Web & WebApp 파일럿 (완료, 5/5 — 2026-08-23)
+- 대화로 코스 흐름을 프론트/백엔드/DevOps/CI-CD 4단계로 정리했으나, 사용자가 기존 "Full-stack 프로젝트" 캡스톤 카드를 유지하고 싶어해 5장으로 확정.
+- `index.html` `#web` 섹션 카드를 4장(Frontend/Backend/Full-stack/배포·인프라)에서 5장(Frontend·React / Backend·Node·Spring / DevOps·Docker / CI-CD·GitHub Actions / Full-stack 통합 프로젝트)으로 재구성 — 기존 한 장에 뭉쳐 있던 DevOps·CI/CD 설명을 분리.
+- 커버아트를 텍스트 배지(FE/BE/FS/Ops)에서 실제 로고 이미지로 1차 교체했으나, 사용자 피드백(① JS 노란색 컬러톤 ② 카드 상단을 가득 채우는 이미지 ③ 5장뿐이니 Swiper 없이 정적 그리드로) 반영해 최종적으로 커버아트 전체를 채우는 커스텀 SVG 아이콘(브랜드 색상은 강조색으로 재사용)으로 정리 — Algorithm 섹션의 "커버아트를 채우는 인라인 SVG" 패턴 재사용. 색상은 `--from:#fde047;--to:#854d0e`(노란색)로 통일, 레이아웃은 `.course-swiper` 대신 Language와 동일한 정적 5열 그리드.
+- **상세 페이지 5종 완료(2026-08-23)**: `src/web-frontend.html`/`web-backend.html`/`web-devops.html`/`web-cicd.html`/`web-fullstack.html` — Algorithm처럼 시각화하기는 어렵다는 데 동의하고 `lang-cp.html`류 12개 커리큘럼 아코디언 형식을 채택. CI/CD 페이지만 예외적으로 파이프라인이 순차적 상태를 가진다는 점을 활용해 Push→Build→Test→Deploy→Live 5단계 재생 위젯을 보너스로 추가(성공/테스트 실패 2개 시나리오). Full-stack 통합 프로젝트 페이지는 새 개념이 아니라 기획→설계→구현→배포→회고 프로젝트 진행 단계로 구성해 앞선 4개 코스를 되짚는 캡스톤 성격을 살림. `index.html` `#web` 섹션 5개 카드 전부 실제 링크로 전환.
+- 남은 작업: 없음(Web & WebApp 파일럿 5종 전부 완료). 다음 결정은 사용자 지시에 따름 — 카테고리 간 이동 구조 설계, 또는 다른 코스(Unity/Agent AI) 착수 등.
 
 ### Phase 3 — 외부 연동 정리
 - OJ(`oj.recode.ai.kr`)/LMS(`lms.recode.ai.kr`)/business(`business.recode.ai.kr`)/studio(`studio.recode.ai.kr`) 4개 서브도메인은 각각 별도 프로젝트로 직접 제작 중 — 이 저장소는 오픈 시점에 맞춰 링크 활성화·"준비중" 배지 정리만 담당.

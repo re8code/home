@@ -276,3 +276,27 @@
   - `index.html`의 `#ds-swiper` 나머지 4개 카드(연결 리스트/해시 테이블/힙/이진 탐색 트리)를 전부 `<a>` 링크로 전환. **자료구조 6종 전부 완료**를 기념해 마지막 카드(이진 탐색 트리)에 "마지막 카드 하이라이트" 관례(테두리+링, `text-slate-600`)를 처음 적용 — 지금까지는 완성되지 않은 자료구조 서브그룹이라 어떤 카드에도 적용하지 않고 있었음.
   - 이번에도 claude-in-chrome MCP 연결이 끊긴 상태라 실제 브라우저 조작 검증은 수행하지 못함 — HTML 태그 밸런스 검사, JS 문법 검사(`node --check`), 그리고 각 파일에서 실제로 추출한 `buildSteps`/`SCENARIOS` 코드를 Node로 재실행하는 방식으로 6개 파일 모두의 로직을 검증했다. 브라우저 연결이 복구되면 6개 페이지 전부 시각적으로 재생/커스텀 조작을 확인할 필요가 있음.
   - `CLAUDE.md`(4개 항목 신설, GNB 페이지 수 20→24개 갱신)에 반영.
+- 사용자와 다음 코스인 Web & WebApp 섹션 구성을 대화로 논의 — 카드 흐름을 프론트/백엔드/DevOps/CI-CD 4단계로 정리했으나, 사용자가 기존 "Full-stack 프로젝트" 캡스톤 카드를 유지하고 싶어해 5장으로 확정. 각 상세 페이지에 들어갈 커리큘럼 주제도 함께 스케치(코드로 남기지 않고 대화로만 정리).
+  - 사용자가 "카드 상단 썸네일을 더 직관적인 이미지로 만들 수 있는지, unsplash 같은 무료 이미지 사이트를 참고해도 되는지" 질문 — Unsplash 사진은 사이트의 "그라디언트+크리스프한 심볼" 톤과 안 맞을 것 같다고 판단해, Language 섹션처럼 실제 기술 로고를 쓰는 방향을 역제안했고 사용자가 승인.
+  - `index.html`의 `#web` 섹션 카드를 4장에서 5장으로 재구성: Frontend(React) / Backend(Node·Spring) / DevOps(Docker) / CI/CD(GitHub Actions) / Full-stack 통합 프로젝트(캡스톤, 마지막 카드 하이라이트를 기존 "배포/인프라 기초" 카드에서 이관). 기존 한 장에 뭉쳐 있던 DevOps·CI/CD 설명을 분리해 각각 새 문구 작성.
+  - React/Node.js/Docker/GitHub Actions 로고는 devicon(MIT 라이선스) 저장소의 `*-original.svg`(컬러 아이콘 단독, 128×128)를 jsdelivr CDN에서 다운로드해 `assets/image/react.svg`/`nodejs.svg`/`docker.svg`/`github-actions.svg`로 저장 — Java/Python/Dart 워드마크를 가져올 때(2026-08-22)와 동일한 저장소·라이선스이지만, 이번엔 SVG를 그대로 써서 당시 필요했던 PNG 래스터화(wsrv.nl 프록시) 단계가 필요 없었음.
+  - Full-stack 통합 프로젝트는 특정 브랜드가 없어 커스텀 인라인 SVG(가로 막대 3개가 화살표로 위→아래 이어지는 형태, 불투명도로 계층 구분)를 새로 그려 "프론트·백엔드·인프라가 하나로 엮인다"는 개념을 표현.
+  - 검증: 4개 SVG 파일 다운로드 후 `content-type: image/svg+xml`·HTTP 200 확인, `index.html` HTML 태그 밸런스 검사 통과, 로컬 서버로 이미지·페이지 전부 200 확인. claude-in-chrome MCP 연결이 이번에도 끊긴 상태라 실제 브라우저 렌더링(카드 배치·로고 시각 확인)은 수행하지 못함.
+  - 5개 카드 모두 아직 상세 페이지가 없어 비클릭 `<div>`로 유지(Unity/Agent AI 섹션처럼 "준비중" 배지 없이 그대로 둠 — 섹션 전체가 미착수 상태라 개별 배지가 불필요).
+  - `report/2026-08-23-web-webapp-cards.md` 신규 작성(로고 소스·라이선스·검증 내역), `CLAUDE.md`(Web & WebApp 섹션 항목 신설, `assets/image/` 설명에 신규 로고 4종 추가)에 반영.
+- 사용자 피드백 3건 — "① 컬러톤을 JS 대표 색깔인 노란색으로, ② 카드 상단을 가득 채우는 이미지가 가능한지, ③ 카드가 5개뿐이니 Swiper 없이 Language처럼 정적 그리드로" — 방금 만든 Web & WebApp 카드를 즉시 수정.
+  - 커버아트를 하늘색(`--from:#7dd3fc;--to:#075985`)에서 노란색(`--from:#fde047;--to:#854d0e`)으로 5개 카드 전부 변경.
+  - "가득 채우는 이미지" 질문에는, 방금 넣은 `h-20 w-20` 실제 로고를 그대로 확대하면 로고 여백 때문에 어색하다고 판단해, Algorithm/자료구조 섹션에서 이미 쓰던 "커버아트 전체를 채우는 커스텀 인라인 SVG"(`absolute inset-0 h-full w-full`) 패턴을 역제안하고 실행 — Frontend는 브라우저 창+React 원자 심볼, Backend는 서버 랙↔DB 원통 화살표, DevOps는 컨테이너 3개+톱니바퀴, CI/CD는 4단계 파이프라인 노드로 각각 새로 그렸고, 각 기술의 실제 브랜드 색상(React/Node/Docker/GitHub Actions)을 강조색으로 재사용해 직관성을 유지. 직전에 다운로드한 로고 SVG 4개는 삭제하지 않고 `assets/image/`에 그대로 남겨둠(현재 미사용, 추후 상세 페이지에서 재사용 가능).
+  - Swiper 캐러셀(`.course-swiper`/`swiper-slide`/`swiper-pagination`/nav 화살표)을 완전히 제거하고 Language 섹션과 동일한 `grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4` 정적 그리드로 교체 — Unity/Agent AI는 여전히 4카드 Swiper라 손대지 않음.
+  - 검증: HTML 태그 밸런스 재검사 통과, 섹션 내 "swiper" 문자열 0건(grep) 확인, 로컬 서버로 200 확인. claude-in-chrome 연결이 계속 끊긴 상태라 실제 렌더링은 미확인.
+  - `report/2026-08-23-web-webapp-cards.md`·`CLAUDE.md`에 후속 수정 내역 반영.
+- 사용자 지시로 미세 조정 2건: Frontend 카드 React 원자 심볼을 17px 위로 이동(`translate(200,172)`→`translate(200,155)`, 아래 UI 블록 때문에 무게중심이 낮아 보인다는 지적 반영), 5개 카드 전부에서 난이도 배지(입문/중급/심화)를 완전히 제거. HTML 검증·로컬 서버 200 확인 완료.
+- 사용자와 "상세 페이지는 어떻게 구성할까 — Language처럼 커리큘럼 중심? Algorithm처럼 시각화 중심?" 논의. Algorithm 방식은 어려울 것 같다는 사용자 의견에 동의하면서도, CI/CD만은 파이프라인 자체가 순차적 상태를 가져 작은 시각화가 가능할 것 같다고 역제안 — 사용자가 "네가 제안해준 방식으로 가자"고 승인해, 5장 전부 Language 커리큘럼 형식 + CI/CD만 보너스 파이프라인 시각화로 제작.
+  - `src/web-frontend.html`/`web-backend.html`/`web-devops.html`/`web-cicd.html`/`web-fullstack.html` 5개 파일 신규 생성 — `lang-cp.html`을 템플릿으로 GNB/브레드크럼/커리큘럼 아코디언/CTA/Footer/토글 스크립트를 그대로 재사용하고 콘텐츠만 교체. 각 페이지 12개 커리큘럼 항목(기초 5+실습 5+프로젝트 2)을 사이트의 "데이터 흐름" 철학에 맞춰 새로 작성 — Frontend(브라우저 렌더링→React 컴포넌트/상태/이펙트→대시보드 프로젝트), Backend(요청-응답 사이클→REST/DB/ORM→인증/캐싱→API 서버 프로젝트), DevOps(개발-배포 환경 차이→Docker 이미지/Compose→클라우드/Nginx→컨테이너화 프로젝트), CI/CD(자동화 필요성→GitHub Actions 문법→자동 배포/롤백→파이프라인 프로젝트).
+  - Full-stack 통합 프로젝트 페이지만 예외적으로 12개 항목이 새 개념이 아니라 **기획→설계→구현→배포→회고**로 이어지는 프로젝트 진행 단계이며, 각 항목 설명에서 앞선 4개 코스를 명시적으로 되짚어("Backend 코스에서 다룬 ~을 이번엔 실제로" 식) 통합 코스라는 성격을 드러냄.
+  - Web & WebApp 코스 바로가기 pill 탭을 5개 파일 모두에 넣고(언어 페이지의 "언어 바로가기 탭"과 동일 패턴) `aria-current="page"`로 현재 페이지 표시.
+  - CI/CD 페이지 전용 보너스로 Push→Build→Test→Deploy→Live 5단계 파이프라인 재생 위젯을 커리큘럼 목록 위에 추가 — Algorithm 코스의 "step 배열 사전 계산 → 재생 컨트롤이 인덱스만 이동" 패턴을 아주 단순화해 재사용(새 엔진을 통째로 만들 필요 없이 원형 노드+연결 화살표만으로 구성). 시나리오 2종(성공 흐름/테스트 실패 흐름)의 로직을 Node로 사전 검증(성공 7스텝 전부 done, 실패 5스텝에서 Test만 failed 나머지 pending)한 뒤 코드로 옮기고, 실제 파일에서 추출한 코드로 재검증까지 완료.
+  - `index.html` `#web` 섹션 5개 카드를 전부 `<a>` 링크로 전환(각 상세 페이지로 연결).
+  - 검증: 5개 파일 전부 HTML 태그 밸런스 검사 통과, CI/CD 페이지 인라인 스크립트 3개 전부 `node --check` 통과, 로컬 서버로 `index.html`+5개 페이지 전부 200 확인. claude-in-chrome 연결이 계속 끊긴 상태라 실제 브라우저 렌더링(아코디언 펼침, 파이프라인 재생 애니메이션)은 미확인 — 연결 복구 시 확인 필요.
+  - `CLAUDE.md`(Web & WebApp 상세 페이지 항목 신설, GNB 페이지 수 24→29개 갱신)에 반영.
+- 사용자 지적 — "web 섹션 마지막 카드 테두리가 혼자 연두색이네" — Full-stack 통합 프로젝트 카드의 "마지막 카드 하이라이트"가 다른 섹션과 동일하게 브랜드 그린(`border-brand-400/60 ring-brand-400/40`)이었는데, Web & WebApp만 노란 톤 카드라 유독 튀어 보였음. `border-yellow-500/60 ring-1 ring-yellow-500/40`로 교체해 섹션 톤에 맞춤(다른 섹션의 브랜드 그린 하이라이트는 그대로 유지 — Web & WebApp만의 예외 처리).

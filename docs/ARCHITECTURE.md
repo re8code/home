@@ -2,7 +2,7 @@
 
 이 문서는 "Recode Coding" 서비스 전체(이 저장소 + 외부 연동 서브도메인)의 아키텍처를 정리한다. 구조가 바뀔 때마다(신규 서브도메인 오픈, 백엔드 교체, 배포 방식 변경 등) 이 문서를 함께 갱신한다. 특정 시점의 상세 작업 근거는 `../report/*.md`, 요구사항 변화는 `PRD.md`/`DEV_PLAN.md`(같은 `docs/` 폴더)를 참고.
 
-- 최종 갱신: 2026-08-23 (자료구조 6종 나머지 4개(연결 리스트/해시 테이블/힙/이진 탐색 트리) 완성 — 자료구조 파일럿 6종 전부 완료)
+- 최종 갱신: 2026-08-23 (Web & WebApp 코스 5개 상세 페이지 완성 — `src/web-frontend.html` 등, Web & WebApp 코스 5종 전부 완료)
 
 ## 1. 한눈에 보기
 
@@ -59,8 +59,9 @@ graph TD
 | `src/algo-hash-table.html` | 자료구조 6종 중 네 번째 — 해시 테이블 시각화 상세 페이지 (2026-08-23, `hash(key)=key%7` 버킷 배열 + 체이닝 시뮬레이션 엔진) | `index.html`의 `#ds-swiper` 해시 테이블 카드를 실제 링크로 전환. 동작 시나리오 4종(기본 삽입/검색/삭제·학번→사물함 배정·전화번호부 검색·최악의 해시 함수) — 충돌이 정확히 일어나도록 키를 계산해서 설계, "최악의 해시 함수" 시나리오는 모든 키가 한 버킷에 몰려 O(n)으로 퇴화하는 것을 증명. 버킷 7개를 세로 행으로, 각 행 안의 충돌 항목은 연결 리스트와 같은 화살표 체인으로 표시 |
 | `src/algo-heap.html` | 자료구조 6종 중 다섯 번째 — 힙(최소 힙) 시각화 상세 페이지 (2026-08-23, Algorithm 코스 최초의 **동적 좌표 계산 SVG 트리 엔진**) | `index.html`의 `#ds-swiper` 힙 카드를 실제 링크로 전환. `heapPos(i,n)`이 인덱스로부터 매번 레벨·위치를 계산(BFS/DFS의 고정 `POS` 상수와 대비). insert(sift-up)/extractMin(sift-down) + 트리와 배열을 동시에 렌더링. 동작 시나리오 4종(기본 삽입·마감일 스케줄러·힙 정렬 체감·최솟값이 떠오르는 순간) |
 | `src/algo-bst.html` | 자료구조 6종 중 마지막 — 이진 탐색 트리 시각화 상세 페이지 (2026-08-23, 노드 객체를 스텝마다 깊은 복사하고 중위 순회 순서로 x좌표를 매기는 SVG 트리 엔진) | `index.html`의 `#ds-swiper` 이진 탐색 트리 카드를 실제 링크로 전환하고 "마지막 카드 하이라이트" 적용. 삭제는 3가지 경우(자식 0/1/2개)로 복잡해져 의도적으로 범위 제외, insert+search만 구현. 동작 시나리오 4종(기본 삽입·정렬된 순서 삽입=편향 트리(높이5)·균형 잡힌 삽입(높이3)·검색 시연). **Algorithm 코스 자료구조 파일럿 6종(스택/큐/연결 리스트/해시 테이블/힙/BST) 전부 완료** |
+| `src/web-frontend.html` / `src/web-backend.html` / `src/web-devops.html` / `src/web-cicd.html` / `src/web-fullstack.html` | Web & WebApp 코스 5개 카드의 상세 페이지 (2026-08-23, `lang-cp.html`류 12개 커리큘럼 아코디언 형식) | Algorithm처럼 시각화하기 어렵다고 판단해 Language 페이지 템플릿(브레드크럼·번호 매긴 카드·펼침 아코디언)을 그대로 재사용. CI/CD 페이지만 예외적으로 커리큘럼 위에 Push→Build→Test→Deploy→Live 5단계 파이프라인 재생 위젯(성공/테스트 실패 2개 시나리오)을 보너스로 추가. Full-stack 통합 프로젝트 페이지는 새 개념 대신 기획→설계→구현→배포→회고 프로젝트 진행 단계로 구성해 앞선 4개 코스를 되짚는 캡스톤 성격. `index.html` `#web` 섹션 5개 카드 전부 실제 링크로 전환 — **Web & WebApp 코스 5종 전부 완료** |
 
-- **GNB**: `index.html` / `src/graffiti*.html`(3개) / `src/lang-*.html`(5개) / `src/algo-sort.html` / `src/algo-{bubble,selection,insertion,merge,quick}-sort.html`(5개) / `src/algo-binary-search.html` / `src/algo-bfs.html` / `src/algo-dfs.html` / `src/algo-stack.html` / `src/algo-queue.html` / `src/algo-linked-list.html` / `src/algo-hash-table.html` / `src/algo-heap.html` / `src/algo-bst.html` 총 24개 페이지 전부 헤더(`<header>` 전체 — 로고/nav/CTA/모바일 메뉴)가 동일한 마크업(페이지별 커스텀 nav 링크 없음, 2026-08-22 통일). 상세: `../CLAUDE.md` "페이지 구조".
+- **GNB**: `index.html` / `src/graffiti*.html`(3개) / `src/lang-*.html`(5개) / `src/algo-sort.html` / `src/algo-{bubble,selection,insertion,merge,quick}-sort.html`(5개) / `src/algo-binary-search.html` / `src/algo-bfs.html` / `src/algo-dfs.html` / `src/algo-stack.html` / `src/algo-queue.html` / `src/algo-linked-list.html` / `src/algo-hash-table.html` / `src/algo-heap.html` / `src/algo-bst.html` / `src/web-frontend.html` / `src/web-backend.html` / `src/web-devops.html` / `src/web-cicd.html` / `src/web-fullstack.html` 총 29개 페이지 전부 헤더(`<header>` 전체 — 로고/nav/CTA/모바일 메뉴)가 동일한 마크업(페이지별 커스텀 nav 링크 없음, 2026-08-22 통일). 상세: `../CLAUDE.md` "페이지 구조".
 - `src/` 안의 페이지끼리는 파일명만으로 상호 링크하고, 루트(`index.html`)나 `assets/`를 가리킬 때는 `../`를 붙인다.
 - `assets/js/mobile-menu.js` — 모든 페이지 하단에서 `defer` 로드, 모바일 내비게이션 토글 공통 처리.
 - `assets/image/` — 외부에서 가져온 로고·아이콘 리소스(예: `index.html` Language 카드의 언어별 로고 PNG). 출처/라이선스는 도입 시점 `../report/*.md`에 기록.

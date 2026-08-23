@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Backend (Node / Spring) — 훈련 코스 | Recode Coding</title>
+<meta name="description" content="API·DB 계층을 오가는 데이터 흐름의 구조적 설계를 훈련하는 Backend(Node/Spring) 코스. 리코드 코딩의 1:1 맞춤 커리큘럼을 확인하세요." />
+
+<style>
+  @view-transition { navigation: auto; }
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; background-color: rgba(12,12,15,.95); border-bottom: 1px solid rgba(255,255,255,.1); }
+  header > div:first-child { max-width: 1440px; margin: 0 auto; padding: 0 1.5rem; height: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  header nav { display: flex; align-items: center; gap: 1.5rem; }
+  header #mobile-menu { display: none; }
+  header a { color: #fff; text-decoration: none; }
+  header nav a { color: #94a3b8; }
+  header a[aria-disabled="true"] { color: #64748b; }
+  header nav + a { display: inline-flex; align-items: center; background-color: #18b476; color: #fff; padding: .5rem 1rem; border-radius: 9999px; font-weight: 600; font-size: .875rem; }
+  header span.rounded-lg { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: .5rem; background-color: rgba(24,180,118,.15); color: #3ecf8e; border: 1px solid rgba(24,180,118,.3); }
+  @media (min-width: 768px) { header #mobile-menu-btn { display: none; } }
+  main { padding-top: 4rem; }
+</style>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Pretendard', 'Pretendard Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        },
+        colors: {
+          brand: {
+            50: '#eefdf5',
+            100: '#d5f9e4',
+            200: '#aef1cd',
+            300: '#74e4ad',
+            400: '#3ecf8e',
+            500: '#18b476',
+            600: '#0e9261',
+            700: '#0c7550',
+            800: '#0d5d42',
+            900: '#0c4c38',
+            950: '#052b20',
+          },
+        },
+        boxShadow: {
+          glow: '0 0 60px -15px rgba(62, 207, 142, 0.45)',
+        },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link
+  rel="stylesheet"
+  as="style"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
+/>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-feature-settings: "tnum"; background-color: #FBF7EE; }
+  .cover-art {
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,0.10), transparent 55%),
+      linear-gradient(155deg, var(--from), var(--to));
+  }
+  .curriculum-card {
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .curriculum-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(24, 180, 118, 0.4);
+    box-shadow: 0 16px 32px -18px rgba(15, 23, 42, 0.2);
+  }
+  .filter-tab.is-active {
+    background-color: #0f172a;
+    color: #fff;
+  }
+  .curriculum-detail {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .25s ease;
+  }
+  .curriculum-detail > div {
+    overflow: hidden;
+  }
+  [data-expanded="true"] .curriculum-detail {
+    grid-template-rows: 1fr;
+  }
+  .curriculum-chevron {
+    transition: transform .2s ease;
+  }
+  [data-expanded="true"] .curriculum-chevron {
+    transform: rotate(180deg);
+  }
+</style>
+</head>
+
+<body class="text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
+
+  <!-- ===== Header (GNB) ===== -->
+  <header class="fixed top-0 inset-x-0 z-[60] bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 h-16 flex items-center justify-between gap-8">
+      <div class="flex items-center gap-6">
+        <a href="../index.html" class="flex items-center gap-2 font-mono font-semibold tracking-tight text-white">
+          <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400 border border-brand-500/30">R/</span>
+          <span class="hidden sm:inline">Recode Coding</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="hidden md:inline-flex items-center gap-1.5 text-sm text-slate-500 cursor-not-allowed">
+          회사 소개
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+      </div>
+      <div class="hidden md:flex items-center gap-8">
+        <nav class="flex items-center gap-6 text-sm text-slate-400">
+          <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+          <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            LMS
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            business
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            studio
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+        </nav>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-400 transition-colors">
+          1:1 상담 신청
+        </a>
+      </div>
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
+        aria-label="메뉴 열기"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg data-icon="open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-5 w-5">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg data-icon="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="hidden h-5 w-5">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-[#0c0c0f]/95 backdrop-blur">
+      <nav class="flex flex-col px-6 py-4 gap-4 text-sm text-slate-300">
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          회사 소개
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+        <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          LMS
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          business
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          studio
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-brand-500 px-4 py-2 font-semibold text-white hover:bg-brand-400 transition-colors">1:1 상담 신청</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pt-16">
+
+    <!-- ===== 페이지 헤더: 브레드크럼 + 타이틀 ===== -->
+    <section class="mx-auto max-w-4xl px-6 lg:px-8 pt-12">
+      <nav class="flex items-center gap-2 text-sm text-slate-500" aria-label="breadcrumb">
+        <a href="../index.html" class="inline-flex items-center hover:text-slate-900 transition-colors" aria-label="홈">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+        </a>
+        <span>/</span>
+        <span class="text-slate-900 font-medium">Backend</span>
+      </nav>
+
+      <div class="mt-6 flex items-end gap-5">
+        <div class="cover-art h-16 w-16 shrink-0 rounded-2xl flex items-center justify-center" style="--from:#fde047;--to:#854d0e">
+          <span class="text-lg font-bold text-white font-mono">BE</span>
+        </div>
+        <div>
+          <p class="text-xs font-mono font-semibold text-yellow-700 tracking-wide">WEB &amp; WEBAPP</p>
+          <h1 class="mt-1 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">Backend (Node / Spring)</h1>
+        </div>
+      </div>
+      <p class="mt-5 max-w-2xl text-slate-500 leading-relaxed">
+        요청 하나가 서버에 도착해 DB를 거쳐 응답으로 돌아오기까지, 데이터가 여러 계층을 통과하는 흐름을 구조적으로 설계하는 훈련입니다.
+        프레임워크 문법이 아니라 &ldquo;이 요청이 지금 어느 계층에 있는가&rdquo;를 항상 그릴 수 있게 되는 것이 목표입니다.
+      </p>
+
+      <div class="mt-8 border-b border-slate-200"></div>
+    </section>
+
+    <!-- ===== Web & WebApp 코스 바로가기 ===== -->
+    <section class="mx-auto max-w-4xl px-6 lg:px-8 mt-10">
+      <nav class="flex flex-wrap items-center gap-2" aria-label="Web & WebApp 코스 바로가기">
+        <a href="web-frontend.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">Frontend</a>
+        <a href="web-backend.html" aria-current="page" class="filter-tab is-active rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">Backend</a>
+        <a href="web-devops.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">DevOps</a>
+        <a href="web-cicd.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">CI/CD</a>
+        <a href="web-fullstack.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">Full-stack 통합 프로젝트</a>
+      </nav>
+
+      <p id="curriculum-count" class="mt-5 text-sm text-slate-500">전체 <span class="font-semibold text-slate-900">12</span>건</p>
+
+      <!-- ===== 커리큘럼 목록 ===== -->
+      <div id="curriculum-list" class="mt-3 flex flex-col gap-3">
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">1. OT — 요청-응답 사이클과 서버 아키텍처</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">클라이언트-서버 구조와 요청 하나가 처리되는 전체 흐름을 먼저 그리고 12주 로드맵을 확인합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">브라우저가 요청을 보내고 서버가 라우팅·비즈니스 로직·DB 조회를 거쳐 응답을 돌려주기까지 전체 파이프라인을 다이어그램으로 살펴봅니다. 앞으로 12주 동안 어떤 순서로 개념이 쌓이는지 미리 확인해 학습 방향을 잡습니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">2. HTTP 프로토콜과 REST 설계 원칙</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">메서드·상태코드·헤더의 의미를 이해하고 자원 중심으로 API를 설계하는 원칙을 익힙니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">GET/POST/PUT/DELETE가 각각 어떤 의도를 표현하는지, 2xx/4xx/5xx 상태코드가 어떤 상황을 나타내는지 실제 응답으로 확인합니다. URL은 자원을, 메서드는 행위를 나타낸다는 REST 설계 원칙을 실습 API로 직접 적용해봅니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">3. 라우팅과 미들웨어 (Express / Spring MVC)</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">요청이 여러 미들웨어 계층을 순서대로 통과하며 처리되는 흐름을 이해합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">요청이 로깅·인증·파싱 같은 미들웨어를 순서대로 거쳐 최종 핸들러에 도달하는 체인 구조를 직접 로그로 추적합니다. next() 호출 하나가 파이프라인의 다음 단계로 넘어가는 신호라는 것을 이해하며 미들웨어를 직접 작성해봅니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">4. 데이터베이스 기초와 SQL</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">관계형 모델과 JOIN, 트랜잭션의 개념을 실제 쿼리로 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">테이블을 정규화해 중복을 줄이는 관계형 모델의 원칙을 이해하고, 여러 테이블을 엮는 JOIN을 직접 작성합니다. 여러 쿼리가 하나의 단위로 성공하거나 실패해야 하는 트랜잭션의 필요성을 계좌 이체 예제로 체감합니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">5. ORM과 데이터 계층 설계</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">객체와 테이블을 매핑하는 ORM의 동작 방식과 N+1 문제를 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">ORM이 객체 조작을 SQL로 변환해 실행하는 과정을 쿼리 로그로 직접 확인하고, 연관 데이터를 반복 조회하다 쿼리 수가 폭발하는 N+1 문제를 재현한 뒤 즉시 로딩(eager loading)으로 해결합니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">6. 인증과 인가 (세션 / JWT)</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">로그인 상태를 유지하는 두 가지 방식을 비교하고 직접 구현합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">서버가 상태를 기억하는 세션 방식과, 토큰 안에 정보를 담아 서버가 상태를 기억하지 않는 JWT 방식의 요청 흐름을 각각 다이어그램으로 비교합니다. 토큰 만료·재발급 전략과 어떤 정보를 토큰에 담으면 안 되는지도 다룹니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">7. API 설계와 에러 핸들링</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">일관된 응답 형식을 설계하고 예외를 계층적으로 처리하는 전략을 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">성공·실패 응답의 형식을 일관되게 통일해 프론트가 예측 가능하게 처리하도록 설계하고, try/catch를 여기저기 흩뿌리는 대신 전역 에러 핸들러 한 곳에서 예외를 잡아 응답으로 변환하는 패턴을 구현합니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">8. 캐싱과 성능 (Redis)</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">반복 조회 비용을 줄이는 캐싱 원리와 캐시 무효화 전략을 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">같은 조회 쿼리를 매번 DB에 던지는 대신 결과를 메모리(Redis)에 잠시 저장해두는 캐싱 패턴을 직접 구현하고 응답 속도 차이를 측정합니다. 원본 데이터가 바뀌었을 때 캐시를 언제 지워야 하는지(무효화) 전략도 함께 다룹니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">9. 비동기 처리와 메시지 큐</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">무거운 작업을 응답과 분리해 백그라운드로 넘기는 흐름을 개념적으로 익힙니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">이메일 발송처럼 오래 걸리는 작업을 요청-응답 사이클 안에서 처리하면 응답이 느려진다는 문제를 확인하고, 작업을 큐에 넣어두고 별도 워커가 순서대로 처리하는 비동기 패턴의 흐름을 다이어그램으로 이해합니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">10. 파일 업로드와 외부 API 연동</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">서버가 클라이언트와 외부 서비스 사이의 중개자 역할을 하는 흐름을 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">멀티파트 요청으로 파일을 받아 저장소에 올리는 흐름을 구현하고, 결제·지도 같은 외부 API를 호출할 때 API 키를 클라이언트가 아닌 서버에서만 다뤄야 하는 보안 이유를 이해합니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20 cursor-pointer" data-curriculum-card data-category="project" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">11. 테스트와 API 문서화</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">단위·통합 테스트를 작성하고 Swagger 등으로 API 계약을 명시합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">단일 함수를 검증하는 단위 테스트와 여러 계층이 함께 동작하는지 확인하는 통합 테스트의 차이를 실습하고, API 명세를 코드와 함께 자동 문서화해 프론트엔드 팀과의 협업 비용을 줄이는 방법을 다룹니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20 cursor-pointer" data-curriculum-card data-category="project" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">12. 미니 프로젝트 — REST API 서버 구축</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">인증·DB 연동을 포함한 API 서버를 처음부터 설계하고 구현합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">12주 동안 배운 라우팅·DB 설계·인증·캐싱·에러 처리를 하나로 엮어, 회원가입부터 인증이 필요한 리소스 CRUD까지 갖춘 REST API 서버를 처음부터 구현합니다. 코드 리뷰를 통해 계층 분리가 잘 되어 있는지 점검받습니다.</p>
+          </div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="mx-auto max-w-4xl px-6 lg:px-8 py-16">
+      <div class="rounded-2xl border border-brand-900/40 bg-gradient-to-br from-brand-600 via-brand-800 to-brand-950 p-10 sm:p-12 text-center">
+        <p class="text-xs font-mono font-semibold text-brand-200 tracking-wide">1:1 정원제 · 상시 모집</p>
+        <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white tracking-tight">Backend, 데이터 흐름의 눈으로 다시 배우세요</h2>
+        <p class="mt-3 text-sm text-slate-200/90 leading-relaxed">
+          당신에게 맞는 커리큘럼은 1:1 상담에서부터 시작됩니다.
+        </p>
+        <div class="mt-7">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-slate-950 hover:bg-slate-200 transition-colors">
+            1:1 상담 신청하기
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="border-t border-slate-200">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 pt-14 pb-8">
+      <p class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">RECODE</p>
+
+      <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-8 border-t border-slate-200 pt-10">
+        <div>
+          <p class="text-sm font-semibold text-slate-900">훈련 코스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#lang" class="hover:text-slate-900 transition-colors">Language</a></li>
+            <li><a href="../index.html#algo" class="hover:text-slate-900 transition-colors">Algorithm</a></li>
+            <li><a href="../index.html#web" class="hover:text-slate-900 transition-colors">Web &amp; WebApp</a></li>
+            <li><a href="../index.html#game" class="hover:text-slate-900 transition-colors">Unity</a></li>
+            <li><a href="../index.html#agent-ai" class="hover:text-slate-900 transition-colors">Agent AI</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">회사</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#philosophy" class="hover:text-slate-900 transition-colors">교육 철학</a></li>
+            <li><a href="../index.html" class="hover:text-slate-900 transition-colors">소개</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">모집</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#cta" class="hover:text-slate-900 transition-colors">1:1 상담 신청</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">리소스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="graffiti.html" class="hover:text-slate-900 transition-colors">원장님의 낙서</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">문의</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 text-center">
+        © 2026 Recode Coding. AI시대 프로그래밍 연구소.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/mobile-menu.js" defer></script>
+  <script>
+    document.querySelectorAll('[data-curriculum-card]').forEach((card) => {
+      const toggle = () => {
+        const expanded = card.getAttribute('data-expanded') === 'true';
+        card.setAttribute('data-expanded', String(!expanded));
+        card.setAttribute('aria-expanded', String(!expanded));
+      };
+      card.addEventListener('click', toggle);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+      card.addEventListener('blur', () => {
+        card.setAttribute('data-expanded', 'false');
+        card.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
+</body>
+</html>

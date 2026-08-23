@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CI/CD (GitHub Actions) — 훈련 코스 | Recode Coding</title>
+<meta name="description" content="빌드·테스트·배포를 자동화해 안정적으로 릴리즈하는 흐름을 훈련하는 CI/CD(GitHub Actions) 코스. 파이프라인 시각화와 1:1 맞춤 커리큘럼을 확인하세요." />
+
+<style>
+  @view-transition { navigation: auto; }
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; background-color: rgba(12,12,15,.95); border-bottom: 1px solid rgba(255,255,255,.1); }
+  header > div:first-child { max-width: 1440px; margin: 0 auto; padding: 0 1.5rem; height: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  header nav { display: flex; align-items: center; gap: 1.5rem; }
+  header #mobile-menu { display: none; }
+  header a { color: #fff; text-decoration: none; }
+  header nav a { color: #94a3b8; }
+  header a[aria-disabled="true"] { color: #64748b; }
+  header nav + a { display: inline-flex; align-items: center; background-color: #18b476; color: #fff; padding: .5rem 1rem; border-radius: 9999px; font-weight: 600; font-size: .875rem; }
+  header span.rounded-lg { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: .5rem; background-color: rgba(24,180,118,.15); color: #3ecf8e; border: 1px solid rgba(24,180,118,.3); }
+  @media (min-width: 768px) { header #mobile-menu-btn { display: none; } }
+  main { padding-top: 4rem; }
+</style>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Pretendard', 'Pretendard Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        },
+        colors: {
+          brand: {
+            50: '#eefdf5',
+            100: '#d5f9e4',
+            200: '#aef1cd',
+            300: '#74e4ad',
+            400: '#3ecf8e',
+            500: '#18b476',
+            600: '#0e9261',
+            700: '#0c7550',
+            800: '#0d5d42',
+            900: '#0c4c38',
+            950: '#052b20',
+          },
+        },
+        boxShadow: {
+          glow: '0 0 60px -15px rgba(62, 207, 142, 0.45)',
+        },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link
+  rel="stylesheet"
+  as="style"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
+/>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-feature-settings: "tnum"; background-color: #FBF7EE; }
+  .cover-art {
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,0.10), transparent 55%),
+      linear-gradient(155deg, var(--from), var(--to));
+  }
+  .curriculum-card {
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .curriculum-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(24, 180, 118, 0.4);
+    box-shadow: 0 16px 32px -18px rgba(15, 23, 42, 0.2);
+  }
+  .filter-tab.is-active {
+    background-color: #0f172a;
+    color: #fff;
+  }
+  .curriculum-detail {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .25s ease;
+  }
+  .curriculum-detail > div {
+    overflow: hidden;
+  }
+  [data-expanded="true"] .curriculum-detail {
+    grid-template-rows: 1fr;
+  }
+  .curriculum-chevron {
+    transition: transform .2s ease;
+  }
+  [data-expanded="true"] .curriculum-chevron {
+    transform: rotate(180deg);
+  }
+  .pipeline-node {
+    transition: background-color .25s ease, border-color .25s ease, color .25s ease;
+  }
+  .pipeline-arrow {
+    transition: background-color .25s ease;
+  }
+  .viz-btn:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+  }
+</style>
+</head>
+
+<body class="text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
+
+  <!-- ===== Header (GNB) ===== -->
+  <header class="fixed top-0 inset-x-0 z-[60] bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 h-16 flex items-center justify-between gap-8">
+      <div class="flex items-center gap-6">
+        <a href="../index.html" class="flex items-center gap-2 font-mono font-semibold tracking-tight text-white">
+          <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400 border border-brand-500/30">R/</span>
+          <span class="hidden sm:inline">Recode Coding</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="hidden md:inline-flex items-center gap-1.5 text-sm text-slate-500 cursor-not-allowed">
+          회사 소개
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+      </div>
+      <div class="hidden md:flex items-center gap-8">
+        <nav class="flex items-center gap-6 text-sm text-slate-400">
+          <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+          <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            LMS
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            business
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            studio
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+        </nav>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-400 transition-colors">
+          1:1 상담 신청
+        </a>
+      </div>
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
+        aria-label="메뉴 열기"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg data-icon="open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-5 w-5">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg data-icon="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="hidden h-5 w-5">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-[#0c0c0f]/95 backdrop-blur">
+      <nav class="flex flex-col px-6 py-4 gap-4 text-sm text-slate-300">
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          회사 소개
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+        <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          LMS
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          business
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          studio
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-brand-500 px-4 py-2 font-semibold text-white hover:bg-brand-400 transition-colors">1:1 상담 신청</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pt-16">
+
+    <!-- ===== 페이지 헤더: 브레드크럼 + 타이틀 ===== -->
+    <section class="mx-auto max-w-4xl px-6 lg:px-8 pt-12">
+      <nav class="flex items-center gap-2 text-sm text-slate-500" aria-label="breadcrumb">
+        <a href="../index.html" class="inline-flex items-center hover:text-slate-900 transition-colors" aria-label="홈">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+        </a>
+        <span>/</span>
+        <span class="text-slate-900 font-medium">CI/CD</span>
+      </nav>
+
+      <div class="mt-6 flex items-end gap-5">
+        <div class="cover-art h-16 w-16 shrink-0 rounded-2xl flex items-center justify-center" style="--from:#fde047;--to:#854d0e">
+          <span class="text-base font-bold text-white font-mono">CI/CD</span>
+        </div>
+        <div>
+          <p class="text-xs font-mono font-semibold text-yellow-700 tracking-wide">WEB &amp; WEBAPP</p>
+          <h1 class="mt-1 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">CI/CD (GitHub Actions)</h1>
+        </div>
+      </div>
+      <p class="mt-5 max-w-2xl text-slate-500 leading-relaxed">
+        코드를 Push하는 순간부터 사용자에게 새 버전이 서비스되기까지, 빌드·테스트·배포가 자동으로 이어지는 흐름을 직접 구성하는 훈련입니다.
+        아래 파이프라인을 직접 재생해보며 각 단계가 실패하면 무슨 일이 일어나는지부터 감을 잡아보세요.
+      </p>
+
+      <div class="mt-8 border-b border-slate-200"></div>
+    </section>
+
+    <!-- ===== 파이프라인 시각화 (보너스) ===== -->
+    <section class="mx-auto max-w-4xl px-6 lg:px-8 mt-10">
+      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6 sm:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <p class="text-xs font-mono font-semibold text-slate-400 tracking-wide">파이프라인 미리보기</p>
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" data-scenario="success" class="scenario-btn filter-tab is-active rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">성공 흐름</button>
+            <button type="button" data-scenario="fail" class="scenario-btn filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">테스트 실패 흐름</button>
+          </div>
+        </div>
+
+        <div id="pipeline-viz" class="mt-6 flex items-center justify-center gap-1 sm:gap-2 overflow-x-auto py-4"></div>
+
+        <p id="pipeline-desc" class="mt-4 min-h-[2.5rem] rounded-lg bg-slate-50 border border-slate-100 px-4 py-2.5 text-sm text-slate-700 leading-relaxed">재생 버튼을 누르거나 다음 단계 버튼으로 파이프라인을 시작하세요.</p>
+
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-2">
+            <button type="button" id="btn-first" class="viz-btn inline-flex h-9 w-9 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm text-sm" aria-label="처음으로">|◀</button>
+            <button type="button" id="btn-prev" class="viz-btn inline-flex h-9 w-9 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm text-sm" aria-label="이전 단계">◀</button>
+            <button type="button" id="btn-play" class="viz-btn inline-flex h-10 w-10 items-center justify-center rounded-full bg-brand-500 hover:bg-brand-400 text-white shadow-sm" aria-label="재생">▶</button>
+            <button type="button" id="btn-next" class="viz-btn inline-flex h-9 w-9 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm text-sm" aria-label="다음 단계">▶</button>
+            <button type="button" id="btn-last" class="viz-btn inline-flex h-9 w-9 items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm text-sm" aria-label="마지막으로">▶|</button>
+          </div>
+          <p id="pipeline-progress" class="text-sm text-slate-400 font-mono">1 / 1</p>
+        </div>
+
+        <div class="mt-5 flex flex-wrap items-center gap-4 text-xs text-slate-500">
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded-full border border-slate-300 bg-white"></span>대기</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded-full border-2 border-amber-400 bg-amber-50"></span>진행 중</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded-full border-2 border-brand-500 bg-brand-50"></span>완료</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded-full border-2 border-rose-400 bg-rose-50"></span>실패 (파이프라인 중단)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Web & WebApp 코스 바로가기 ===== -->
+    <section class="mx-auto max-w-4xl px-6 lg:px-8 mt-10">
+      <nav class="flex flex-wrap items-center gap-2" aria-label="Web & WebApp 코스 바로가기">
+        <a href="web-frontend.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">Frontend</a>
+        <a href="web-backend.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">Backend</a>
+        <a href="web-devops.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">DevOps</a>
+        <a href="web-cicd.html" aria-current="page" class="filter-tab is-active rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">CI/CD</a>
+        <a href="web-fullstack.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">Full-stack 통합 프로젝트</a>
+      </nav>
+
+      <p id="curriculum-count" class="mt-5 text-sm text-slate-500">전체 <span class="font-semibold text-slate-900">12</span>건</p>
+
+      <!-- ===== 커리큘럼 목록 ===== -->
+      <div id="curriculum-list" class="mt-3 flex flex-col gap-3">
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">1. OT — 자동화가 필요한 이유</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">수동 배포의 문제점을 짚고 CI/CD 파이프라인 전체 개요와 12주 로드맵을 확인합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">매번 손으로 빌드·테스트·서버 접속·파일 복사를 반복하다 실수로 잘못된 버전을 배포하는 사고 사례를 살펴보고, 이 모든 과정을 코드로 정의해 자동화하는 CI(지속적 통합)/CD(지속적 배포)의 큰 그림을 먼저 그립니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">2. Git 브랜치 전략</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">main/develop/feature 브랜치 흐름과 PR 기반 협업 방식을 익힙니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">기능마다 별도 브랜치를 파서 작업하고 Pull Request로 리뷰를 거쳐 main에 병합하는 흐름을 직접 실습하며, 어떤 브랜치에 코드가 들어가느냐가 이후 배포 파이프라인의 트리거 조건이 된다는 것을 이해합니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">3. GitHub Actions 기초 문법 (workflow / job / step)</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">이벤트가 파이프라인을 트리거하는 구조와 YAML 문법의 기본 단위를 익힙니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">push나 PR 같은 이벤트가 workflow를 트리거하고, workflow 안의 job들이 step 단위로 순서대로 실행되는 계층 구조를 직접 YAML로 작성하며 확인합니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">4. 자동 빌드와 테스트 파이프라인</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">push할 때마다 빌드·테스트가 자동으로 실행되는 흐름을 직접 구성합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">코드를 Push할 때마다 자동으로 의존성을 설치하고 빌드·테스트가 실행되도록 워크플로를 구성하고, 테스트가 실패하면 PR 병합 자체를 막는 상태 체크(status check)를 연결해봅니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">5. 아티팩트와 캐싱</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">빌드 결과물을 다음 단계로 전달하고 반복 설치를 줄여 파이프라인 속도를 높입니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">Build job에서 만든 결과물을 Deploy job이 다시 받아 쓰도록 아티팩트로 전달하는 방법과, 매번 처음부터 의존성을 설치하지 않도록 캐시를 재사용해 파이프라인 실행 시간을 단축하는 설정을 실습합니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">6. 자동 배포 (CD)</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">테스트를 통과하면 서버로 자동 배포되는 흐름을 구성합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">Test job이 성공했을 때만 Deploy job이 실행되도록 job 간 의존 관계(needs)를 설정하고, SSH나 클라우드 CLI로 실제 서버에 새 코드를 반영하는 배포 스텝을 작성합니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">7. 환경별 배포 전략 (dev / staging / prod)</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">브랜치·태그에 따라 서로 다른 환경으로 배포되도록 분기합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">develop 브랜치는 개발 서버로, main 브랜치는 운영 서버로 자동 배포되도록 조건을 분기하고, 각 환경마다 다른 환경변수·시크릿을 안전하게 주입하는 방법을 다룹니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">8. 무중단 배포와 롤백</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">배포 중 서비스가 끊기지 않게 하는 전략과, 실패 시 되돌리는 방법을 다룹니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">새 버전과 이전 버전을 동시에 띄워둔 채 트래픽을 서서히 옮기는 방식으로 서비스 중단 없이 배포하는 개념을 다루고, 배포 직후 문제가 발견됐을 때 이전 버전으로 즉시 되돌리는 롤백 스텝을 파이프라인에 준비해둡니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">9. 시크릿과 배포 권한 관리</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">CI 환경에서 민감 정보를 안전하게 다루는 방법을 익힙니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">배포에 필요한 서버 키·API 토큰을 워크플로 파일에 직접 적지 않고 저장소의 암호화된 Secrets에 등록해 참조하는 방법을 익히고, 어떤 브랜치·환경에서만 배포 권한을 허용할지 접근 범위를 좁히는 원칙을 다룹니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-sky-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="practice" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">10. 알림과 배포 가시성</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">배포 성공·실패를 팀에 실시간으로 공유하는 흐름을 구성합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">파이프라인이 끝났을 때 Slack이나 이메일로 성공·실패 결과를 자동으로 알리는 스텝을 추가해, 배포가 "조용히" 일어나지 않고 팀 전체가 항상 현재 배포 상태를 알 수 있도록 가시성을 확보합니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20 cursor-pointer" data-curriculum-card data-category="project" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">11. 파이프라인 최적화</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">병렬 실행과 캐시 전략으로 빌드 시간을 단축합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">서로 의존하지 않는 job(예: 린트와 유닛 테스트)을 병렬로 실행해 전체 파이프라인 시간을 줄이고, 어떤 캐시 전략이 가장 효과적인지 실제 실행 시간을 비교하며 최적화 감각을 기릅니다.</p>
+          </div></div>
+        </div>
+
+        <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20 cursor-pointer" data-curriculum-card data-category="project" role="button" tabindex="0" aria-expanded="false">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-900">12. 미니 프로젝트 — 나만의 CI/CD 파이프라인 구축</p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">지금까지 만든 프로젝트에 실제로 자동 빌드·테스트·배포 파이프라인을 연결합니다</p>
+            </div>
+            <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="curriculum-detail"><div>
+            <p class="mt-3 pt-3 border-t border-slate-100 text-sm text-slate-500 leading-relaxed">12주 동안 배운 브랜치 전략·자동 테스트·환경별 배포·롤백을 하나로 엮어, 직접 만든 프로젝트에 Push 한 번으로 빌드부터 배포까지 이어지는 실제 파이프라인을 처음부터 구축합니다.</p>
+          </div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="mx-auto max-w-4xl px-6 lg:px-8 py-16">
+      <div class="rounded-2xl border border-brand-900/40 bg-gradient-to-br from-brand-600 via-brand-800 to-brand-950 p-10 sm:p-12 text-center">
+        <p class="text-xs font-mono font-semibold text-brand-200 tracking-wide">1:1 정원제 · 상시 모집</p>
+        <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white tracking-tight">CI/CD, 데이터 흐름의 눈으로 다시 배우세요</h2>
+        <p class="mt-3 text-sm text-slate-200/90 leading-relaxed">
+          당신에게 맞는 커리큘럼은 1:1 상담에서부터 시작됩니다.
+        </p>
+        <div class="mt-7">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-slate-950 hover:bg-slate-200 transition-colors">
+            1:1 상담 신청하기
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="border-t border-slate-200">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 pt-14 pb-8">
+      <p class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">RECODE</p>
+
+      <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-8 border-t border-slate-200 pt-10">
+        <div>
+          <p class="text-sm font-semibold text-slate-900">훈련 코스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#lang" class="hover:text-slate-900 transition-colors">Language</a></li>
+            <li><a href="../index.html#algo" class="hover:text-slate-900 transition-colors">Algorithm</a></li>
+            <li><a href="../index.html#web" class="hover:text-slate-900 transition-colors">Web &amp; WebApp</a></li>
+            <li><a href="../index.html#game" class="hover:text-slate-900 transition-colors">Unity</a></li>
+            <li><a href="../index.html#agent-ai" class="hover:text-slate-900 transition-colors">Agent AI</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">회사</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#philosophy" class="hover:text-slate-900 transition-colors">교육 철학</a></li>
+            <li><a href="../index.html" class="hover:text-slate-900 transition-colors">소개</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">모집</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#cta" class="hover:text-slate-900 transition-colors">1:1 상담 신청</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">리소스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="graffiti.html" class="hover:text-slate-900 transition-colors">원장님의 낙서</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">문의</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 text-center">
+        © 2026 Recode Coding. AI시대 프로그래밍 연구소.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/mobile-menu.js" defer></script>
+  <script>
+    document.querySelectorAll('[data-curriculum-card]').forEach((card) => {
+      const toggle = () => {
+        const expanded = card.getAttribute('data-expanded') === 'true';
+        card.setAttribute('data-expanded', String(!expanded));
+        card.setAttribute('aria-expanded', String(!expanded));
+      };
+      card.addEventListener('click', toggle);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+      card.addEventListener('blur', () => {
+        card.setAttribute('data-expanded', 'false');
+        card.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
+
+  <!-- ===== 파이프라인 시각화 스크립트 ===== -->
+  <script>
+    (function () {
+      const STAGES = ['Push', 'Build', 'Test', 'Deploy', 'Live'];
+
+      const state = { steps: [], stepIndex: 0, playing: false, timer: null };
+
+      const vizEl = document.getElementById('pipeline-viz');
+      const descEl = document.getElementById('pipeline-desc');
+      const progressEl = document.getElementById('pipeline-progress');
+      const btnFirst = document.getElementById('btn-first');
+      const btnPrev = document.getElementById('btn-prev');
+      const btnPlay = document.getElementById('btn-play');
+      const btnNext = document.getElementById('btn-next');
+      const btnLast = document.getElementById('btn-last');
+
+      function buildSteps(scenario) {
+        const status = STAGES.map(() => 'pending');
+        const steps = [];
+        const snap = (desc) => steps.push({ status: status.slice(), desc });
+
+        snap('재생 버튼을 누르거나 다음 단계 버튼으로 파이프라인을 시작하세요.');
+
+        status[0] = 'active'; snap('코드를 원격 저장소로 Push합니다 — 파이프라인이 트리거됩니다.'); status[0] = 'done';
+        status[1] = 'active'; snap('Build 단계 — 의존성을 설치하고 애플리케이션을 빌드합니다.'); status[1] = 'done';
+        status[2] = 'active'; snap('Test 단계 — 자동화된 테스트를 실행합니다.');
+
+        if (scenario === 'fail') {
+          status[2] = 'failed';
+          snap('테스트 실패! 파이프라인이 중단되고 배포가 자동으로 취소됩니다 — 실패한 코드는 Live에 반영되지 않습니다.');
+          return steps;
+        }
+
+        status[2] = 'done';
+        status[3] = 'active'; snap('Deploy 단계 — 테스트를 통과한 코드를 서버에 배포합니다.'); status[3] = 'done';
+        status[4] = 'active'; snap('Live — 배포가 완료되어 사용자에게 새 버전이 서비스됩니다.'); status[4] = 'done';
+        snap('파이프라인이 성공적으로 완료됐습니다 — Push부터 Live까지 전부 자동으로 처리됐습니다.');
+
+        return steps;
+      }
+
+      function renderPipeline(status) {
+        vizEl.innerHTML = '';
+        STAGES.forEach((label, i) => {
+          if (i > 0) {
+            const prevDone = status[i - 1] === 'done';
+            const arrow = document.createElement('div');
+            arrow.className = 'pipeline-arrow shrink-0 h-1 w-6 sm:w-10 rounded-full ' + (prevDone ? 'bg-brand-400' : 'bg-slate-200');
+            vizEl.appendChild(arrow);
+          }
+
+          const st = status[i];
+          const node = document.createElement('div');
+          node.className = 'pipeline-node shrink-0 flex flex-col items-center justify-center rounded-full h-16 w-16 sm:h-20 sm:w-20 border-2 font-mono text-xs sm:text-sm font-semibold text-center ' + (
+            st === 'active' ? 'bg-amber-50 border-amber-400 text-amber-700' :
+            st === 'done' ? 'bg-brand-50 border-brand-500 text-brand-800' :
+            st === 'failed' ? 'bg-rose-50 border-rose-400 text-rose-700' :
+            'bg-white border-slate-200 text-slate-500'
+          );
+          node.textContent = label;
+          vizEl.appendChild(node);
+        });
+      }
+
+      function render() {
+        const step = state.steps[state.stepIndex];
+        renderPipeline(step.status);
+        descEl.textContent = step.desc;
+        progressEl.textContent = `${state.stepIndex + 1} / ${state.steps.length}`;
+
+        const atStart = state.stepIndex === 0;
+        const atEnd = state.stepIndex === state.steps.length - 1;
+        btnFirst.disabled = atStart;
+        btnPrev.disabled = atStart;
+        btnNext.disabled = atEnd;
+        btnLast.disabled = atEnd;
+        if (atEnd && state.playing) pause();
+      }
+
+      function goTo(index) {
+        state.stepIndex = Math.max(0, Math.min(state.steps.length - 1, index));
+        render();
+      }
+
+      function updatePlayButton() {
+        btnPlay.textContent = state.playing ? '❚❚' : '▶';
+        btnPlay.setAttribute('aria-label', state.playing ? '일시정지' : '재생');
+      }
+
+      function play() {
+        if (state.stepIndex >= state.steps.length - 1) state.stepIndex = 0;
+        state.playing = true;
+        updatePlayButton();
+        clearInterval(state.timer);
+        state.timer = setInterval(() => {
+          if (state.stepIndex >= state.steps.length - 1) {
+            pause();
+            return;
+          }
+          state.stepIndex++;
+          render();
+        }, 700);
+      }
+
+      function pause() {
+        state.playing = false;
+        clearInterval(state.timer);
+        updatePlayButton();
+      }
+
+      function loadScenario(scenario) {
+        pause();
+        state.steps = buildSteps(scenario);
+        state.stepIndex = 0;
+        render();
+      }
+
+      btnFirst.addEventListener('click', () => goTo(0));
+      btnPrev.addEventListener('click', () => goTo(state.stepIndex - 1));
+      btnNext.addEventListener('click', () => goTo(state.stepIndex + 1));
+      btnLast.addEventListener('click', () => goTo(state.steps.length - 1));
+      btnPlay.addEventListener('click', () => (state.playing ? pause() : play()));
+
+      document.querySelectorAll('.scenario-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.scenario-btn').forEach((b) => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          loadScenario(btn.dataset.scenario);
+        });
+      });
+
+      loadScenario('success');
+    })();
+  </script>
+</body>
+</html>
