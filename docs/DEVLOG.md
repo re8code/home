@@ -343,3 +343,9 @@
   - Swiper 공통 옵션에 `watchOverflow: true` 추가 — 슬라이드 수가 화면에 보이는 개수 이하면 Swiper가 자동으로 nextEl/prevEl에 `swiper-button-disabled` 클래스를 부여, `.nav-arrow.swiper-button-disabled { opacity:.35; cursor:not-allowed; pointer-events:none }` CSS로 시각적으로도 비활성화. 전역 옵션이라 Unity/Agent AI(카드 4개 고정)도 화면이 넓어 4장이 모두 보이면 nav가 함께 비활성화됨(의도된 부수 효과).
   - 검증: HTML 태그 밸런스 통과, claude-in-chrome 연결이 여전히 안 돼 헤드리스 Chrome(`--headless=new --screenshot`)으로 대체 확인 — 1440px에서 Language·Web & WebApp 5장 전부 노출 시 nav 회색 비활성화, 500px(Chrome headless 최소 창 폭 제약으로 이보다 좁게는 안 됨)에서 2장만 보이고 nav 활성화 + pagination 3점 정상 확인.
   - `report/task & bug/bug-report-01.md`(체크리스트 완료 표시), `CLAUDE.md`(Algorithm/Web & WebApp 섹션 항목에 반영 내역 추가)에 반영.
+- 사용자 재제보(두 번째 아이폰 스크린샷) — "여전히 문제가 있어 보인다"(배너 CTA가 하단에서 잘려 보임) + "첫번째 레이어 타이틀은 2줄로 삐져나오고 있다"(배너 다음 h2 "AI 시대, 진짜 대학생활을 위한 코딩 컨설팅"이 "컨설"+"팅"으로 단어 중간이 끊겨 2번째 줄에 "팅" 한 글자만 남음).
+  - 배너 CTA: v0.34에서 겹침은 없앴지만 배너가 여전히 `aspect-[7/3]`(모바일 높이 ~163px)라 텍스트+CTA+패딩을 다 담기엔 공간 자체가 부족해 CTA가 배너 바닥 아래로 밀려나 `overflow-hidden`에 잘려 있었음 — `aspect-[7/3]` → `aspect-[4/3] sm:aspect-[7/3]`로 640px 미만에서만 배너를 더 세로로 길게 만들어 여유 공간 확보(`sm:` 이상은 기존 그대로 유지, 데스크톱 렌더링 영향 없음).
+  - 타이틀 줄바꿈: h2에 `break-keep`(`word-break: keep-all`) 추가 — 전체를 한 줄로 강제하는 대신, wrap이 일어나도 항상 단어 경계에서만 끊기도록 수정(2줄 자체는 허용).
+  - 검증: HTML 태그 밸런스 통과, claude-in-chrome 연결 안 됨 → 헤드리스 Chrome(`--window-size=500,1100`/`700,500`/`1440,900`)으로 모바일·sm 경계·데스크톱 3구간 전부 스크린샷 확인 — 500px에서 CTA 전체 노출(잘림 없음)·타이틀 1줄, 700px·1440px 데스크톱은 기존과 동일하게 렌더링됨을 확인.
+  - `CLAUDE.md`(배너 CTA 위치 항목에 후속 버그 기록, 배너 다음 레이어 항목에 줄바꿈 버그 기록)에 반영.
+- v0.36을 dev에 커밋·푸시, main 병합 — 배너 CTA 하단 잘림 + 타이틀 단어 중간 줄바꿈 버그 수정.
