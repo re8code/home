@@ -151,23 +151,25 @@
       <div id="about-banner" class="relative rounded-2xl overflow-hidden aspect-[7/3] border border-brand-900/40">
         <img src="../assets/image/about-banner.jpg" alt="숲 전망 코워킹 공간에서 노트북으로 작업하는 모습" class="absolute inset-0 h-full w-full object-cover" />
         <div id="about-banner-scene" class="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/45 to-slate-950/10">
-          <div class="absolute inset-0 flex flex-col justify-center p-8 sm:p-14 max-w-2xl">
-            <p class="text-xs font-mono font-semibold text-brand-300 tracking-wide">ABOUT US</p>
-            <h1 class="mt-4 text-3xl sm:text-5xl font-bold tracking-tight text-white !leading-[1.25]">
-              신입이 아니라,<br />
-              <span class="text-brand-300 text-4xl sm:text-6xl">시니어</span>로 성장시킵니다.
-            </h1>
+          <div class="absolute inset-0 flex flex-col p-8 sm:p-14">
+            <div class="max-w-2xl">
+              <p class="text-xs font-mono font-semibold text-brand-300 tracking-wide">ABOUT US</p>
+              <h1 class="mt-4 text-3xl sm:text-5xl font-bold tracking-tight text-white !leading-[1.25]">
+                신입이 아니라,<br />
+                <span class="text-brand-300 text-4xl sm:text-6xl">시니어</span>로 성장시킵니다.
+              </h1>
+            </div>
+            <!-- CTA: 텍스트와 겹치지 않도록 flex column + mt-auto로 배너 하단에 고정(사진 우측 하단 워터마크와도 가까운 위치) -->
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header"
+              target="_blank"
+              rel="noopener"
+              class="mt-auto self-end inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg hover:bg-slate-200 transition-colors"
+            >
+              대학생 컨설팅 신청
+            </a>
           </div>
         </div>
-        <!-- CTA: 사진 우측 하단의 워터마크(반투명 스파클 아이콘)를 덮는 위치에 겹쳐 배치 -->
-        <a
-          href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header"
-          target="_blank"
-          rel="noopener"
-          class="absolute right-6 bottom-14 sm:right-10 sm:bottom-20 inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg hover:bg-slate-200 transition-colors"
-        >
-          대학생 컨설팅 신청
-        </a>
       </div>
     </section>
 
