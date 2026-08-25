@@ -364,3 +364,4 @@
 - 사용자 질문 — "GNB에서 studio에 URL 연결할 수 있지?": 가능함을 확인(단순 `href="#"` + `aria-disabled` + "준비중" 뱃지 구조라 다른 활성 링크와 동일한 패턴으로 교체하면 됨).
 - 사용자 지시 — "studio는 https://recodemate-mjrkgnh2vq-du.a.run.app/ 로 연결해줘": 30개 페이지(GNB를 공유하는 전체 페이지) 전부의 데스크톱·모바일 nav에서 studio 링크를 "준비중" 비활성 링크에서 `target="_blank" rel="noopener"` 외부 활성 링크로 전환(정규식 기반 일괄 치환, 60곳=2×30). LMS/business는 여전히 "준비중" 상태로 유지.
 - `CLAUDE.md`(GNB 항목)에 studio 활성화 내역 반영.
+- 사용자 지시 — "GNB 우측 상단에 'studio' 메뉴 링크를 'mate.recode.ai.kr'로 변경해 줘": 커스텀 도메인 연결 완료로 studio 링크를 Cloud Run 기본 URL(`https://recodemate-mjrkgnh2vq-du.a.run.app/`)에서 `https://mate.recode.ai.kr`로 교체(30개 페이지 60곳 일괄 치환, `target="_blank" rel="noopener"` 패턴은 그대로 유지). `CLAUDE.md`(GNB 항목)에 반영.
