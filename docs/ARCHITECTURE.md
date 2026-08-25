@@ -42,7 +42,7 @@ graph TD
 
 ## 3. 프론트엔드 구조 (이 저장소)
 
-공유 컴포넌트나 템플릿 시스템이 없다 — 각 `.html`이 완전히 독립된 페이지이며, Tailwind 설정(`brand` 컬러, Pretendard 폰트 등)이 페이지마다 `<script>tailwind.config = {...}</script>` 블록으로 중복 정의되어 있다. `index.html`만 저장소 루트, 나머지는 전부 `src/`(GitHub Pages branch 배포가 `/root` 또는 `/docs`만 지원하기 때문 — §2 참고).
+공유 컴포넌트나 템플릿 시스템이 없다 — 각 `.html`이 완전히 독립된 페이지고, GNB 마크업·섹션 콘텐츠는 여전히 페이지마다 복제된다. 다만 Tailwind 설정(`brand` 컬러, Pretendard 폰트 등)과 GNB critical CSS는 2026-08-26부터 `assets/js/tailwind-config.js`·`assets/css/base.css`로 분리해 30개 페이지가 참조만 한다 — 형제 저장소 `../business`가 프로젝트 상세 페이지 N장을 만들며 같은 문제(정적 HTML 복제)를 이 방식으로 푼 패턴을 그대로 가져왔다(`CLAUDE.md` 참고). `index.html`만 저장소 루트, 나머지는 전부 `src/`(GitHub Pages branch 배포가 `/root` 또는 `/docs`만 지원하기 때문 — §2 참고).
 
 | 페이지 | 역할 | 비고 |
 | --- | --- | --- |

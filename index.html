@@ -10,52 +10,10 @@
 <link rel="icon" href="assets/image/favicon.ico?v=1" sizes="any" />
 <link rel="apple-touch-icon" href="assets/image/apple-touch-icon.png?v=1" />
 
-<style>
-  @view-transition { navigation: auto; }
-  header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; background-color: rgba(12,12,15,.95); border-bottom: 1px solid rgba(255,255,255,.1); }
-  header > div:first-child { max-width: 1440px; margin: 0 auto; padding: 0 1.5rem; height: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
-  header nav { display: flex; align-items: center; gap: 1.5rem; }
-  header #mobile-menu.hidden { display: none; }
-  header a { color: #fff; text-decoration: none; }
-  header nav a { color: #94a3b8; }
-  header a[aria-disabled="true"] { color: #64748b; }
-  header nav + a { display: inline-flex; align-items: center; background-color: #18b476; color: #fff; padding: .5rem 1rem; border-radius: 9999px; font-weight: 600; font-size: .875rem; }
-  header span.rounded-lg { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: .5rem; background-color: rgba(24,180,118,.15); color: #3ecf8e; border: 1px solid rgba(24,180,118,.3); }
-  @media (min-width: 768px) { header #mobile-menu-btn { display: none; } }
-  main { padding-top: 4rem; }
-</style>
+<link rel="stylesheet" href="/assets/css/base.css" />
 
 <script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        fontFamily: {
-          sans: ['Pretendard', 'Pretendard Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-          mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
-        },
-        colors: {
-          brand: {
-            50: '#eefdf5',
-            100: '#d5f9e4',
-            200: '#aef1cd',
-            300: '#74e4ad',
-            400: '#3ecf8e',
-            500: '#18b476',
-            600: '#0e9261',
-            700: '#0c7550',
-            800: '#0d5d42',
-            900: '#0c4c38',
-            950: '#052b20',
-          },
-        },
-        boxShadow: {
-          glow: '0 0 60px -15px rgba(62, 207, 142, 0.45)',
-        },
-      },
-    },
-  };
-</script>
+<script src="/assets/js/tailwind-config.js"></script>
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" />
 <link

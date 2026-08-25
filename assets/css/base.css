@@ -1,0 +1,18 @@
+/* GNB(전역 내비게이션) critical CSS — 30개 페이지가 공유하는 정본.
+   Tailwind가 CDN 런타임 스크립트라 로드 전까지 유틸리티 클래스가 전혀 적용되지 않는데,
+   그 사이에 헤더가 스타일 없는 상태로 잠깐 보이는 깜빡임을 막기 위해 헤더 최종 렌더링과
+   동일한 값을 순수 CSS로 미리 적용해둔다(Tailwind 로드 후 재적용될 뿐 시각적 변화 없음).
+   <link>는 <script> 인라인과 마찬가지로 렌더 블로킹이라 깜빡임 방지 효과는 동일하다. */
+
+@view-transition { navigation: auto; }
+header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; background-color: rgba(12,12,15,.95); border-bottom: 1px solid rgba(255,255,255,.1); }
+header > div:first-child { max-width: 1440px; margin: 0 auto; padding: 0 1.5rem; height: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+header nav { display: flex; align-items: center; gap: 1.5rem; }
+header #mobile-menu.hidden { display: none; }
+header a { color: #fff; text-decoration: none; }
+header nav a { color: #94a3b8; }
+header a[aria-disabled="true"] { color: #64748b; }
+header nav + a { display: inline-flex; align-items: center; background-color: #18b476; color: #fff; padding: .5rem 1rem; border-radius: 9999px; font-weight: 600; font-size: .875rem; }
+header span.rounded-lg { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: .5rem; background-color: rgba(24,180,118,.15); color: #3ecf8e; border: 1px solid rgba(24,180,118,.3); }
+@media (min-width: 768px) { header #mobile-menu-btn { display: none; } }
+main { padding-top: 4rem; }
