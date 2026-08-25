@@ -140,6 +140,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 경로 규칙: `src/` 안의 페이지끼리는 같은 디렉터리이므로 파일명만으로 링크(`href="graffiti.html"` 등)하고, 루트(`index.html`)나 `assets/`를 가리킬 때는 반드시 `../`를 붙인다(`href="../index.html"`, `src="../assets/js/mobile-menu.js"`). `assets/js/*.js` 파일끼리의 상호 import(`from './firebase-config.js'` 등)는 위치가 바뀌지 않았으므로 그대로 둔다.
 - 모든 페이지 하단에서 `assets/js/mobile-menu.js`(루트에서 상대경로, `src/` 페이지는 `../assets/js/mobile-menu.js`)를 `defer`로 로드해 모바일 내비게이션 토글(`#mobile-menu-btn` / `#mobile-menu`)을 처리한다.
 - `assets/image/` — 외부에서 가져온 로고·아이콘 등 이미지 리소스(예: `index.html` Language 카드의 언어별 로고 PNG, Web & WebApp 카드의 React/Node.js/Docker/GitHub Actions SVG 로고). 각 파일의 출처·라이선스는 도입 시점의 `report/*.md`에 기록되어 있으니, 재배포 범위를 확인하려면 해당 보고서를 참고한다.
+- **favicon**(2026-08-25): 형제 저장소 `../business`(`recode-ai/business`, 별도 Next.js 프로젝트)에서 이미 제작해 쓰고 있던 `favicon.ico`(16/32px 포함)·`apple-touch-icon.png`(180×180, iOS용 흰 배경 합성)를 그대로 가져와 `assets/image/favicon.ico`·`assets/image/apple-touch-icon.png`로 배치, 30개 페이지 전부의 `<head>`(`<meta name="description">` 바로 다음)에 `<link rel="icon" href="assets/image/favicon.ico?v=1" sizes="any" />`(`src/` 페이지는 `../assets/image/...`)·`<link rel="apple-touch-icon" ...>` 두 줄을 동일하게 추가했다. `?v=1` 쿼리는 캐시 무효화용 — Chrome은 파비콘을 일반 HTTP 캐시와 별개인 프로필 DB에 보관해 새로고침으로 갱신되지 않으므로, 파비콘 파일을 교체할 때는 반드시 이 숫자를 올려야 기존 방문자에게도 반영된다(30개 파일 전부 값을 맞춰 올려야 함). 이전까지 이 저장소엔 favicon이 전혀 없었다.
 
 ## Firebase 연동 (`assets/js/`)
 
