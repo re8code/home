@@ -2,7 +2,7 @@
 
 이 문서는 "Recode Coding" 서비스 전체(이 저장소 + 외부 연동 서브도메인)의 아키텍처를 정리한다. 구조가 바뀔 때마다(신규 서브도메인 오픈, 백엔드 교체, 배포 방식 변경 등) 이 문서를 함께 갱신한다. 특정 시점의 상세 작업 근거는 `../report/*.md`, 요구사항 변화는 `PRD.md`/`DEV_PLAN.md`(같은 `docs/` 폴더)를 참고.
 
-- 최종 갱신: 2026-08-23 (Web & WebApp 코스 5개 상세 페이지 완성 — `src/web-frontend.html` 등, Web & WebApp 코스 5종 전부 완료)
+- 최종 갱신: 2026-08-26 (GNB "business" 링크 활성화 — `business-1e563.web.app`)
 
 ## 1. 한눈에 보기
 
@@ -28,8 +28,8 @@ graph TD
 
   Index -- "새 탭 링크" --> OJ["oj.recode.ai.kr\nOnline Judge (wonoj)\n별도 프로젝트, 연동 완료"]
   Index -. "준비중 배지, 추후 링크 활성화" .-> LMS["lms.recode.ai.kr\nLMS 인강\n별도 프로젝트, 개발 중"]
-  Index -. "준비중 배지, 추후 링크 활성화" .-> Business["business.recode.ai.kr\n프로젝트 의뢰\n별도 프로젝트, 예정"]
-  Index -. "준비중 배지, 추후 링크 활성화" .-> Studio["studio.recode.ai.kr\n오프라인 수업 예약·수강권\n별도 프로젝트, 예정"]
+  Index -- "새 탭 링크" --> Business["business-1e563.web.app\n프로젝트 의뢰\n별도 프로젝트, 연동 완료(커스텀 도메인 연결 전)"]
+  Index -- "새 탭 링크" --> Studio["mate.recode.ai.kr\n오프라인 수업 예약·수강권\n별도 프로젝트, 연동 완료"]
 ```
 
 ## 2. 배포 아키텍처
@@ -82,12 +82,12 @@ graph TD
 
 `recode.ai.kr` 하위 4개 서브도메인은 각각 **별도 프로젝트로 독립 개발**되며, 이 저장소는 그 링크만 연결한다(코드/배포를 이 저장소에서 관리하지 않음).
 
-| 서브도메인 | 용도 | 상태 (2026-08-22 기준) |
+| 서브도메인 | 용도 | 상태 (2026-08-26 기준) |
 | --- | --- | --- |
 | `oj.recode.ai.kr` (wonoj) | Online Judge | 개발 완료, `index.html` 헤더에 실제 링크 연결됨(새 탭) |
 | `lms.recode.ai.kr` | LMS 인강 | 별도 프로젝트로 개발 중, 헤더에 "준비중" 배지 + 비활성 링크 |
-| `business.recode.ai.kr` | 프로젝트 의뢰 | 별도 프로젝트 예정, "준비중" 배지 + 비활성 링크 |
-| `studio.recode.ai.kr` | 오프라인 수업 예약·수강권 관리 | 별도 프로젝트 예정, "준비중" 배지 + 비활성 링크 |
+| `business-1e563.web.app`(→ 추후 `business.recode.ai.kr`) | 프로젝트 의뢰 | 별도 프로젝트, 2026-08-26 헤더 링크 활성화(새 탭) — 아직 Firebase 기본 도메인, 커스텀 도메인 연결 전 |
+| `mate.recode.ai.kr` (studio) | 오프라인 수업 예약·수강권 관리 | 별도 프로젝트, 2026-08-25 헤더 링크 활성화(새 탭), 커스텀 도메인 연결 완료 |
 
 서브도메인이 실제로 오픈되면 이 저장소에서 할 일은 "준비중" 배지 제거 + 실제 링크로 교체뿐이다(`PRD.md` §8 미결 사항 참고).
 
