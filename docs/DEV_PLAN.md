@@ -1,9 +1,10 @@
 # DEV_PLAN.md — 개발 계획
 
-`PRD.md`의 범위를 어떻게 구현할지에 대한 기술적 계획. 상세 요구사항은 `PRD.md`, 철학적 배경은 `NEED.md` 참고.
+`PRD.md`의 범위를 어떻게 구현할지에 대한 기술적 계획. 상세 요구사항은 `PRD.md`, 철학적 배경은 `../tasks/Philosophy.md` 참고(구 `NEED.md` — v0.13에서 이름·위치 변경).
 
 ## 1. 기술 스택
-- **유지**: 빌드 도구 없는 정적 HTML, Tailwind CDN, Vanilla JS ES Module. 페이지 규모(5~7개) 대비 빌드 파이프라인 도입은 과함 — GitHub Pages 루트 배포와의 궁합도 그대로 유지.
+- **유지**: 빌드 도구 없는 정적 HTML, Tailwind CDN, Vanilla JS ES Module. 빌드 파이프라인 도입은 여전히 과하다고 보고 유지 — GitHub Pages 루트 배포와의 궁합도 그대로. (계획 수립 당시 5~7개였던 페이지가 2026-08-26 기준 **30개**로 늘었지만, 아래 공통 자산 분리로 중복 유지보수 부담을 덜어 판단은 유지.)
+- **공통 자산 분리 (2026-08-26 결정·적용, `PRD.md` §7이 이 문서에 위임한 결정)**: 페이지마다 byte-identical하게 복제되던 Tailwind config(~40줄)와 GNB critical CSS(~14줄)만 `assets/js/tailwind-config.js`·`assets/css/base.css`로 빼고 30개 페이지가 절대경로(`/assets/...`)로 참조한다. 형제 저장소 `../business`가 같은 문제를 푼 패턴을 그대로 채택(명명까지 동일). HTML 마크업(GNB·푸터) 자체의 복제는 빌드 도구 없이는 불가피하다고 인정하고 유지 — 페이지가 더 크게 늘면 그때 SSG 도입을 재검토.
   - Tailwind CDN 런타임 방식의 알려진 트레이드오프: 스크립트가 로드·실행되기 전까지 유틸리티 클래스가 전혀 적용되지 않아 페이지 이동마다 짧은 FOUC(특히 `fixed` GNB가 접히는 흔들림)가 생긴다(2026-08-22 발견, 같은 날 해결 확인). 빌드 도구 없이 이 문제를 완화하기 위해, 헤더/`main` 레이아웃만 Tailwind와 무관한 순수 CSS로 Tailwind `<script>`보다 앞에 critical 스타일을 추가하고, 정적 다중 페이지 특유의 새로고침/전환 끊김에는 CSS View Transitions(`@view-transition { navigation: auto; }`)를 추가 — 사용자가 하드 리프레시로 최종 확인함(상세: `../CLAUDE.md` GNB 항목, `DEVLOG.md`). 근본적으로 FOUC 자체를 없애려면 정적 컴파일(빌드 도구 도입)이 필요하지만, 위 대응으로 체감 가능한 흔들림은 해소됨 — 페이지 수가 크게 늘어나 다시 부담되면 그때 빌드 도구 도입을 재검토.
 - **신규 도입**: Swiper(캐러셀)와 AOS(스크롤 진입 애니메이션) — 둘 다 `mockup.html`에서 시안으로 검증한 뒤 `index.html`에 그대로 채택(2026-08-22). GSAP은 애초 계획에 있었으나 Swiper와의 타이밍 이슈·무게 때문에 AOS로 대체하기로 확정, 도입하지 않음.
 - **디자인 도구**: `design` 스킬(Artifact 캔버스)로 목업 스케치. Figma MCP는 `figma@claude-plugins-official` 플러그인(project scope, `.claude/settings.json`의 `enabledPlugins`로 관리 — git 동기화됨)으로 연결 완료(2026-08-21), 인증도 완료된 상태.
@@ -15,16 +16,16 @@
 
 ## 3. 단계별 계획
 
-### Phase 0 — 기획 (현재 단계)
+### Phase 0 — 기획 (완료, 2026-08-21)
 - `PRD.md`, `DEV_PLAN.md` 작성.
 - `design` 스킬로 `index.html` 허브 목업 스케치.
 
 ### Phase 1 — `index.html` 허브 재설계 (완료, 2026-08-22)
 - 5갈래 내비게이션 구조 반영 (OJ/낙서장/LMS/프로젝트 의뢰/오프라인 문의) — 완료.
-- 히어로·철학 섹션 재작성: 애초 계획은 `NEED.md`의 3대 기둥 구조를 텍스트 중심 히어로로 재작성하는 방향이었으나, 실제로는 `mockup.html`에서 검증한 "코스 카테고리 히어로(Language/Algorithm/Web & WebApp/Unity/Agent AI 자동 전환 배너) + 압축된 핵심 철학 섹션 + CTA" 구성을 최종안으로 채택. `mockup.html` 내용을 `index.html`로 옮기고 `mockup.html`은 삭제(상세: `../report/2026-08-22-index-adopt-mockup.md`).
+- 히어로·철학 섹션 재작성: 애초 계획은 `../tasks/Philosophy.md`(구 `NEED.md`)의 3대 기둥 구조를 텍스트 중심 히어로로 재작성하는 방향이었으나, 실제로는 `mockup.html`에서 검증한 "코스 카테고리 히어로(Language/Algorithm/Web & WebApp/Unity/Agent AI 자동 전환 배너) + 압축된 핵심 철학 섹션 + CTA" 구성을 최종안으로 채택. `mockup.html` 내용을 `index.html`로 옮기고 `mockup.html`은 삭제(상세: `../report/2026-08-22-index-adopt-mockup.md`).
 - Swiper(캐러셀)/AOS(스크롤 애니메이션) 적용 완료, GSAP은 채택하지 않음.
 
-### Phase 2 — 낙서장 톤 조정
+### Phase 2 — 낙서장 톤 조정 (미착수 — 헤더만 선반영)
 - `graffiti*.html`의 디자인 톤을 새 브랜드 톤에 맞춰 조정 (Firestore CRUD 로직은 변경하지 않음).
 - 헤더는 2026-08-22 GNB 통일 작업으로 선반영 완료 — `index.html`과 완전히 동일한 마크업으로 교체(페이지별 커스텀 nav 제거). 포지셔닝은 같은 날 `fixed`→`sticky`→다시 `fixed`로 두 번 전환(스크롤 당길 때 오버스크롤 바운스에 흔들리지 않도록 `fixed`로 최종 확정, `<main>`에 `pt-16` 오프셋 필요). 본문(카드 리스트·푸터 등)의 톤 조정은 아직 남은 작업.
 
@@ -32,7 +33,7 @@
 - `index.html` Language 카드 클릭 시 이동하는 개별 언어 페이지(과거에는 `mockup.html`의 카드였으나, `mockup.html`이 `index.html`로 흡수되며 이제 `index.html`의 카드). 커리큘럼 목록 UI는 korea-pass.kr 공지사항 목록 페이지(`/notice/noticeList.do`)를 벤치마크(브레드크럼+타이틀 + 언어 바로가기 탭 + 뱃지·메타·제목 카드 리스트) — 검색창과 "더보기" 페이지네이션은 이후 제거되어 12개 카드를 처음부터 전부 노출.
 - `src/lang-cp.html`(C/C++)을 템플릿으로 `src/lang-jv.html`(Java)/`src/lang-py.html`(Python)/`src/lang-js.html`(JavaScript)/`src/lang-dt.html`(Dart)까지 5개 페이지 전부 제작 완료. 각 페이지 상단 언어 바로가기 탭(5개 pill 링크)과 `index.html` Language 카드에서 상호 연결됨.
 
-### Phase 2.6 — Algorithm 코스 랜딩 구성 (착수, 2026-08-22)
+### Phase 2.6 — Algorithm 코스 랜딩 구성 (파일럿 완료, 8/8 — 2026-08-23)
 - `report/2026-08-22-algorithm-visualization-listup.md`에서 visualgo.net을 벤치마크해 학생 학습 관점의 알고리즘 리스트업과 파일럿 우선순위(정렬 → 그래프탐색 → 이진탐색)를 먼저 정리.
 - 1순위인 정렬을 `index.html` Algorithm 섹션에 반영: 기존 Swiper 캐러셀 4카드(자료구조 기초/알고리즘 문제 해결/코딩테스트 대비/시스템 설계 기초)를 Language 섹션과 동일한 정적 그리드 5카드(버블/선택/삽입/병합/퀵 정렬)로 교체.
   - 시행착오: 처음엔 "정렬 5개를 Language 때와 같은 방식으로 구성"이라는 지시를 `lang-cp.html`류 12주형 커리큘럼 상세 페이지로 오해해 `src/algo-sort.html`을 만들었으나, 실제 의도는 랜딩 카드 구성이었음을 사용자가 정정 — 해당 파일은 삭제하지 않고 남겨뒀지만 현재 어디서도 연결되지 않은 미사용 상태(재사용 여부 미정).
@@ -62,8 +63,10 @@
 - **상세 페이지 5종 완료(2026-08-23)**: `src/web-frontend.html`/`web-backend.html`/`web-devops.html`/`web-cicd.html`/`web-fullstack.html` — Algorithm처럼 시각화하기는 어렵다는 데 동의하고 `lang-cp.html`류 12개 커리큘럼 아코디언 형식을 채택. CI/CD 페이지만 예외적으로 파이프라인이 순차적 상태를 가진다는 점을 활용해 Push→Build→Test→Deploy→Live 5단계 재생 위젯을 보너스로 추가(성공/테스트 실패 2개 시나리오). Full-stack 통합 프로젝트 페이지는 새 개념이 아니라 기획→설계→구현→배포→회고 프로젝트 진행 단계로 구성해 앞선 4개 코스를 되짚는 캡스톤 성격을 살림. `index.html` `#web` 섹션 5개 카드 전부 실제 링크로 전환.
 - 남은 작업: 없음(Web & WebApp 파일럿 5종 전부 완료). 다음 결정은 사용자 지시에 따름 — 카테고리 간 이동 구조 설계, 또는 다른 코스(Unity/Agent AI) 착수 등.
 
-### Phase 3 — 외부 연동 정리
-- OJ(`oj.recode.ai.kr`)/LMS(`lms.recode.ai.kr`)/business(`business.recode.ai.kr`)/studio(`studio.recode.ai.kr`) 4개 서브도메인은 각각 별도 프로젝트로 직접 제작 중 — 이 저장소는 오픈 시점에 맞춰 링크 활성화·"준비중" 배지 정리만 담당.
+### Phase 3 — 외부 연동 정리 (진행 중, 3/4 완료)
+- OJ/LMS/business/studio 4개 서브도메인은 각각 별도 프로젝트로 직접 제작 중 — 이 저장소는 오픈 시점에 맞춰 링크 활성화·"준비중" 배지 정리만 담당.
+- 완료: OJ(`oj.recode.ai.kr`, 2026-08-21) / studio(`mate.recode.ai.kr`, 2026-08-25 활성화 후 같은 날 커스텀 도메인으로 재교체) / business(`business-1e563.web.app`, 2026-08-26 — Firebase 기본 도메인이라 커스텀 도메인 `business.recode.ai.kr` 연결 시 30개 페이지 60곳 재교체 필요).
+- 남은 작업: LMS(`lms.recode.ai.kr`) 하나만 "준비중" 배지 + 비활성 링크 상태. 활성화 절차는 studio/business 때와 동일(배지·`aria-disabled`·`onclick` 제거 → `target="_blank" rel="noopener"` 외부 링크).
 
 ## 4. 작업 관례
 - 각 Phase 착수 시 `../tasks/*.md`에 작업 지시 기록, 완료 후 `../report/YYYY-MM-DD-*.md`에 진행 보고서 작성 (기존 관례 유지).

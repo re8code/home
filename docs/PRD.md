@@ -2,7 +2,7 @@
 
 ## 1. 배경
 - `recode.ai.kr`은 현재 GitHub Pages로 배포된 정적 사이트. `index.html`(랜딩) + `src/graffiti*.html`(원장님의 낙서 게시판) + `src/lang-*.html`(언어별 코스 상세)로 구성되어 있다.
-- 사이트 전체를 "대공사" 수준으로 리뉴얼하기로 결정함 (2026-08-20). 철학적 배경은 `NEED.md` 참고.
+- 사이트 전체를 "대공사" 수준으로 리뉴얼하기로 결정함 (2026-08-20). 철학적 배경은 `../tasks/Philosophy.md` 참고(v0.13에서 `NEED.md` → `tasks/Philosophy.md`로 이름·위치 변경됨).
 - `index.html` 리뉴얼은 애초에 별도 파일(`mockup.html`)에서 라이트 톤 시안으로 반복 검토를 거친 뒤, 최종 결정된 내용을 `index.html`에 옮기고 `mockup.html`은 삭제하는 방식으로 진행했다(2026-08-22 완료 — §8 참고).
 
 ## 2. 목표
@@ -16,8 +16,12 @@
 | 영역 | 내용 | 상태 |
 | --- | --- | --- |
 | `index.html` | 허브형 랜딩 재설계, 5갈래 내비게이션 진입점 | 완료(2026-08-22) — `mockup.html` 라이트 톤 시안(코스 카테고리 히어로 + Language/Algorithm/Web & WebApp/Unity/Agent AI 5개 섹션 + 핵심 철학 + CTA)을 최종안으로 채택해 전면 교체, `mockup.html`은 삭제 |
-| 낙서장 게시판 (`src/graffiti*.html`) | 기능은 유지, 디자인 톤만 리뉴얼 톤에 맞춰 조정 | 톤 조정 |
+| 낙서장 게시판 (`src/graffiti*.html`) | 기능은 유지, 디자인 톤만 리뉴얼 톤에 맞춰 조정 | 헤더(GNB)는 2026-08-22 통일 완료, 본문(카드 리스트·푸터) 톤 조정은 미착수 — `DEV_PLAN.md` Phase 2 |
 | 언어별 코스 상세 페이지 (`src/lang-*.html`) | `index.html` Language 카드 클릭 시 이동하는 개별 언어 페이지. 커리큘럼 목록 UI는 korea-pass.kr 공지사항 목록 페이지를 벤치마크 | 완료(2026-08-22) — C/C++·Java·Python·JavaScript·Dart 5개 페이지 전부 제작, 상호 링크 연결 |
+| Algorithm 코스 상세 페이지 (`src/algo-*.html`) | `index.html` Algorithm 섹션 카드에서 연결되는 visualgo.net식 시각화 페이지 | 완료(2026-08-23) — 정렬 5 + 탐색 3(이진탐색/BFS/DFS) + 자료구조 6 = 파일럿 14종 전부 제작·연결 |
+| Web & WebApp 코스 상세 페이지 (`src/web-*.html`) | `index.html` Web & WebApp 섹션 카드에서 연결되는 12주 커리큘럼 아코디언 페이지 | 완료(2026-08-23) — Frontend/Backend/DevOps/CI-CD/Full-stack 5종 전부 제작·연결 |
+| 회사 소개 페이지 (`src/about.html`) | GNB "회사 소개" 진입점. 배너 + 중앙 타이틀 + 이미지·텍스트 좌우 교대 레이어 4종 + CTA | 완료(2026-08-24) — 레이어는 요청에 따라 단계적으로 추가하는 방식(추가 확장 여지 있음) |
+| Unity / Agent AI 코스 | `index.html` 섹션·카드는 존재하나 상세 페이지 미착수 | 미착수 — 카드 4장씩 비클릭 `<div>` 상태 |
 
 ### Out of Scope — 별도 프로젝트, 외부 링크만 연결
 | 영역 | 내용 |
@@ -31,7 +35,7 @@
 - 주 타겟: 대학생 (프로그래밍 진로·훈련에 관심 있는)
 - 부 타겟: 학부모, 원장(콘텐츠 관리자, 낙서장 운영)
 
-## 5. 핵심 메시지 (`NEED.md` 기반)
+## 5. 핵심 메시지 (`../tasks/Philosophy.md` 기반)
 - 핵심 지향점: "신입 시니어"를 1:1 훈련으로 길러내는 연구소.
 - 3대 기둥: ① 훈련 중심·1:1 맞춤형 교육 ② Agent Coding 시대의 기술 철학 ③ 인간-AI 협업 구조(왼손-오른손).
 - 카피 작성 시 3단 위계(핵심 문장 → 기둥 → 세부 논리)로 압축해서 표현한다.
@@ -47,11 +51,12 @@
 ## 7. 비기능 요구사항
 - 빌드 도구 없는 정적 HTML + Tailwind CDN 구조를 유지한다(별도 결정 전까지).
 - GitHub Pages 배포(`main` 브랜치, `/root`) 호환을 유지한다.
-- 페이지별 Tailwind config 중복 정의 방식을 유지할지, 공통화할지는 `DEV_PLAN.md`에서 결정한다.
+- 페이지별 Tailwind config 중복 정의 방식을 유지할지, 공통화할지는 `DEV_PLAN.md`에서 결정한다. → **2026-08-26 공통화로 결정·적용**: Tailwind config와 GNB critical CSS만 `assets/js/tailwind-config.js`·`assets/css/base.css`로 분리하고 30개 페이지가 참조만 한다(HTML 마크업 복제는 빌드 도구 없이는 불가피하다고 보고 유지).
 
 ## 8. 미결 사항 (Open Questions)
 - 언어별 코스 상세 페이지: `lang-cp.html`(C/C++)에 이어 `lang-jv.html`(Java)/`lang-py.html`(Python)/`lang-js.html`(JavaScript)/`lang-dt.html`(Dart) 4개도 제작·연결 완료(2026-08-22) — Language 코스 5개 페이지 전부 존재하며, 각 페이지 상단 언어 바로가기 탭과 `index.html` Language 카드에서 모두 연결됨.
 - LMS/business/studio 3개 서브도메인의 실제 오픈 시점. (UI 처리 방식은 2026-08-21 상단 내비게이션 1차 구현 시 우선 "준비중" 배지 + 비활성 링크로 임시 확정 — `index.html` 헤더 참고. 서브도메인 오픈 시 실제 링크로 교체 예정.)
+  - 진행 상황(2026-08-26 기준): studio는 2026-08-25 활성화(`mate.recode.ai.kr`, 커스텀 도메인 연결 완료), business는 2026-08-26 활성화(`business-1e563.web.app` — Firebase 기본 도메인, 커스텀 도메인 `business.recode.ai.kr` 연결 시 링크 재교체 필요). **남은 "준비중" 항목은 LMS 하나뿐**이다.
 - "회사 소개" 페이지 제작(2026-08-22 신규 결정, 2026-08-23 완료): GNB 로고 바로 오른쪽에 nav 첫 항목으로 "준비중" 배지 + 비활성 링크를 우선 추가했다가(2026-08-22), `report/task & bug/task-01.md` 지시에 따라 `src/about.html`(배너+소개+CTA 단순 구성)을 제작하고 30개 페이지 전부에서 배지를 제거·실제 링크로 교체 완료(2026-08-23). 상단 배너는 사용자가 직접 추가한 실사진(`assets/image/bg-consult.png`)을 압축해 `assets/image/about-banner.jpg`로 적용 완료. 대표자·연혁·강사진 프로필 등은 이번 1차 범위에서 제외 — 실제 회사 정보가 정해지면 추가 보강 필요.
 - OJ(`oj.recode.ai.kr`)는 2026-08-21부로 `index.html` 상단 내비게이션에서 실제 링크로 연결 완료(새 탭).
 - Algorithm 코스 랜딩 구성(2026-08-22): `report/2026-08-22-algorithm-visualization-listup.md`에서 제안한 파일럿 우선순위(정렬→그래프탐색→이진탐색) 중 정렬을 먼저 다루기로 하고, `index.html` Algorithm 섹션(기존 4개 카드: 자료구조 기초/알고리즘 문제 해결/코딩테스트 대비/시스템 설계 기초 · Swiper 캐러셀)을 Language 섹션과 동일한 정적 그리드 5카드(버블/선택/삽입/병합/퀵 정렬)로 교체 완료. 처음엔 이 지시를 `lang-cp.html`류 12주형 커리큘럼 상세 페이지(`src/algo-sort.html`)로 오해해 제작했으나, 실제 의도는 랜딩 카드 구성이었음이 확인되어 정정 — `algo-sort.html`은 삭제하지 않고 남겨뒀지만 현재 미사용 상태.
