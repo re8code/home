@@ -4,7 +4,7 @@
 
 ## 제1원칙: 문서 검토 및 업데이트
 
-작업 지시를 받으면, 아래 6개 문서를 먼저 검토하고 업데이트할 내용이 있으면 업데이트한다. 이 체크를 가장 우선하는 원칙으로 삼는다.
+작업 지시를 받으면, 아래 7개 문서를 먼저 검토하고 업데이트할 내용이 있으면 업데이트한다. 이 체크를 가장 우선하는 원칙으로 삼는다.
 
 - `CLAUDE.md` — 이 파일. 프로젝트 규칙/지침.
 - `docs/DEV_PLAN.md` — 개발 계획/로드맵. phase 기반으로 단계별로 Sequence를 구성.
@@ -12,8 +12,9 @@
 - `docs/PRD.md` — 제품 요구사항.
 - `docs/ARCHITECTURE.md` — 아키텍처/설계 결정. ADR 작성.
 - `docs/CHANGE_DEVICE.md` - 장비간 이동시킬 때의 작업 업무 인수/인계를 자동화시키기 위한 내용.
+- `docs/ACCOUNT_COST.md` - 기술 스택 중에서 계정이 필요한 항목, 비용 발생 개연성이 있는 항목을 간단하게 정리.
 
-- 작업 시작 전: 관련 있는 부분이 있는지 6개 문서를 훑어본다.
+- 작업 시작 전: 관련 있는 부분이 있는지 7개 문서를 훑어본다.
 - 작업 완료 후: 관련된 문서를 업데이트한다 (예: `DEVLOG.md`에 이력 추가, `DEV_PLAN.md` 상태 갱신, 새 결정 사항을 `ARCHITECTURE.md`/`PRD.md`에 반영, 새 컨벤션을 이 파일에 추가).
 - 해당 작업과 무관한 문서는 굳이 수정하지 않는다 (체크는 하되 강제로 쓰지 않는다).
 - 근거가 얕은 상태에서 PRD/ARCHITECTURE의 큰 내용을 추측으로 채우지 않는다 — 범위가 불명확하면 먼저 사용자에게 확인한다.
@@ -34,7 +35,7 @@
 
 사용자가 여러 장비를 오가며 작업하므로, **이 저장소(프로젝트 폴더)가 항상 우선순위 1순위 정보원**이다. Claude의 개인 메모리(장비/세션에 로컬로 저장됨)는 보조 수단일 뿐, 저장소 문서를 대체하지 않는다.
 
-- 세션 간 유지되어야 할 내용(진행 상황, 결정 사항, 외부 참고 링크·Artifact URL 등)은 Claude 메모리보다 **이 저장소의 문서(위 6개 문서 또는 `report/`)에 먼저** 기록한다.
+- 세션 간 유지되어야 할 내용(진행 상황, 결정 사항, 외부 참고 링크·Artifact URL 등)은 Claude 메모리보다 **이 저장소의 문서(위 7개 문서 또는 `report/`)에 먼저** 기록한다.
 - Claude 메모리에 무언가를 적을 때는, 같은 내용이 반드시 이 저장소 문서에도 존재하도록 한다 — 메모리에만 있고 저장소에 없는 정보는 다른 장비에서 이어받는 순간 사라진 것과 같다.
 
 ## 작업 보고서 (`report/`)
@@ -75,6 +76,7 @@
 - `src/graffiti.html` / `src/graffiti-detail.html` / `src/graffiti-new.html` — "원장님의 낙서" 게시판 (목록 / 상세·수정·삭제 / 작성). Firestore CRUD를 `assets/js/firebase-client.js`에서 가져와 사용하며, `<script type="module">` 인라인 블록에서 DOM과 연결한다. 헤더는 `index.html`과 동일한 GNB(아래 참고)를 쓰지만, 본문(카드 리스트·푸터 등)의 디자인 톤 조정은 아직 미착수(`docs/DEV_PLAN.md` Phase 2).
 - `src/lang-cp.html` — Language 코스 중 C/C++ 상세 페이지(`index.html`의 C/C++ 카드에서 연결). 커리큘럼 목록 UI는 korea-pass.kr 공지사항 목록 페이지(`/notice/noticeList.do`)를 벤치마크(브레드크럼(홈/C/C++, "훈련 코스" 중간 항목은 2026-08-22 제거)+타이틀, "더보기" 버튼 — 검색창은 2026-08-22 제거). 상단 "LANGUAGE" 라벨은 번호(`01 ·`) 없이 텍스트만 표기(2026-08-22). `index.html`과 동일한 라이트 테마·헤더/푸터를 재사용.
   - **커리큘럼 카드 형식** (2026-08-22, `lang-cp.html`에서 먼저 적용한 뒤 같은 날 `lang-jv/py/js/dt.html` 4개에도 동일 적용 — 5개 페이지 전부 동일 형식): 뱃지(기초/실습/프로젝트)+N주차 표시를 없애고 제목에 `1.`~`12.` 번호를 붙이는 방식으로 교체. 각 카드는 항상 보이는 brief 설명(`text-sm text-slate-500`, non-bold, 제목과 같은 위치)과, 클릭 시에만 펼쳐지는 detail 설명 2단 구성 — CSS Grid의 `grid-template-rows: 0fr → 1fr` 트랜지션(`.curriculum-detail`, `<style>` 블록)으로 높이 애니메이션을 구현해 별도 JS 높이 계산 없이 부드럽게 확장/축소된다. 카드 자체가 `role="button" tabindex="0" aria-expanded`를 갖는 클릭/키보드(Enter·Space) 토글 대상이며, 파일 하단 인라인 `<script>`가 `data-expanded` 속성을 토글해 CSS가 반응하는 구조(셰브런 아이콘도 같은 속성으로 회전). 카드가 포커스를 잃으면(`blur` 이벤트 — 다른 카드 클릭, 빈 영역 클릭, Tab으로 다음 요소 이동 등) 열려 있던 상태와 무관하게 자동으로 `data-expanded="false"`로 되돌아가 원래 크기로 접힌다 — 한 번에 하나의 카드만 펼쳐진 상태를 유지하기 위한 동작. `data-category`(basic/practice/project)는 정보성 메타데이터로 카드에 남아 있지만 더 이상 뱃지로 렌더링되지 않음. 새 언어 페이지를 추가할 때는 이 5개 파일 중 하나를 템플릿으로 카드 구조·`<style>`의 `.curriculum-detail`/`.curriculum-chevron` 블록·파일 하단 토글 스크립트를 함께 복사할 것.
+  - **1번 항목은 항상 출력(Output)** (2026-08-29): 5개 페이지 모두 1번 카드가 원래 "OT — {언어별 실행 모델}"(C의 메모리 모델·JVM 실행 모델·인터프리터 구조·이벤트 루프·Flutter 렌더링 파이프라인)이었으나, 사용자 지시로 **콘솔 출력 함수(print 계열)** 내용으로 전부 교체했다 — C/C++ `printf`·`std::cout`, Java `System.out.println`/`print`/`printf`, Python `print()`의 `sep`·`end`·`file`·`flush`, JavaScript `console.log`/`error`/`warn`/`table`, Dart `print()`·`debugPrint()`. 카드 수(12개)와 번호(1~12)·"전체 12건" 표기는 그대로다. 새 언어 페이지를 만들 때도 1번은 그 언어의 출력 함수로 채운다 — 첫 주에 결과를 눈으로 확인할 도구부터 쥐어준다는 취지다. 교체된 OT 내용은 되살리지 않았다(되살리려면 13번째 카드가 되므로 사용자 판단 필요).
   - **언어 바로가기 탭** (2026-08-22, 이전엔 기초/실습/프로젝트 카테고리 필터였음): C/C++/Java/Python/JavaScript/Dart 5개 pill 탭이 각각 `lang-cp.html`/`lang-jv.html`/`lang-py.html`/`lang-js.html`/`lang-dt.html`로 이동하는 페이지 전환 링크로 동작(현재 페이지는 `aria-current="page"` + `is-active` 스타일). 5개 파일 모두 존재하며(2026-08-22, C/C++·Java·Python·JavaScript·Dart 전부 제작 완료) 서로의 탭 `href`가 정확히 일치한다. 새 언어 페이지를 추가로 만들 때는 이 파일명 규칙을 따르고, **5개 페이지 전부**의 언어 바로가기 탭에 새 항목을 반영해야 한다(한 파일만 만들고 나머지 4개의 탭을 안 챙기면 링크가 어긋난다).
   - "더보기" 페이지네이션은 2026-08-22 제거 — 12개 커리큘럼 카드를 처음부터 전부 노출한다(관련 JS도 제거, 정적 마크업만 남음).
 - `src/algo-sort.html` — 2026-08-22 초안 제작 후 같은 날 방향 수정으로 **현재 어디서도 링크되지 않는 미사용 파일**(파일 자체는 삭제하지 않고 남겨둠). 처음엔 "정렬 5개를 Language 때와 같은 방식으로 구성"이라는 지시를 lang-cp.html과 동일한 12주형 커리큘럼 카드 상세 페이지로 오해해 만들었으나, 실제 의도는 랜딩 페이지(`index.html`) Algorithm 섹션의 카드를 Language 섹션과 같은 정적 그리드 형식으로 구성하라는 것이었음이 확인됨. 재사용 여부(시각화 페이지로 개조 vs 삭제)는 아직 미정.
@@ -202,12 +204,13 @@
 
 ## 저장소 관례
 
-- `docs/` — `PRD.md`/`DEV_PLAN.md`/`DEVLOG.md`/`ARCHITECTURE.md`/`CHANGE_DEVICE.md` 5개 주요 문서가 위치한 폴더(2026-08-22 정리, `CHANGE_DEVICE.md`는 2026-08-29 추가). `docs/account-cost.md`(2026-08-29 추가)는 제1원칙 6개 문서에 포함되지 않는 **보조 참고 문서** — `ARCHITECTURE.md` §1 기술 스택의 계정·비용 요약이며, 외부 서비스 도입·요금제 변경 시에만 갱신한다. `CLAUDE.md`만 Claude Code가 저장소 루트에서 자동으로 읽는 파일이라 루트에 남아 있다 — 4개 문서를 가리킬 때는 `docs/PRD.md`처럼 `docs/` 접두사를 붙인다.
+- `docs/` — `PRD.md`/`DEV_PLAN.md`/`DEVLOG.md`/`ARCHITECTURE.md`/`CHANGE_DEVICE.md`/`ACCOUNT_COST.md` 6개 주요 문서가 위치한 폴더(2026-08-22 정리, `CHANGE_DEVICE.md`·`ACCOUNT_COST.md`는 2026-08-29 추가). 제1원칙 7개 문서 중 `CLAUDE.md`만 Claude Code가 저장소 루트에서 자동으로 읽는 파일이라 루트에 남아 있다 — 나머지를 가리킬 때는 `docs/PRD.md`처럼 `docs/` 접두사를 붙인다.
 - `tasks/*.md` — 작업 지시/요구사항을 기록. `report/YYYY-MM-DD-*.md` — 해당 작업을 완료한 뒤 진행 과정을 날짜별로 정리한 보고서. 새 작업을 마쳤을 때 이 관례를 따라 보고서를 남기는 흐름이 이미 자리잡혀 있다.
-- **작업 완료 후 문서 점검(중요 규칙)**: 사용자가 지시한 작업이 끝날 때마다, 별도 요청 없이도 매번 `docs/PRD.md`, `docs/DEV_PLAN.md`, `CLAUDE.md`, `docs/DEVLOG.md`, `docs/ARCHITECTURE.md`, `docs/CHANGE_DEVICE.md` 6개 문서를 검토해 업데이트가 필요하면 반영한다.
+- **작업 완료 후 문서 점검(중요 규칙)**: 사용자가 지시한 작업이 끝날 때마다, 별도 요청 없이도 매번 `docs/PRD.md`, `docs/DEV_PLAN.md`, `CLAUDE.md`, `docs/DEVLOG.md`, `docs/ARCHITECTURE.md`, `docs/CHANGE_DEVICE.md`, `docs/ACCOUNT_COST.md` 7개 문서를 검토해 업데이트가 필요하면 반영한다.
   - `docs/DEVLOG.md`는 날짜별 작업 일지 — 무슨 작업을 했는지 간단히 기록(장황한 서술 대신 요약).
   - `docs/PRD.md`/`docs/DEV_PLAN.md`는 제품 범위·요구사항이나 기술 계획이 바뀐 경우에만 갱신.
   - `CLAUDE.md`는 개발 명령, 페이지 구조, Firebase 연동, 저장소 관례 등 이 문서가 다루는 내용이 바뀐 경우에만 갱신.
   - `docs/ARCHITECTURE.md`는 서비스 아키텍처(배포 구조, 프론트엔드/백엔드 구성, 서브도메인 연동 상태 등)에 실질적 변화가 있을 때만 갱신 — 작업 과정 자체는 이 문서가 아니라 `report/*.md`에 남긴다. 새로 내린 아키텍처 결정은 마지막 절(§8 ADR)에 한 항목으로 추가한다.
   - `docs/CHANGE_DEVICE.md`는 장비 이동 프로토콜 — 실제로 장비를 옮겨보며 절차에 빠진 단계나 새로 발견한 함정이 있을 때만 갱신한다.
-  - 6개 중 바꿀 내용이 없으면 억지로 손대지 않고 넘어간다.
+  - `docs/ACCOUNT_COST.md`는 계정·비용 요약 — 외부 서비스를 새로 도입하거나 요금제·호스팅 방식이 바뀔 때만 갱신하고, 구체적 금액은 적지 않는다(과금 전환 조건만 유지).
+  - 7개 중 바꿀 내용이 없으면 억지로 손대지 않고 넘어간다.
