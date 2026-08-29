@@ -41,14 +41,6 @@
       radial-gradient(circle at 30% 20%, rgba(255,255,255,0.10), transparent 55%),
       linear-gradient(155deg, var(--from), var(--to));
   }
-  .curriculum-card {
-    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
-  }
-  .curriculum-card:hover {
-    transform: translateY(-2px);
-    border-color: rgba(24, 180, 118, 0.4);
-    box-shadow: 0 16px 32px -18px rgba(15, 23, 42, 0.2);
-  }
   .filter-tab.is-active {
     background-color: #0f172a;
     color: #fff;
@@ -189,7 +181,7 @@
         <div class="curriculum-card rounded-2xl border border-slate-200 bg-white shadow-sm p-6 cursor-pointer" data-curriculum-card data-category="basic" role="button" tabindex="0" aria-expanded="false">
           <div class="flex items-start justify-between gap-4">
             <div class="flex-1">
-              <p class="font-semibold text-slate-900">1. OT — 개발 환경과 배포 환경의 차이</p>
+              <p class="font-semibold text-slate-900">1. OT</p>
               <p class="mt-2 text-sm text-slate-500 leading-relaxed">"내 컴퓨터에선 되는데" 문제가 왜 생기는지 원인을 짚고 12주 로드맵을 확인합니다</p>
             </div>
             <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -332,7 +324,7 @@
         <div class="curriculum-card rounded-2xl border border-violet-200 bg-white shadow-sm p-6 ring-1 ring-violet-400/20 cursor-pointer" data-curriculum-card data-category="project" role="button" tabindex="0" aria-expanded="false">
           <div class="flex items-start justify-between gap-4">
             <div class="flex-1">
-              <p class="font-semibold text-slate-900">12. 미니 프로젝트 — 애플리케이션 컨테이너화·배포</p>
+              <p class="font-semibold text-slate-900">12. 미니 프로젝트</p>
               <p class="mt-2 text-sm text-slate-500 leading-relaxed">직접 만든 앱을 Docker로 패키징해 실제 서버에 배포합니다</p>
             </div>
             <svg class="curriculum-chevron mt-1 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
