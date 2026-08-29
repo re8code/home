@@ -59,7 +59,7 @@ graph TD
 
   Graffiti -- "Firestore CRUD" --> Firebase[("Firebase\nproject: graffiti-3b1fc")]
   Firebase --> Firestore["Firestore\ngraffiti_posts 컬렉션"]
-  Firebase --> Auth["Firebase Authentication\n낙서장 쓰기 사용자(won@re8code.com)"]
+  Firebase --> Auth["Firebase Authentication\n낙서장 쓰기 사용자(triwon20@gmail.com)"]
 
   Index -- "새 탭 링크" --> OJ["oj.recode.ai.kr\nOnline Judge (wonoj)\n별도 프로젝트, 연동 완료"]
   Index -. "준비중 배지, 추후 링크 활성화" .-> LMS["lms.recode.ai.kr\nLMS 인강\n별도 프로젝트, 개발 중"]
@@ -107,8 +107,8 @@ graph TD
 
 메인 사이트에서 유일하게 동적인 기능. 설정은 `assets/js/`에 역할별로 분리되어 있다.
 
-- **프로젝트**: Firebase 프로젝트 `graffiti-3b1fc` (설정값은 `assets/js/firebase-config.js`). **콘솔 소유 계정은 `triwon20@gmail.com`**이고, 아래 쓰기 권한 계정(`won@re8code.com`)과는 별개다 — 전자는 규칙 게시·요금제 변경 등 프로젝트 관리용, 후자는 Authentication에 등록된 낙서장 사용자다(`ACCOUNT_COST.md` §2).
-- **DB**: Firestore, 컬렉션 `graffiti_posts` 1개. 목록/상세 조회(`read`)는 누구나 가능, 등록/수정/삭제(`write`)는 Firebase Authentication으로 로그인한 원장 계정(`won@re8code.com`)만 가능 — 규칙은 `firestore.rules`에 정의(Firebase 콘솔에 수동 게시 필요, 코드에서 자동 배포되지 않음).
+- **프로젝트**: Firebase 프로젝트 `graffiti-3b1fc` (설정값은 `assets/js/firebase-config.js`). **콘솔 소유 계정과 낙서장 쓰기 계정을 `triwon20@gmail.com` 하나로 통일했다(2026-08-29, ADR D2 — 수정 불가).** 원래 이 둘은 다른 레이어(콘솔 IAM vs Authentication 사용자)라 갈라질 수 있고 실제로 그랬으나, 계정 혼선을 없애기 위해 같은 값으로 고정했다(`ACCOUNT_COST.md` §2).
+- **DB**: Firestore, 컬렉션 `graffiti_posts` 1개. 목록/상세 조회(`read`)는 누구나 가능, 등록/수정/삭제(`write`)는 Firebase Authentication으로 로그인한 원장 계정(`triwon20@gmail.com`)만 가능 — 규칙은 `firestore.rules`에 정의(Firebase 콘솔에 수동 게시 필요, 코드에서 자동 배포되지 않음).
 - **인증**: Firebase Authentication (이메일/비밀번호), `assets/js/firebase-auth.js`가 로그인/로그아웃 처리. `assets/js/admin-auth.js`가 "수정/삭제/글 작성" 진입 시 비밀번호 모달(`requestAdminPassword`)과 삭제 확인 모달을 담당.
 - **로컬 개발 폴백**: `firebase-config.js`의 `IS_PLACEHOLDER_CONFIG` 플래그(`projectId`가 `TEMP_`로 시작하면 true)로, 실제 Firebase 프로젝트 없이도 하드코딩 비밀번호(`DEV_FALLBACK_PASSWORD`) 기반 로컬 개발 모드가 동작한다. 이 플래그 하나로 다른 모든 Firebase 관련 파일이 분기하므로, 폴백 로직이 파일마다 중복 구현되지 않는다.
 - **안정성 처리**: `assets/js/firebase-client.js`는 요청에 6초 타임아웃(`REQUEST_TIMEOUT_MS`)을 두고, 초과 시 연결을 `terminate` 후 리셋해 무한 재시도를 방지한다.
@@ -142,6 +142,12 @@ graph TD
 기록 형식은 형제 저장소 `../business/docs/ARCHITECTURE.md`의 표기법을 따른다 — `### D<번호>. <결정을 한 문장으로>` 아래에 **맥락(왜 결정이 필요했나) / 결정 / 트레이드오프(무엇을 포기했나)**를 적는다. 번호는 `D1`부터 순차적으로 붙이고, 뒤집힌 결정은 지우지 말고 그 항목에 "→ D<n>으로 대체됨"을 덧붙여 남긴다.
 
 기록 대상은 되돌리기 어렵거나 이후 작업의 전제가 되는 선택이다 — 호스팅·배포 방식, 백엔드/데이터 저장소, 브랜치 전략, 공통부 분리 방식, 페이지 생성 단위 등. 개별 페이지의 카피·색상·레이아웃 조정은 여기가 아니라 `DEVLOG.md`와 `report/`에 남긴다.
+
+### D2. 낙서장 쓰기 계정을 Firebase 콘솔 계정과 같은 `triwon20@gmail.com`으로 통일한다
+
+- **맥락**: Firestore 규칙의 `request.auth.token.email`(=Authentication에 등록된 최종 사용자)과 Firebase 콘솔 소유 Google 계정은 서로 다른 레이어라 값이 갈라질 수 있고, 실제로 2026-08-29까지 갈라져 있었다(쓰기 `won@re8code.com` / 콘솔 `triwon20@gmail.com`). 문서도 이 둘을 하나로 뭉뚱그려 적어 두어, "Firebase 계정이 무엇인가"라는 질문에 답이 두 개인 상태였다. 로그인 UI는 비밀번호만 받고 이메일은 코드에 하드코딩돼 있어, 어느 계정으로 로그인되는지가 화면에서는 전혀 드러나지 않는다.
+- **결정**: 두 값을 `triwon20@gmail.com` 하나로 통일하고 **수정 불가 값**으로 고정한다. 정본은 `ACCOUNT_COST.md` §2이며, 실제 값은 세 곳(`assets/js/firebase-config.js`의 `ADMIN_EMAIL`, `firestore.rules`, `scripts/check-device.sh`의 `FIXED_ADMIN_MAIL`)에 존재하고 장비 점검 스크립트가 매번 세 값의 일치를 대조한다. 바꾸려면 이 ADR을 먼저 고친다.
+- **트레이드오프**: 콘솔 관리 권한과 게시판 쓰기 권한이 한 계정에 묶여, 계정 하나가 잠기면 둘 다 멈춘다(권한 분리를 포기한 대가 — `ACCOUNT_COST.md` §4의 "단일 Google 계정 집중" 리스크가 그만큼 커진다). 또 이 변경은 **콘솔 작업 없이는 완결되지 않는다** — Authentication에 해당 사용자가 등록돼 있어야 하고, 바뀐 `firestore.rules`를 콘솔에 재게시해야 실제로 적용된다. 옛 사용자(`won@re8code.com`)를 남겨두면 규칙상 쓰기는 못 하지만 계정 목록에 혼선으로 남으므로 정리 대상이다.
 
 ### D1. 장비 점검은 문서가 아니라 `scripts/check-device.sh`가 수행하고, 관측값은 저장소에 남기지 않는다
 

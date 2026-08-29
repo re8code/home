@@ -2,7 +2,7 @@
 
 `ARCHITECTURE.md` §1 기술 스택(및 §3 배포·§5 백엔드·§6 서브도메인)에서 **계정이 필요한 항목**과 **비용이 발생할 개연성이 있는 항목**만 뽑아 정리한다. 구조 설명은 `ARCHITECTURE.md`가 정본이고, 이 문서는 "누구 계정으로 무엇이 돌아가고, 어디서 돈이 샐 수 있는가"만 다룬다.
 
-- 최종 갱신: 2026-08-29 (Firebase 콘솔 계정을 `triwon20@gmail.com`으로 정정 — 낙서장 쓰기 계정 `won@re8code.com`과 구분. 신설 — 같은 날 `CLAUDE.md` 제1원칙 문서 세트에 편입되어 7개 문서 중 하나가 됨)
+- 최종 갱신: 2026-08-29 (계정을 `triwon20@gmail.com` 하나로 통일하고 **수정 불가**로 확정 — ADR D2. 신설 — 같은 날 `CLAUDE.md` 제1원칙 문서 세트에 편입되어 7개 문서 중 하나가 됨)
 - 확인 방법: 저장소 내 외부 호스트 전수 조사 + 실서비스 응답 헤더/DNS 조회
 - **금액은 적지 않는다** — 요금제는 수시로 바뀌므로 각 서비스 콘솔의 값이 정본이다. 여기에는 "과금으로 전환되는 조건"만 적는다.
 
@@ -12,7 +12,7 @@
 | --- | --- | --- | --- |
 | 도메인 `recode.ai.kr` (닷홈) | 닷홈 | **유료(연 단위)** | 이미 발생 중 — 갱신 실패 시 도메인 상실 |
 | GitHub + GitHub Pages | GitHub `re8code` | 무료 | 저장소를 **비공개로 전환**하면 Pages에 유료 플랜 필요 |
-| Firebase (Firestore + Auth) | Google `triwon20@gmail.com` (콘솔 소유) | 무료(Spark) | 무료 한도 초과 시 **차단**(Spark는 자동 과금 없음). Blaze로 올리면 과금 시작 |
+| Firebase (Firestore + Auth) | Google `triwon20@gmail.com` (콘솔 소유 = 낙서장 쓰기 계정) | 무료(Spark) | 무료 한도 초과 시 **차단**(Spark는 자동 과금 없음). Blaze로 올리면 과금 시작 |
 | Google Forms (1:1 상담) | Google `triwon20@gmail.com` | 무료 | 사실상 없음 (Drive 용량 한도만) |
 | CDN 4종 (Tailwind·jsDelivr·unpkg·gstatic) | 계정 불필요 | 무료 | 없음 — 대신 **가용성 리스크** (§4) |
 | `oj.recode.ai.kr` / `mate.recode.ai.kr` | Google Cloud | **결제 계정 연결 필수** | 이 생태계에서 **과금 개연성 1순위** (§3) |
@@ -25,13 +25,21 @@
 
 1. **닷홈** — 도메인 `recode.ai.kr` 등록·DNS. 네임서버가 `ns1~3.dothome.co.kr`로 확인됨. GitHub Pages와 4개 서브도메인의 A/CNAME 레코드가 전부 여기 걸려 있어, **이 계정을 잃으면 사이트와 서브도메인이 한꺼번에 끊긴다.**
 2. **GitHub (`re8code`)** — 저장소 `re8code/home` + GitHub Pages 배포. 저장소는 **public**이라 Pages가 무료다.
-3. **Google (`triwon20@gmail.com`)** — Firebase 프로젝트 `graffiti-3b1fc`(Firestore + Authentication)를 소유한 콘솔 계정. `firestore.rules` 게시·요금제 변경·Auth 사용자 관리가 전부 이 계정에서 이뤄진다.
+3. **Google (`triwon20@gmail.com`)** — Firebase 프로젝트 `graffiti-3b1fc`(Firestore + Authentication), 낙서장 쓰기 권한, 1:1 상담 Google Forms까지 **전부 이 한 계정**이다. 상담 응답이 쌓이는 곳이기도 해서, 이 계정을 잃으면 낙서장 운영과 상담 접수가 동시에 끊긴다.
 
-   **주의 — 콘솔 계정과 낙서장 쓰기 계정은 다른 것이다.** `firebase-config.js`의 `ADMIN_EMAIL`과 `firestore.rules`에 박힌 `won@re8code.com`은 Firebase **Authentication에 등록된 사용자**(낙서장의 유일한 쓰기 권한자)이지 프로젝트 소유 계정이 아니다. 둘을 같은 것으로 적어두면 "콘솔에 로그인이 안 된다"는 상황에서 엉뚱한 계정을 찾게 된다.
+### 계정 값은 수정 불가 (2026-08-29 확정)
 
-   1:1 상담 Google Forms도 같은 `triwon20@gmail.com` 계정 소유다 — 상담 신청 응답이 쌓이는 곳이므로 이 계정을 잃으면 접수 내역째 접근이 끊긴다.
+**낙서장 쓰기 계정 = 콘솔 계정 = `triwon20@gmail.com`.** 이 값은 임의로 바꾸지 않는다 — 결정 배경과 트레이드오프는 `ARCHITECTURE.md` ADR D2에 있다.
 
-   **낙서장 쓰기 계정(`won@re8code.com`)은 저장소 기준으로만 확인된 값이다.** `firebase-config.js`의 `ADMIN_EMAIL`과 `firestore.rules`의 이메일이 서로 일치한다는 것까지는 저장소에서 확인되지만(`./scripts/check-device.sh`가 매번 대조한다), **콘솔의 Authentication에 그 이메일로 사용자가 실제 등록돼 있는지, 게시된 규칙이 저장소 파일과 같은지는 콘솔에서만 확인할 수 있다** — 규칙은 수동 게시라 드리프트가 가능하고(§4), 이메일 열거 보호가 켜져 있어 클라이언트 API로도 등록 여부를 판별할 수 없다. 가장 확실한 확인은 낙서장에서 실제로 글을 써 보는 것이다.
+원래 이 둘은 **다른 레이어**라 갈라질 수 있고, 실제로 2026-08-29까지 갈라져 있었다.
+
+| | 콘솔 계정 | 규칙의 `token.email` |
+| --- | --- | --- |
+| 정체 | Google 계정 + IAM(Owner) | Firebase **Authentication에 등록된 최종 사용자** |
+| 하는 일 | 규칙 게시·요금제·Auth 사용자 생성 | 브라우저에서 로그인해 글을 씀 |
+| 주의 | **콘솔 Owner라도 클라이언트 규칙에서는 아무 특권이 없다** — Auth 사용자로 등록돼 있지 않으면 글을 못 쓴다 | |
+
+값을 바꿔야 할 일이 생기면 **세 곳을 함께** 고치고 콘솔에 규칙을 재게시해야 한다 — `assets/js/firebase-config.js`의 `ADMIN_EMAIL`, `firestore.rules`, `scripts/check-device.sh`의 `FIXED_ADMIN_MAIL`. 세 값의 일치는 `./scripts/check-device.sh`가 매번 대조한다(콘솔에 게시된 규칙과의 일치는 콘솔에서만 확인 가능하다 — 규칙은 수동 게시라 드리프트가 가능하고, 이메일 열거 보호가 켜져 있어 클라이언트 API로는 Auth 사용자 존재 여부를 판별할 수 없다).
 
 계정이 **필요 없는** 것: Tailwind Play CDN·jsDelivr(Pretendard, Swiper)·unpkg(AOS)·gstatic(Firebase SDK) — 전부 익명 공개 CDN이다.
 

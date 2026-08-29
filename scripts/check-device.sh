@@ -24,6 +24,10 @@ cd "$(dirname "$0")/.."
 
 PORT="${CHECK_DEVICE_PORT:-8799}"   # start.sh 기본 포트(8765)와 겹치지 않게
 
+# 낙서장 쓰기 계정 — ARCHITECTURE.md ADR D2로 고정된 값(콘솔 계정과 동일하게 통일).
+# 저장소에서 유도할 수 없는 유일한 판정 기준이라 여기 둔다. 바꾸려면 ADR을 먼저 고친다.
+FIXED_ADMIN_MAIL="triwon20@gmail.com"
+
 QUICK=0; AUDIT_ONLY=0
 case "${1:-}" in
   --quick) QUICK=1 ;;
@@ -111,10 +115,13 @@ CFG_MAIL=$(grep -o "ADMIN_EMAIL = '[^']*'" assets/js/firebase-config.js | sed "s
 RUL_MAIL=$(grep -o 'token.email == "[^"]*"' firestore.rules | sed 's/.*"\(.*\)"/\1/')
 if [ -z "$CFG_MAIL" ] || [ -z "$RUL_MAIL" ]; then
   warn "쓰기 계정" "ADMIN_EMAIL 또는 firestore.rules 이메일을 읽지 못함"
-elif [ "$CFG_MAIL" = "$RUL_MAIL" ]; then
-  ok "쓰기 계정" "$CFG_MAIL — config·rules 일치 (콘솔 게시본과의 일치는 콘솔에서 확인)"
-else
+elif [ "$CFG_MAIL" != "$RUL_MAIL" ]; then
   bad "쓰기 계정" "config($CFG_MAIL) ≠ rules($RUL_MAIL) — 낙서장 글쓰기가 실패한다"
+elif [ "$CFG_MAIL" != "$FIXED_ADMIN_MAIL" ]; then
+  bad "쓰기 계정" "$CFG_MAIL — ADR D2로 고정된 $FIXED_ADMIN_MAIL 이 아니다"
+  hint "계정을 정말 바꾸려면 ADR D2와 ACCOUNT_COST §2를 먼저 갱신하고 이 스크립트의 FIXED_ADMIN_MAIL도 함께 고친다"
+else
+  ok "쓰기 계정" "$CFG_MAIL — config·rules·ADR D2 일치 (콘솔 게시본과의 일치는 콘솔에서 확인)"
 fi
 
 # 형제 저장소 (CHANGE_DEVICE §5) — 문서가 ../business 로 지칭한다
