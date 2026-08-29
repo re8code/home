@@ -20,8 +20,11 @@
 - 근거가 얕은 상태에서 PRD/ARCHITECTURE의 큰 내용을 추측으로 채우지 않는다 — 범위가 불명확하면 먼저 사용자에게 확인한다.
 - `ARCHITECTURE.md` 상단에는 프로젝트 전체의 '기술 스택'에 대해서 기록한다.
 - `ARCHITECTURE.md` 마지막 항목은 ADR(Architecture Decision Record)을 기록한다.
+- `ARCHITECTURE.md` 작성시에 운영상의 비용이 발생될 여지가 있는 모든 항목을 기록한다.
+- `CHANGE_DEVICE.md` 작성시 gitignore 때문에 보관되지 않는 파일들 중에서 중요한 값들이 있을 경우는 별도로 기록해 두고 알리도록 한다. 지향점은 장비마다 해당 값들을 구성할 수 있는지를 검토시키도록 한다.
 - 장비 이동이 발생했을 때에는 `docs/CHANGE_DEVICE.md` 프로토콜에 따라서 우선 진행한다.
 - 장비 이동 정리가 되었다면, 반드시 전체 문서에 대한 정합성 확인을 진행한다.
+- 장비 이동 정리 시에 단순한 장비에 의존적인 값들은 git 추적에서 배제시킬 수 있는 방법을 '/scripts/check-device.sh' 에 쉘 스크립트로 제작해 둔다.
 
 ## git commit 규칙
 - 'vX.XX' 양식으로 표기를 지킨다. 예를들면, v0.12, v0.45, v1.02 등등.
@@ -51,6 +54,7 @@
 ## 개발 명령
 
 - **로컬 서버 실행**: 저장소 루트의 `./start.sh`(2026-08-25 추가, 실행 위치와 무관하게 항상 저장소 루트 기준으로 서버를 띄움, 기본 포트 8765·`./start.sh 8080`처럼 인자로 변경 가능, 포트가 이미 사용 중이면 안내 메시지와 함께 종료)를 쓰면 서버가 실제로 응답할 때까지 대기한 뒤 `http://localhost:<port>/index.html`을 Chrome으로 자동으로 열어준다(macOS `open -a "Google Chrome"`, 그 외 OS는 `google-chrome`/`xdg-open` 순으로 폴백, 둘 다 없으면 URL만 안내). 자동 오픈이 필요 없다면 동일하게 `python3 -m http.server 8765`를 저장소 루트에서 직접 실행해도 된다. 이후 그 외 페이지는 `http://localhost:8765/src/graffiti.html`처럼 `src/` 경로로 접속. Firestore(`assets/js/firebase-client.js`)를 사용하는 `src/graffiti*.html`은 `file://`로 직접 열면 ES module import가 동작하지 않으므로 반드시 로컬 서버를 통해 확인해야 한다.
+- **장비 점검**: `./scripts/check-device.sh` — 장비를 옮겼을 때 `docs/CHANGE_DEVICE.md` 프로토콜의 기계적 점검(도구·저장소 동기화·추적 배제·절대경로·30개 페이지 공통 요소·내부 링크·문서 정합성·Claude 경로 키 잔재·로컬 서버)을 한 번에 수행한다. `--quick`은 로컬 서버 검사 생략, `--audit`는 문서 드리프트 감사만. **점검 결과는 화면에만 출력하고 문서에 적지 않는다** — 관측값을 문서에 남기면 다음 장비에서 또 어긋나 핑퐁 커밋이 생기기 때문이다(형제 저장소 `../recodemate`의 같은 이름 스크립트에서 가져온 방식).
 - **빌드/린트/테스트**: 없음. `package.json` 자체가 존재하지 않는다. 변경 확인은 브라우저에서 직접 페이지를 열어 눈으로 검증한다(가능하면 claude-in-chrome으로 중간 점검).
 - **진짜 좁은 모바일 폭(예: 390px) 검증이 필요할 때(2026-08-24 확립)**: claude-in-chrome의 `resize_window`도, 헤드리스 Chrome의 `--window-size`도 이 환경에서는 **폭 500px 밑으로 내려가지 않는 하드 플로어**가 있어(둘 다 시도해봤으나 요청한 값과 무관하게 500px로 고정됨 — `about.html` 배너 CTA 잘림 버그가 처음에 이 한계 때문에 500px 테스트에서는 안 잡히고 실제 아이폰(390~428pt)에서만 재현된 전례가 있음) 실제 좁은 기기 폭을 재현하려면 이 방법으로는 부족하다. 대신 Chrome을 `--remote-debugging-port`로 직접 띄우고 CDP(`Emulation.setDeviceMetricsOverride`)로 뷰포트를 강제 지정하면 500px 미만 폭도 정확히 재현된다: `google-chrome --headless=new --remote-debugging-port=9333 --user-data-dir=<임시경로> about:blank &` 로 띄운 뒤, Python(`pip install websockets`)으로 `/json/new`(PUT)에 붙어 WebSocket으로 `Emulation.setDeviceMetricsOverride({width:390,height:844,deviceScaleFactor:3,mobile:true})` → `Page.navigate` → `Runtime.evaluate`/`Page.captureScreenshot` 순으로 호출하면 실제 iPhone 뷰포트와 동일한 CSS 폭에서 오버플로우·줄바꿈을 정확히 측정할 수 있다. 작업이 끝나면 띄운 Chrome 프로세스(`pkill -f "remote-debugging-port=9333"`)와 임시 프로필 디렉터리를 정리할 것.
 
