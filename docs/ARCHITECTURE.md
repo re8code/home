@@ -12,7 +12,7 @@
 | --- | --- | --- |
 | 마크업/페이지 | 순수 정적 HTML 30장 (`index.html` + `src/*.html` 29장) | 빌드 도구·패키지 매니저 없음(`package.json` 자체가 없다). 템플릿 엔진도 없어 GNB·푸터 마크업은 페이지마다 복제된다 |
 | 스타일 | Tailwind CSS — Play CDN 런타임(`cdn.tailwindcss.com`) | 디자인 토큰(brand 50~950, Pretendard/JetBrains Mono, `shadow-glow`)은 `assets/js/tailwind-config.js` 한 곳에 정의. CDN 런타임 특성상 FOUC가 있어 GNB·`main` 레이아웃만 `assets/css/base.css`의 critical CSS로 선반영하고, 페이지 전환 끊김은 CSS View Transitions(`@view-transition`)로 완화 |
-| 폰트 | Pretendard Variable v1.3.9(jsDelivr), JetBrains Mono(코드/라벨용) | 30개 페이지 전부 `<link>`로 로드 |
+| 폰트 | Pretendard Variable v1.3.9(jsDelivr) | 30개 페이지 전부 `<link>`로 로드. **웹폰트로 내려받는 것은 Pretendard 하나뿐이다** — `font-mono`(코드/라벨용)는 `tailwind-config.js`의 `'"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'` 스택으로, JetBrains Mono를 `<link>`로 로드하지는 않아 설치되지 않은 기기에서는 시스템 모노스페이스로 폴백된다 |
 | 스크립트 | Vanilla JS (ES Module) | 공통 스크립트는 `assets/js/mobile-menu.js` 하나뿐. 알고리즘 시각화 등 페이지 고유 로직은 각 HTML의 인라인 `<script>`에 둔다 |
 | UI 라이브러리 | Swiper 11(캐러셀), AOS 2.3.1(스크롤 애니메이션) — 둘 다 CDN | `index.html`에서만 로드. GSAP은 검토 후 미채택(`DEV_PLAN.md` §1) |
 | 백엔드/데이터 | Firebase JS SDK 10.12.2 — Firestore + Authentication | "원장님의 낙서" 게시판 전용, 그 외 페이지는 백엔드가 없다(§5) |
