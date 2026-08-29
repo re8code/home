@@ -17,11 +17,13 @@
 - 해당 작업과 무관한 문서는 굳이 수정하지 않는다 (체크는 하되 강제로 쓰지 않는다).
 - 근거가 얕은 상태에서 PRD/ARCHITECTURE의 큰 내용을 추측으로 채우지 않는다 — 범위가 불명확하면 먼저 사용자에게 확인한다.
 - `ARCHITECTURE.md` 상단에는 프로젝트 전체의 '기술 스택'에 대해서 기록한다.
+- `ARCHITECTURE.md` 마지막 항목은 ADR(Architecture Decision Record)을 기록한다.
 
 ## git commit 규칙
 - 'vX.XX' 양식으로 표기를 지킨다. 예를들면, v0.12, v0.45, v1.02 등등.
 - 특별한 지시가 있기 전까지는 minor 버전만을 1씩 증가시키며 commit을 한다.
 - 모든 commit은 'vX.XX: ' 로 comment를 시작한다.
+- minor 버전이 100을 넘어가면 'vX.XXX' 양식으로 전환한다.
 - 지시된 작업이 완료될 때마다 commit과 push를 함께 진행한다.
 - main 브랜치와 dev 브랜치가 구성되어 있을 경우에는 기본적으로 dev 브랜치로 checkout 한다.
 

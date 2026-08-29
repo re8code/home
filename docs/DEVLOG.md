@@ -405,3 +405,8 @@
   - 이번 점검 작업의 보고서를 `report/2026-08-28-docs-audit.md`로 작성(새 규칙에 따른 첫 보고서). `report/`의 직전 파일이 2026-08-23이라 v0.30~v0.49 구간은 보고서가 비어 있는데, 상세 경위가 이 DEVLOG에 남아 있어 소급 작성은 하지 않고 이후 작업부터 관례를 유지하기로 함.
   - 이 장비의 Claude 개인 메모리는 비어 있음을 확인 — "저장소가 1순위 정보원" 규칙과 어긋나는 메모리 전용 정보는 없다.
 - 사용자 지시("main 브랜치 병합도 해 줘") — v0.50을 `dev`에 커밋·푸시한 뒤 `main`에 fast-forward 병합·푸시(`d3b1b9e`→`4d921f0`, v0.49·v0.50 두 커밋이 함께 올라감). 둘 다 문서만 변경이라 사이트 산출물 변화는 없다. GitHub Pages 빌드 `built` 확인, `https://recode.ai.kr/`·`/src/about.html` 200 확인.
+
+## 2026-08-29
+- 장비 경로 이동 마무리 — `home`이 `~/dev/recode-ai/home` → `~/recode-ai/home`으로, 이어서 `business`도 `~/recode-ai/business`로 옮겨져 `../business` 상대 참조가 다시 유효함을 확인(저장소 문서의 `../business` 표기는 수정 불필요). 저장소 자체는 절대경로 하드코딩이 없어(상대경로·`/assets/...` 절대참조·`start.sh`의 `BASH_SOURCE`) 이동만으로 깨진 것 없음 — 로컬 서버로 주요 경로 200 확인. 경로를 키로 보관되던 Claude Code 로컬 상태(옛 세션 기록·`~/.claude.json`·입력 이력·파일 스냅샷)는 저장소 밖에서 정리. 상세: `report/2026-08-29-repo-path-move-cleanup.md`.
+- 사용자가 `CLAUDE.md`를 직접 수정 — 규칙 2종 추가: **ADR**(`ARCHITECTURE.md` 마지막 항목에 Architecture Decision Record를 기록) / **버전 표기**(minor가 100을 넘으면 `vX.XXX` 양식으로 전환).
+- 위 ADR 규칙에 따라 `docs/ARCHITECTURE.md`에 **§8 ADR 절 신설**. 사용자 지시("ADR은 추가로 적용되는 사항이 있으면 기록하도록")에 따라 **과거 결정을 소급해 채우지 않고 자리와 기록 규약만** 정함 — 표기법은 형제 저장소 `../business`의 `### D<번호>.` + 맥락/결정/트레이드오프 형식을 그대로 따르고, 번호는 다음 결정부터 `D1`로 시작한다. §7 갱신 원칙에도 "새 아키텍처 결정은 §8에 추가한다" 한 줄 추가.
