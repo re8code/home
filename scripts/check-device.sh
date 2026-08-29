@@ -106,6 +106,17 @@ JUNK=$(git ls-files | grep -c '\.DS_Store$' || true)
 ABS=$(grep -rl "/Users/" --include="*.html" --include="*.js" --include="*.css" --include="*.sh" . 2>/dev/null | grep -v '^./scripts/check-device.sh$' | wc -l | tr -d ' ')
 [ "$ABS" = "0" ] && ok "절대경로" "하드코딩 0건" || { bad "절대경로" "${ABS}개 파일에 /Users/ 경로가 박혀 있음"; grep -rl "/Users/" --include="*.html" --include="*.js" --include="*.css" --include="*.sh" . | grep -v check-device | sed 's/^/          → /'; }
 
+# Firebase 쓰기 권한 계정 — config 와 규칙 파일이 어긋나면 낙서장 글쓰기가 조용히 실패한다
+CFG_MAIL=$(grep -o "ADMIN_EMAIL = '[^']*'" assets/js/firebase-config.js | sed "s/.*'\(.*\)'/\1/")
+RUL_MAIL=$(grep -o 'token.email == "[^"]*"' firestore.rules | sed 's/.*"\(.*\)"/\1/')
+if [ -z "$CFG_MAIL" ] || [ -z "$RUL_MAIL" ]; then
+  warn "쓰기 계정" "ADMIN_EMAIL 또는 firestore.rules 이메일을 읽지 못함"
+elif [ "$CFG_MAIL" = "$RUL_MAIL" ]; then
+  ok "쓰기 계정" "$CFG_MAIL — config·rules 일치 (콘솔 게시본과의 일치는 콘솔에서 확인)"
+else
+  bad "쓰기 계정" "config($CFG_MAIL) ≠ rules($RUL_MAIL) — 낙서장 글쓰기가 실패한다"
+fi
+
 # 형제 저장소 (CHANGE_DEVICE §5) — 문서가 ../business 로 지칭한다
 [ -d ../business ] && ok "형제 저장소" "../business 있음" \
   || warn "형제 저장소" "../business 없음 — 문서의 ../business 상대 참조가 깨진 상태"

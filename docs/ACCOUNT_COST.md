@@ -13,7 +13,7 @@
 | 도메인 `recode.ai.kr` (닷홈) | 닷홈 | **유료(연 단위)** | 이미 발생 중 — 갱신 실패 시 도메인 상실 |
 | GitHub + GitHub Pages | GitHub `re8code` | 무료 | 저장소를 **비공개로 전환**하면 Pages에 유료 플랜 필요 |
 | Firebase (Firestore + Auth) | Google `triwon20@gmail.com` (콘솔 소유) | 무료(Spark) | 무료 한도 초과 시 **차단**(Spark는 자동 과금 없음). Blaze로 올리면 과금 시작 |
-| Google Forms (1:1 상담) | Google (소유 계정 미확인) | 무료 | 사실상 없음 (Drive 용량 한도만) |
+| Google Forms (1:1 상담) | Google `triwon20@gmail.com` | 무료 | 사실상 없음 (Drive 용량 한도만) |
 | CDN 4종 (Tailwind·jsDelivr·unpkg·gstatic) | 계정 불필요 | 무료 | 없음 — 대신 **가용성 리스크** (§4) |
 | `oj.recode.ai.kr` / `mate.recode.ai.kr` | Google Cloud | **결제 계정 연결 필수** | 이 생태계에서 **과금 개연성 1순위** (§3) |
 | `business-1e563.web.app` | Google (Firebase) | 무료(Spark) | 호스팅 전송량/용량 한도 초과 시 |
@@ -29,7 +29,9 @@
 
    **주의 — 콘솔 계정과 낙서장 쓰기 계정은 다른 것이다.** `firebase-config.js`의 `ADMIN_EMAIL`과 `firestore.rules`에 박힌 `won@re8code.com`은 Firebase **Authentication에 등록된 사용자**(낙서장의 유일한 쓰기 권한자)이지 프로젝트 소유 계정이 아니다. 둘을 같은 것으로 적어두면 "콘솔에 로그인이 안 된다"는 상황에서 엉뚱한 계정을 찾게 된다.
 
-   1:1 상담 Google Forms가 어느 계정 소유인지는 아직 확인되지 않았다(응답이 쌓이는 곳이라 확인 필요).
+   1:1 상담 Google Forms도 같은 `triwon20@gmail.com` 계정 소유다 — 상담 신청 응답이 쌓이는 곳이므로 이 계정을 잃으면 접수 내역째 접근이 끊긴다.
+
+   **낙서장 쓰기 계정(`won@re8code.com`)은 저장소 기준으로만 확인된 값이다.** `firebase-config.js`의 `ADMIN_EMAIL`과 `firestore.rules`의 이메일이 서로 일치한다는 것까지는 저장소에서 확인되지만(`./scripts/check-device.sh`가 매번 대조한다), **콘솔의 Authentication에 그 이메일로 사용자가 실제 등록돼 있는지, 게시된 규칙이 저장소 파일과 같은지는 콘솔에서만 확인할 수 있다** — 규칙은 수동 게시라 드리프트가 가능하고(§4), 이메일 열거 보호가 켜져 있어 클라이언트 API로도 등록 여부를 판별할 수 없다. 가장 확실한 확인은 낙서장에서 실제로 글을 써 보는 것이다.
 
 계정이 **필요 없는** 것: Tailwind Play CDN·jsDelivr(Pretendard, Swiper)·unpkg(AOS)·gstatic(Firebase SDK) — 전부 익명 공개 CDN이다.
 
