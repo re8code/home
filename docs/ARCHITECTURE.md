@@ -147,7 +147,7 @@ graph TD
 
 - **맥락**: Firestore 규칙의 `request.auth.token.email`(=Authentication에 등록된 최종 사용자)과 Firebase 콘솔 소유 Google 계정은 서로 다른 레이어라 값이 갈라질 수 있고, 실제로 2026-08-29까지 갈라져 있었다(쓰기 `won@re8code.com` / 콘솔 `triwon20@gmail.com`). 문서도 이 둘을 하나로 뭉뚱그려 적어 두어, "Firebase 계정이 무엇인가"라는 질문에 답이 두 개인 상태였다. 로그인 UI는 비밀번호만 받고 이메일은 코드에 하드코딩돼 있어, 어느 계정으로 로그인되는지가 화면에서는 전혀 드러나지 않는다.
 - **결정**: 두 값을 `triwon20@gmail.com` 하나로 통일하고 **수정 불가 값**으로 고정한다. 정본은 `ACCOUNT_COST.md` §2이며, 실제 값은 세 곳(`assets/js/firebase-config.js`의 `ADMIN_EMAIL`, `firestore.rules`, `scripts/check-device.sh`의 `FIXED_ADMIN_MAIL`)에 존재하고 장비 점검 스크립트가 매번 세 값의 일치를 대조한다. 바꾸려면 이 ADR을 먼저 고친다.
-- **트레이드오프**: 콘솔 관리 권한과 게시판 쓰기 권한이 한 계정에 묶여, 계정 하나가 잠기면 둘 다 멈춘다(권한 분리를 포기한 대가 — `ACCOUNT_COST.md` §4의 "단일 Google 계정 집중" 리스크가 그만큼 커진다). 또 이 변경은 **콘솔 작업 없이는 완결되지 않는다** — Authentication에 해당 사용자가 등록돼 있어야 하고, 바뀐 `firestore.rules`를 콘솔에 재게시해야 실제로 적용된다. 옛 사용자(`won@re8code.com`)를 남겨두면 규칙상 쓰기는 못 하지만 계정 목록에 혼선으로 남으므로 정리 대상이다.
+- **트레이드오프**: 콘솔 관리 권한과 게시판 쓰기 권한이 한 계정에 묶여, 계정 하나가 잠기면 둘 다 멈춘다(권한 분리를 포기한 대가 — `ACCOUNT_COST.md` §4의 "단일 Google 계정 집중" 리스크가 그만큼 커진다). 또 이 변경은 **콘솔 작업 없이는 완결되지 않는다** — Authentication에 해당 사용자가 등록돼 있어야 하고, 바뀐 `firestore.rules`를 콘솔에 재게시해야 실제로 적용된다. 옛 사용자(`won@re8code.com`)는 새 계정으로 로그인·글쓰기가 실증된 뒤 2026-08-29 삭제해, 이 프로젝트의 인증 사용자는 하나만 남았다.
 
 ### D1. 장비 점검은 문서가 아니라 `scripts/check-device.sh`가 수행하고, 관측값은 저장소에 남기지 않는다
 

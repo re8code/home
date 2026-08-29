@@ -39,6 +39,8 @@
 | 하는 일 | 규칙 게시·요금제·Auth 사용자 생성 | 브라우저에서 로그인해 글을 씀 |
 | 주의 | **콘솔 Owner라도 클라이언트 규칙에서는 아무 특권이 없다** — Auth 사용자로 등록돼 있지 않으면 글을 못 쓴다 | |
 
+**옛 Auth 사용자 `won@re8code.com`은 2026-08-29 삭제 완료.** 이제 이 프로젝트의 낙서장 인증 사용자는 `triwon20@gmail.com` 하나뿐이다. 같은 주소가 형제 저장소 `../business`의 `/privacy` 페이지에 **개인정보 보호책임자 문의 창구**로 표기돼 있는데, 그건 대외 공개용 메일 주소일 뿐 로그인 계정이 아니다 — 여기서 삭제한 것은 이 Firebase 프로젝트의 인증 레코드이지 메일 계정이 아니므로 그 표기는 그대로 유효하다. git 커밋 author(`re8code <won@re8code.com>`)도 별개 신원이라 영향 없다.
+
 값을 바꿔야 할 일이 생기면 **세 곳을 함께** 고치고 콘솔에 규칙을 재게시해야 한다 — `assets/js/firebase-config.js`의 `ADMIN_EMAIL`, `firestore.rules`, `scripts/check-device.sh`의 `FIXED_ADMIN_MAIL`. 세 값의 일치는 `./scripts/check-device.sh`가 매번 대조한다(콘솔에 게시된 규칙과의 일치는 콘솔에서만 확인 가능하다 — 규칙은 수동 게시라 드리프트가 가능하고, 이메일 열거 보호가 켜져 있어 클라이언트 API로는 Auth 사용자 존재 여부를 판별할 수 없다).
 
 계정이 **필요 없는** 것: Tailwind Play CDN·jsDelivr(Pretendard, Swiper)·unpkg(AOS)·gstatic(Firebase SDK) — 전부 익명 공개 CDN이다.
