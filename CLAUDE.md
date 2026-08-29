@@ -202,7 +202,7 @@
 
 ## 저장소 관례
 
-- `docs/` — `PRD.md`/`DEV_PLAN.md`/`DEVLOG.md`/`ARCHITECTURE.md`/`CHANGE_DEVICE.md` 5개 주요 문서가 위치한 폴더(2026-08-22 정리, `CHANGE_DEVICE.md`는 2026-08-29 추가). `CLAUDE.md`만 Claude Code가 저장소 루트에서 자동으로 읽는 파일이라 루트에 남아 있다 — 4개 문서를 가리킬 때는 `docs/PRD.md`처럼 `docs/` 접두사를 붙인다.
+- `docs/` — `PRD.md`/`DEV_PLAN.md`/`DEVLOG.md`/`ARCHITECTURE.md`/`CHANGE_DEVICE.md` 5개 주요 문서가 위치한 폴더(2026-08-22 정리, `CHANGE_DEVICE.md`는 2026-08-29 추가). `docs/account-cost.md`(2026-08-29 추가)는 제1원칙 6개 문서에 포함되지 않는 **보조 참고 문서** — `ARCHITECTURE.md` §1 기술 스택의 계정·비용 요약이며, 외부 서비스 도입·요금제 변경 시에만 갱신한다. `CLAUDE.md`만 Claude Code가 저장소 루트에서 자동으로 읽는 파일이라 루트에 남아 있다 — 4개 문서를 가리킬 때는 `docs/PRD.md`처럼 `docs/` 접두사를 붙인다.
 - `tasks/*.md` — 작업 지시/요구사항을 기록. `report/YYYY-MM-DD-*.md` — 해당 작업을 완료한 뒤 진행 과정을 날짜별로 정리한 보고서. 새 작업을 마쳤을 때 이 관례를 따라 보고서를 남기는 흐름이 이미 자리잡혀 있다.
 - **작업 완료 후 문서 점검(중요 규칙)**: 사용자가 지시한 작업이 끝날 때마다, 별도 요청 없이도 매번 `docs/PRD.md`, `docs/DEV_PLAN.md`, `CLAUDE.md`, `docs/DEVLOG.md`, `docs/ARCHITECTURE.md`, `docs/CHANGE_DEVICE.md` 6개 문서를 검토해 업데이트가 필요하면 반영한다.
   - `docs/DEVLOG.md`는 날짜별 작업 일지 — 무슨 작업을 했는지 간단히 기록(장황한 서술 대신 요약).
