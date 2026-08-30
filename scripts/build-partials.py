@@ -77,11 +77,29 @@ def tokens_for(page: Path) -> dict[str, str]:
     }
 
 
+# 코스 바로가기 탭 — 정본에는 전부 평범한 링크로 두고, 자기 자신을 가리키는 것만 여기서 활성 처리한다.
+# `filter-tab` 클래스를 가진 링크에만 적용한다 — GNB·푸터에도 자기 자신을 가리키는 링크가 있지만
+# (about.html 의 "소개" 등) 그쪽은 현재 페이지 강조를 하지 않는 것이 관례이기 때문.
+TAB_RE = re.compile(r'<a href="(?P<href>[^"]+)" class="filter-tab (?P<rest>[^"]*)"')
+
+
+def mark_current(body: str, page: Path) -> str:
+    def sub(m: re.Match[str]) -> str:
+        if m.group("href") != page.name:
+            return m.group(0)
+        return '<a href="{0}" aria-current="page" class="filter-tab is-active {1}"'.format(
+            m.group("href"), m.group("rest")
+        )
+
+    return TAB_RE.sub(sub, body)
+
+
 def render(name: str, page: Path) -> str:
     body = (PARTIALS / f"{name}.html").read_text(encoding="utf-8")
     body = LEADING_COMMENT.sub("", body).rstrip("\n")
     for key, value in tokens_for(page).items():
         body = body.replace("{{%s}}" % key, value)
+    body = mark_current(body, page)
     left = re.search(r"\{\{(\w+)\}\}", body)
     if left:
         raise SystemExit(f"오류: {name}.html 에 치환되지 않은 토큰 {{{{{left.group(1)}}}}} 이(가) 남았습니다.")

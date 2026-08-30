@@ -1,0 +1,12 @@
+<!-- Language 코스 바로가기 탭 정본 — 해당 5개 페이지가 공유한다.
+     이 파일만 고치고 `./scripts/build-partials.py`를 돌린다. 페이지의 마커 안은 생성물이다(ADR D3).
+     현재 페이지 표시(aria-current="page" + is-active)는 여기 적지 않는다 — 빌드가 각 페이지에서
+     자기 자신을 가리키는 탭에 자동으로 붙인다. **새 페이지를 추가할 때는 이 파일에 <a> 한 줄만 더하면
+     기존 페이지의 탭까지 전부 갱신된다**(종전에는 5장을 일일이 고쳐야 했다). -->
+      <nav class="flex flex-wrap items-center gap-2" aria-label="Language 코스 바로가기">
+        <a href="lang-cp.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">C/C++</a>
+        <a href="lang-jv.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">Java</a>
+        <a href="lang-py.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">Python</a>
+        <a href="lang-js.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">JavaScript</a>
+        <a href="lang-dt.html" class="filter-tab rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors">Dart</a>
+      </nav>
