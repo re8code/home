@@ -1,0 +1,69 @@
+<!-- GNB 정본 — 30개 페이지가 공유한다. 이 파일만 고치고 `./scripts/build-partials.py`를 돌린다.
+     페이지의 마커 안은 생성물이므로 직접 고치지 않는다(ARCHITECTURE.md ADR D3).
+     데스크톱 nav ↔ 모바일 햄버거 전환은 반드시 `lg:` 기준을 유지할 것 — `md:`로 되돌리면
+     갤럭시 Z 폴드7 펼친 폭에서 nav 항목이 개별 줄바꿈되는 버그가 재발한다. -->
+  <header class="fixed top-0 inset-x-0 z-[60] bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 h-16 flex items-center justify-between gap-8">
+      <div class="flex items-center gap-6">
+        <a href="{{HOME_HREF}}" class="flex items-center gap-2 font-mono font-semibold tracking-tight text-white">
+          <img src="{{ASSET}}image/logo.png" alt="Recode Coding" class="h-8 w-8" />
+          <span class="hidden sm:inline">Recode Coding</span>
+        </a>
+        <a href="{{SRC}}about.html" class="hidden lg:inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors">
+          회사 소개
+        </a>
+      </div>
+      <div class="hidden lg:flex items-center gap-8">
+        <nav class="flex items-center gap-6 text-sm text-slate-400">
+          <a href="{{SRC}}graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+          <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            LMS
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+          <a href="https://business-1e563.web.app" target="_blank" rel="noopener" class="hover:text-white transition-colors">
+            business
+          </a>
+          <a href="https://mate.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">
+            studio
+          </a>
+        </nav>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-400 transition-colors">
+          1:1 상담 신청
+        </a>
+      </div>
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
+        aria-label="메뉴 열기"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg data-icon="open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-5 w-5">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg data-icon="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="hidden h-5 w-5">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden lg:hidden border-t border-white/10 bg-[#0c0c0f]/95 backdrop-blur">
+      <nav class="flex flex-col px-6 py-4 gap-4 text-sm text-slate-300">
+        <a href="{{SRC}}about.html" class="hover:text-white transition-colors">회사 소개</a>
+        <a href="{{SRC}}graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+        <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">wonoj</a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          LMS
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="https://business-1e563.web.app" target="_blank" rel="noopener" class="hover:text-white transition-colors">
+          business
+        </a>
+        <a href="https://mate.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">
+          studio
+        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-brand-500 px-4 py-2 font-semibold text-white hover:bg-brand-400 transition-colors">1:1 상담 신청</a>
+      </nav>
+    </div>
+  </header>

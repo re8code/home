@@ -1,0 +1,31 @@
+<!-- <head> 공통부 정본 — 30개 페이지가 공유한다. 이 파일만 고치고 `./scripts/build-partials.py`를 돌린다.
+     페이지의 마커 안은 생성물이므로 직접 고치지 않는다(ARCHITECTURE.md ADR D3).
+     og:title/og:description/og:url 은 각 페이지의 <title>·<meta name="description">·파일 경로에서
+     자동으로 파생된다 — 문구를 고치면 OG도 함께 갱신되므로 따로 챙길 필요가 없다.
+     favicon 을 교체할 때는 ?v=N 을 올릴 것(Chrome 이 파비콘을 별도 캐시에 보관한다). -->
+<!-- Open Graph: 카카오톡 등 메신저/SNS에 링크 공유 시 제목·설명·썸네일 미리보기 표시 -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Recode Coding" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:url" content="{{URL}}" />
+<meta property="og:title" content="{{TITLE}}" />
+<meta property="og:description" content="{{DESC}}" />
+<meta property="og:image" content="https://recode.ai.kr/assets/image/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<!-- favicon: Chrome은 파비콘을 일반 HTTP 캐시와 별개로 보관해 새로고침으로 갱신되지 않으므로, 교체 시 ?v=N 을 올릴 것 -->
+<link rel="icon" href="{{ASSET}}image/favicon.ico?v=1" sizes="any" />
+<link rel="apple-touch-icon" href="{{ASSET}}image/apple-touch-icon.png?v=1" />
+
+<link rel="stylesheet" href="/assets/css/base.css" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="/assets/js/tailwind-config.js"></script>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link
+  rel="stylesheet"
+  as="style"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
+/>

@@ -37,14 +37,43 @@ PAGES = [ROOT / "index.html"] + sorted((ROOT / "src").glob("*.html"))
 LEADING_COMMENT = re.compile(r"\A\s*<!--.*?-->\s*\n", re.S)
 
 
+SITE = "https://recode.ai.kr/"
+
+TITLE_RE = re.compile(r"<title>(.*?)</title>", re.S)
+DESC_RE = re.compile(r'<meta name="description" content="(.*?)"\s*/?>', re.S)
+
+
+def attr(text: str) -> str:
+    """<title> 원문을 속성값으로 옮긴다.
+
+    원문은 이미 HTML 이스케이프된 상태이므로 **그대로 복사**한다 — 여기서 `&`를 다시
+    이스케이프하면 나중에 제목에 `Web &amp; WebApp` 같은 표기가 들어왔을 때 `&amp;amp;`로
+    이중 이스케이프된다. 속성을 깨뜨리는 따옴표만 바꾼다.
+    """
+    return text.replace('"', "&quot;")
+
+
 def tokens_for(page: Path) -> dict[str, str]:
-    """페이지 위치에서 경로 접두사를 계산한다."""
+    """페이지 위치에서 경로 접두사를, 페이지 본문에서 제목·설명을 계산한다."""
     at_root = page.parent == ROOT
+    text = page.read_text(encoding="utf-8")
+
+    title = TITLE_RE.search(text)
+    desc = DESC_RE.search(text)
+    if not title or not desc:
+        raise SystemExit(f"오류: {page} 에 <title> 또는 <meta name=\"description\"> 이 없습니다.")
+
     return {
         # 루트에서는 자기 자신이라 앵커만, src/ 에서는 한 단계 올라가야 한다(`index.html`로 쓰면 src/index.html 을 가리킨다).
         "HOME": "" if at_root else "../index.html",
+        "HOME_HREF": "#" if at_root else "../index.html",
         "SRC": "src/" if at_root else "",
         "ASSET": "assets/" if at_root else "../assets/",
+        # OG 태그용 — 페이지의 <title>/<meta description>/경로에서 파생시켜, 문구를 고칠 때
+        # OG를 따로 챙겨야 하던 이중 관리를 없앤다(종전 관례는 CLAUDE.md "Open Graph" 항목 참고).
+        "URL": SITE + ("" if at_root else f"src/{page.name}"),
+        "TITLE": attr(title.group(1).strip()),
+        "DESC": attr(desc.group(1).strip()),
     }
 
 

@@ -445,3 +445,9 @@
   - 검증: 재실행 멱등, 내부 링크 733건 깨짐 0, 26장은 푸터 링크가 **이전과 byte 단위로 동일**. 의도적으로 달라진 4장 — `index.html`은 죽은 "블로그"가 "원장님의 낙서"(실제 링크)로, `graffiti*` 3장은 옛 미니 푸터가 표준 푸터로 통일. 헤드리스 Chrome으로 4개 페이지 렌더링·스크린샷 확인.
   - 초기 구현에서 `{{HOME}}`을 `src/` 페이지에 `index.html`로 넣어 `src/index.html`을 가리키는 버그가 있었으나 링크 대조에서 즉시 발견해 `../index.html`로 수정.
   - 상세: `report/2026-08-30-partials-footer.md`.
+- **v0.66** — 사용자 지시("GNB랑 head도 정본화")로 정본을 3종으로 확장. `partials/header.html`(GNB 전체)과 `partials/head-common.html`(OG 9종·favicon·base.css·Tailwind·config·Pretendard) 신설, 30장에 마커 삽입 후 주입. 페이지에 남는 것은 `<title>`·`<meta description>`·페이지 고유 `<style>`·페이지 전용 CDN(index의 Swiper/AOS)뿐.
+  - **OG 태그 자동 파생** — `{{TITLE}}`/`{{DESC}}`/`{{URL}}`을 그 페이지의 `<title>`·`description`·파일 경로에서 계산하도록 빌드 스크립트에 추가. 종전에는 "`<title>`을 고치면 OG도 같이 고쳐야 한다"가 `CLAUDE.md`의 주의사항이었는데, 이 이중 관리가 구조적으로 사라졌다. 적용 전 30장 전수 확인 결과 og:title/description/url이 이미 title·description·경로와 **30/30 일치**해 파생으로 대체해도 값이 바뀌지 않음을 먼저 검증.
+  - `<title>` 원문은 이미 이스케이프된 상태라 **그대로 복사**하고 따옴표만 `&quot;`로 바꾼다 — `&`를 다시 이스케이프하면 `Web &amp; WebApp` 같은 제목에서 `&amp;amp;`로 이중 이스케이프되기 때문(제목에 `&`를 넣어 실제로 확인).
+  - GNB 정본에는 `{{HOME_HREF}}` 토큰을 추가(루트는 `#`, `src/`는 `../index.html` — 로고 링크가 두 경우에 다른 형태라 `{{HOME}}`으로는 표현되지 않음).
+  - 검증: **head·GNB의 header 마크업·OG 9종·favicon·외부 리소스가 이전 커밋과 30/30장 완전 동일**(순수 리팩터링 확인). 내부 링크 733건 깨짐 0, `check-device.sh` 사이트 무결성 전 항목 30/30, 헤드리스 Chrome으로 5개 페이지 렌더링(로고·홈 링크가 루트/`src/`에서 정확히 갈리는 것 포함) 확인.
+  - 상세: `report/2026-08-30-partials-footer.md` (같은 작업의 연장이라 동일 보고서에 §5로 추가).
