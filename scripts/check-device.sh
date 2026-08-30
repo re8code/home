@@ -130,6 +130,15 @@ fi
 
 echo "── 사이트 무결성 ───────────────────────────"
 ok "페이지 수" "${NPAGES}장 (index.html + src/*.html)"
+
+# 공통 마크업 정본과 생성물의 드리프트 (ADR D3) — 마커 안을 직접 고치면 여기서 잡힌다
+if [ -x ./scripts/build-partials.py ]; then
+  if PARTIAL_OUT=$(./scripts/build-partials.py --check 2>&1); then
+    ok "공통 마크업" "${PARTIAL_OUT#정본과 일치 — }"
+  else
+    bad "공통 마크업" "정본과 어긋난 페이지 있음 — ./scripts/build-partials.py 실행 필요"
+  fi
+fi
 for entry in "${COMMON[@]}"; do
   label=${entry%%|*}; needle=${entry#*|}
   n=$(grep -l -F "$needle" "${PAGES[@]}" 2>/dev/null | wc -l | tr -d ' ')

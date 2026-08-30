@@ -1,0 +1,46 @@
+<!-- 푸터 정본 — 30개 페이지가 공유한다. 이 파일만 고치고 `./scripts/build-partials.py`를 돌린다.
+     페이지의 <!-- @partial:footer --> 마커 안은 생성물이므로 직접 고치지 않는다(ARCHITECTURE.md ADR D3).
+     토큰: {{HOME}} 랜딩(루트 index.html) · {{SRC}} src/ 페이지 · {{ASSET}} assets/ — 파일 위치에서 계산된다. -->
+  <footer class="border-t border-slate-200">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 pt-14 pb-8">
+      <p class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">RECODE</p>
+
+      <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-8 border-t border-slate-200 pt-10">
+        <div>
+          <p class="text-sm font-semibold text-slate-900">훈련 코스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="{{HOME}}#lang" class="hover:text-slate-900 transition-colors">Language</a></li>
+            <li><a href="{{HOME}}#algo" class="hover:text-slate-900 transition-colors">Algorithm</a></li>
+            <li><a href="{{HOME}}#web" class="hover:text-slate-900 transition-colors">Web &amp; WebApp</a></li>
+            <li><a href="{{HOME}}#game" class="hover:text-slate-900 transition-colors">Unity</a></li>
+            <li><a href="{{HOME}}#agent-ai" class="hover:text-slate-900 transition-colors">Agent AI</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">회사</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="{{HOME}}#philosophy" class="hover:text-slate-900 transition-colors">교육 철학</a></li>
+            <li><a href="{{SRC}}about.html" class="hover:text-slate-900 transition-colors">소개</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">모집</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="{{HOME}}#cta" class="hover:text-slate-900 transition-colors">1:1 상담 신청</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">리소스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="{{SRC}}graffiti.html" class="hover:text-slate-900 transition-colors">원장님의 낙서</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">문의</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 text-center">
+        © 2026 Recode Coding. AI시대 프로그래밍 연구소.
+      </p>
+    </div>
+  </footer>
