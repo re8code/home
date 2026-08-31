@@ -238,23 +238,24 @@ ok('GNB 준비중', (', '.join(pending) or '없음') + ' — §6 표와 대조�
 
 # 4) 문서 내부 §n 상호참조 유효성
 #    `X.md` §n 처럼 문서명이 바로 앞에 붙은 것만 그 문서의 절로 보고, 그 외는 자기 문서의 절로 본다.
+# report/*.md 도 후보에 넣는다 — 문서가 보고서의 절(`report/....md` §5)을 가리키는 경우가 있다.
 secs = {os.path.basename(d): {int(m) for m in re.findall(r'^## (\d+)\.', open(d, encoding='utf-8').read(), re.M)}
-        for d in ['CLAUDE.md'] + sorted(glob.glob('docs/*.md'))}
+        for d in ['CLAUDE.md'] + sorted(glob.glob('docs/*.md')) + sorted(glob.glob('report/*.md'))}
 badrefs = []
 for d in docs:
     s_ = open(d, encoding='utf-8').read()
-    for m in re.finditer(r'`(?:docs/)?([A-Za-z_]+\.md)`[^§`\n]{0,12}§(\d+)', s_):
+    for m in re.finditer(r'`(?:[A-Za-z0-9_./-]*/)?([A-Za-z0-9_.-]+\.md)`[^§`\n]{0,12}§(\d+)', s_):
         tgt, n = m.group(1), int(m.group(2))
         if secs.get(tgt) and n not in secs[tgt]:
             badrefs.append(f"{d}: {tgt} §{n}")
     own = os.path.basename(d)
     for m in re.finditer(r'§(\d+)', s_):
         pre = s_[max(0, m.start() - 40):m.start()]
-        if re.search(r'`(?:docs/)?[A-Za-z_]+\.md`[^§`\n]{0,12}$', pre):
+        if re.search(r'`(?:[A-Za-z0-9_./-]*/)?[A-Za-z0-9_.-]+\.md`[^§`\n]{0,12}$', pre):
             continue                      # 위에서 이미 검사한 타 문서 참조
         n = int(m.group(1))
         line = s_[s_.rfind('\n', 0, m.start()) + 1:m.start()]
-        named = re.findall(r'`(?:docs/)?([A-Za-z_]+\.md)`', line)   # 같은 줄에서 앞서 언급된 문서(§3·§5 처럼 이어지는 참조)
+        named = re.findall(r'`(?:[A-Za-z0-9_./-]*/)?([A-Za-z0-9_.-]+\.md)`', line)   # 같은 줄에서 앞서 언급된 문서(§3·§5 처럼 이어지는 참조)
         cand = [own] + named
         if not any(n in secs.get(c, set()) for c in cand):
             badrefs.append(f"{d}: §{n}")
