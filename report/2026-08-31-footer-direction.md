@@ -64,13 +64,56 @@
 
 **목업의 링크 구성과 문구는 배치를 보기 위한 임시안이므로 그대로 옮기지 말 것** — 이 주의사항을 `CLAUDE.md`와 `DEV_PLAN.md` Phase 4 양쪽에 남겼다.
 
+## 5. 채택안 핵심 코드 (저장소 보존분)
+
+목업은 세션 임시 폴더와 Artifact에만 있어 둘 다 사라지면 그림이 남지 않는다. **구현에 실제로 필요한 부분만 여기 옮겨 둔다** — 이것만 있으면 Artifact 없이도 재현된다. 아래는 목업(`Living.dc.html`)의 인라인 스타일을 그대로 옮긴 것이므로, `partials/footer.html`에 넣을 때는 사이트 관례대로 Tailwind 유틸리티로 바꿔 쓰고 애니메이션 부분만 `<style>`로 남긴다.
+
+막대는 46개, 높이는 고정이고 **색만** 왼쪽에서 오른쪽으로 정렬되어 간다. 배치는 푸터 바닥에 `position:absolute`로 깔고(`height:132px`, `opacity:.5`, `gap:3px`) 본문은 그 위에 `position:relative`로 얹는다.
+
+```css
+.bar { animation: sweep 16s linear infinite; will-change: background-color; }
+@keyframes sweep {
+  0%,  46% { background-color: #cbd5e1; }  /* 대기(회색) */
+  50%, 94% { background-color: #18b476; }  /* 정렬 완료(브랜드 그린) */
+  98%, 100% { background-color: #cbd5e1; }
+}
+/* 비교 중인 지점 — 초록 경계와 같은 속도로 따라간다 */
+.scan { animation: scan 16s linear infinite; }  /* width:2px; background:#f59e0b */
+@keyframes scan {
+  0%   { left: 0%;   opacity: 0; }
+  6%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bar, .scan { animation: none; }
+  .scan { opacity: 0; }
+}
+```
+
+막대 높이와 위상은 정적 사이트이므로 **빌드 때 인라인 style로 박아 두면 런타임 JS가 필요 없다**(푸터가 30장에 들어가므로 스크립트를 늘리지 않는 편이 낫다). 생성 규칙:
+
+```js
+const COUNT = 46;
+let seed = 7;
+for (let i = 0; i < COUNT; i++) {
+  seed = (seed * 1103515245 + 12345) % 2147483648;   // 재현 가능한 난수
+  const h = 18 + (seed % 1000) / 1000 * 96;          // 18~114px
+  // flex:1 1 0; min-width:0; border-radius:2px 2px 0 0; background:#cbd5e1;
+  // animation-delay 는 부호와 순서에 주의 — 아래가 "왼쪽부터" 맞는 식이다
+  const delay = -(COUNT - 1 - i) * 0.34;             // 초 단위
+}
+```
+
+`animation-delay`를 `-i * 0.34s`로 주면 초록이 **오른쪽부터** 번진다(위 §3 버그). 반드시 `-(COUNT-1-i)`로 뒤집을 것.
+
 ## 기록 위치
 
 `CLAUDE.md`의 "여러 장비 간 작업 연속성" 규칙에 따라 Artifact URL을 저장소에 남겼다(메모리에만 있으면 다른 장비에서 사라진 것과 같다).
 
 - `docs/DEV_PLAN.md` **Phase 4** — 배경·확정 사항·남은 결정·목업 URL
 - `CLAUDE.md` partials 항목 — 방향과 "목업 문구를 그대로 옮기지 말 것" 주의
-- 목업 캔버스: `https://claude.ai/code/artifact/26a54fbd-5ba8-45b0-9cb5-c3e06c7df4d3`
+- 목업 캔버스: `https://claude.ai/code/artifact/26a54fbd-5ba8-45b0-9cb5-c3e06c7df4d3` — **없어져도 무방하다.** 채택안의 핵심은 위 §5에 옮겨 뒀고, 나머지(터미널 안·폐기된 A~D)는 §1·§3의 서술로 충분하다.
 
 ## 남은 이슈
 
