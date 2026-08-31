@@ -2,7 +2,7 @@
 
 `ARCHITECTURE.md` §1 기술 스택(및 §3 배포·§5 백엔드·§6 서브도메인)에서 **계정이 필요한 항목**과 **비용이 발생할 개연성이 있는 항목**만 뽑아 정리한다. 구조 설명은 `ARCHITECTURE.md`가 정본이고, 이 문서는 "누구 계정으로 무엇이 돌아가고, 어디서 돈이 샐 수 있는가"만 다룬다.
 
-- 최종 갱신: 2026-08-29 (계정을 `triwon20@gmail.com` 하나로 통일하고 **수정 불가**로 확정 — ADR D2. 신설 — 같은 날 `CLAUDE.md` 제1원칙 문서 세트에 편입되어 7개 문서 중 하나가 됨)
+- 최종 갱신: 2026-08-31 (서브도메인 2개의 실제 호스팅 경로를 재확인 — Firebase Hosting을 거쳐 Cloud Run으로 간다, §3). 이전 갱신: 2026-08-29 (계정을 `triwon20@gmail.com` 하나로 통일하고 **수정 불가**로 확정 — ADR D2. 신설 — 같은 날 `CLAUDE.md` 제1원칙 문서 세트에 편입되어 7개 문서 중 하나가 됨)
 - 확인 방법: 저장소 내 외부 호스트 전수 조사 + 실서비스 응답 헤더/DNS 조회
 - **금액은 적지 않는다** — 요금제는 수시로 바뀌므로 각 서비스 콘솔의 값이 정본이다. 여기에는 "과금으로 전환되는 조건"만 적는다.
 
@@ -53,9 +53,9 @@
 
 ### 개연성 1순위 — Google Cloud (서브도메인 2개)
 
-`oj.recode.ai.kr`·`mate.recode.ai.kr` 둘 다 응답 헤더가 `server: Google Frontend`이고, studio는 원래 `recodemate-...-du.a.run.app`(Cloud Run) 주소로 연결했던 이력이 있다. **Cloud Run은 결제 계정이 연결돼 있어야 동작**하므로, 무료 한도를 넘는 순간 별도 확인 없이 청구된다 — 이 생태계에서 실제로 돈이 샐 가능성이 가장 높은 지점이다.
+`oj.recode.ai.kr`·`mate.recode.ai.kr` 둘 다 **Google Cloud에서 돌고 있다.** DNS는 Firebase Hosting(`project-5886...web.app` / `recodemate.web.app`)을 가리키지만, 정적 호스팅이 아니라 그 뒤의 **Cloud Run으로 넘어간다** — 응답에 `x-cloud-trace-context`가 붙고 루트 요청이 `/login`으로 동적 리다이렉트되는 것이 근거다(studio가 원래 `recodemate-...-du.a.run.app`으로 연결돼 있던 이력과도 맞는다). **Cloud Run은 결제 계정이 연결돼 있어야 동작**하므로, 무료 한도를 넘는 순간 별도 확인 없이 청구된다 — 이 생태계에서 실제로 돈이 샐 가능성이 가장 높은 지점이다.
 
-다만 **두 서비스 모두 이 저장소가 아니라 별도 프로젝트에서 관리**하므로(`ARCHITECTURE.md` §6), 실제 사용량·예산 알림 설정은 해당 프로젝트 쪽에서 확인해야 한다. 이 저장소가 하는 일은 링크 연결뿐이다.
+정리하면 **GCP를 안 쓰는 게 아니라, 이 저장소가 안 쓰는 것**이다. 이 저장소(`recode.ai.kr`)는 GitHub Pages에 올라가고 GCP 접점은 Firebase(Firestore·Auth, Spark)뿐이며, Cloud Run 두 개는 **링크로만 이어진 별도 프로젝트**다(`ARCHITECTURE.md` §6) — 실제 사용량과 예산 알림 설정은 그쪽 프로젝트에서 확인해야 한다. 다만 **결제 계정이 같은 Google 계정 하나에 묶여 있어**(§4) 청구는 함께 온다.
 
 ### 개연성 2순위 — Firebase 무료 한도 (낙서장)
 
