@@ -2,7 +2,7 @@
 // firebase-config.js가 실제 프로젝트 값으로 설정된 경우 Firebase Authentication으로
 // 실제 로그인을 수행하고, 아직 임시(placeholder) 값인 개발 단계에서는 로컬 비밀번호로
 // 대체하여 Firebase 프로젝트 없이도 화면 동작을 확인할 수 있게 합니다.
-import { IS_PLACEHOLDER_CONFIG } from './firebase-config.js';
+import { IS_PLACEHOLDER_CONFIG, ADMIN_EMAILS } from './firebase-config.js';
 import { isAdminSignedIn, signInAdmin } from './firebase-auth.js';
 
 // 개발 단계(임시 config)에서만 쓰이는 로컬 비밀번호. 실제 config로 교체되면 이 값은
@@ -24,6 +24,23 @@ export function requestAdminPassword(actionLabel) {
     return Promise.resolve(true);
   }
 
+  // 쓰기 계정이 하나뿐이면 고를 것이 없으므로 비밀번호만 받는다(종전과 같은 화면).
+  // 둘 이상일 때만 선택칸을 낸다 — 자유 입력이 아니라 목록이라, 비밀번호를 계정칸에
+  // 잘못 치는 일이 생기지 않는다.
+  const needsPicker = !IS_PLACEHOLDER_CONFIG && ADMIN_EMAILS.length > 1;
+  let remembered = '';
+  try {
+    remembered = localStorage.getItem('recode.adminEmail') ?? '';
+  } catch (e) {
+    /* 저장소 접근이 막힌 환경 */
+  }
+  const chosen = ADMIN_EMAILS.includes(remembered) ? remembered : ADMIN_EMAILS[0];
+  const picker = needsPicker
+    ? `<select class="admin-id-input mt-4 w-full rounded-xl border border-slate-900/10 px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500/50">
+         ${ADMIN_EMAILS.map((m) => `<option value="${m}"${m === chosen ? ' selected' : ''}>${m}</option>`).join('')}
+       </select>`
+    : '';
+
   return new Promise((resolve) => {
     const overlay = document.createElement('div');
     overlay.className =
@@ -31,10 +48,10 @@ export function requestAdminPassword(actionLabel) {
     overlay.innerHTML = `
       <div class="w-full max-w-sm rounded-2xl border border-slate-900/10 bg-white p-6 shadow-xl">
         <h3 class="text-base font-semibold text-slate-900">원장 인증</h3>
-        <p class="mt-1 text-sm text-slate-500">"${actionLabel}" 기능은 원장만 사용할 수 있습니다. 계정과 비밀번호를 입력해주세요.</p>
-        <input type="email" class="admin-id-input mt-4 w-full rounded-xl border border-slate-900/10 px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500/50" placeholder="이메일" autocomplete="username" inputmode="email" />
+        <p class="mt-1 text-sm text-slate-500">"${actionLabel}" 기능은 원장만 사용할 수 있습니다. ${needsPicker ? '계정을 고르고 비밀번호를' : '비밀번호를'} 입력해주세요.</p>
+        ${picker}
         <input type="password" class="admin-pw-input mt-2 w-full rounded-xl border border-slate-900/10 px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500/50" placeholder="비밀번호" autocomplete="current-password" />
-        <p class="admin-pw-error mt-2 hidden text-xs text-red-500">계정 또는 비밀번호가 올바르지 않습니다.</p>
+        <p class="admin-pw-error mt-2 hidden text-xs text-red-500">비밀번호가 올바르지 않습니다.</p>
         <div class="mt-5 flex justify-end gap-2">
           <button type="button" class="admin-pw-cancel rounded-full px-4 py-2 text-sm text-slate-500 hover:bg-slate-900/5">취소</button>
           <button type="button" class="admin-pw-confirm rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-brand-400">확인</button>
@@ -46,13 +63,8 @@ export function requestAdminPassword(actionLabel) {
     const input = overlay.querySelector('.admin-pw-input');
     const errorEl = overlay.querySelector('.admin-pw-error');
     const confirmBtn = overlay.querySelector('.admin-pw-confirm');
-    // 같은 브라우저에서 다시 열 때 직전에 쓴 주소를 채워둔다(비밀번호는 저장하지 않는다).
-    try {
-      idInput.value = localStorage.getItem('recode.adminEmail') ?? '';
-    } catch (e) {
-      /* 저장소 접근이 막힌 환경 — 빈칸으로 시작한다 */
-    }
-    (idInput.value ? input : idInput).focus();
+    // 계정은 이미 골라져 있으므로 커서는 언제나 비밀번호 칸에 둔다.
+    input.focus();
 
     function close(result) {
       overlay.remove();
@@ -62,10 +74,11 @@ export function requestAdminPassword(actionLabel) {
     async function submit() {
       confirmBtn.disabled = true;
       confirmBtn.textContent = '확인 중...';
-      const ok = await verifyAdminPassword(idInput.value, input.value);
+      const email = idInput ? idInput.value : chosen;
+      const ok = await verifyAdminPassword(email, input.value);
       if (ok) {
         try {
-          localStorage.setItem('recode.adminEmail', idInput.value.trim().toLowerCase());
+          localStorage.setItem('recode.adminEmail', email.trim().toLowerCase());
         } catch (e) {
           /* 저장 실패는 로그인 성공과 무관하다 */
         }
@@ -81,7 +94,7 @@ export function requestAdminPassword(actionLabel) {
 
     overlay.querySelector('.admin-pw-confirm').addEventListener('click', submit);
     overlay.querySelector('.admin-pw-cancel').addEventListener('click', () => close(false));
-    [idInput, input].forEach((el) => {
+    [idInput, input].filter(Boolean).forEach((el) => {
       el.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') submit();
         if (e.key === 'Escape') close(false);

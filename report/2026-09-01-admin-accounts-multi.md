@@ -7,7 +7,7 @@
 - [x] 값만 늘려서는 동작하지 않는다는 것을 코드에서 확인
 - [x] `ADMIN_EMAIL`(문자열) → `ADMIN_EMAILS`(배열)
 - [x] `signInAdmin(email, password)` + 목록 밖 주소 사전 차단
-- [x] 로그인 모달에 이메일 입력칸 추가
+- [x] 로그인 모달에 계정 선택칸 추가 (자유 입력 → `<select>`로 정정, v0.76)
 - [x] `firestore.rules` `==` → `in [...]`
 - [x] `check-device.sh` 단일 값 대조 → 순서 무관 목록 대조
 - [x] ADR D4 신설 · D2에 "대체됨" 표기
@@ -37,7 +37,7 @@ signInWithEmailAndPassword(getAuthInstance(), ADMIN_EMAIL, password)
 | --- | --- |
 | `firebase-config.js` | `ADMIN_EMAIL` → `ADMIN_EMAILS` 배열 (전부 소문자) |
 | `firebase-auth.js` | `signInAdmin(email, password)` · `isAdminEmail()` 신설 · 정규화(trim+소문자) |
-| `admin-auth.js` | 모달에 이메일 입력칸. 직전 주소는 `localStorage`에 저장 |
+| `admin-auth.js` | 계정이 둘 이상일 때만 계정 `<select>`. 하나면 비밀번호만(종전과 동일) |
 | `firestore.rules` | `token.email == "..."` → `token.email in ["...", ...]` |
 | `check-device.sh` | `FIXED_ADMIN_MAIL` → `FIXED_ADMIN_MAILS`, 순서 무관 목록 대조 |
 
@@ -94,3 +94,17 @@ signInWithEmailAndPassword(getAuthInstance(), ADMIN_EMAIL, password)
 - git 커밋 author(`re8code <won@re8code.com>`)와 `../business`의 `/privacy` 문의 창구 표기는 **별개 신원**이라 이번 변경과 무관하다.
 - 낙서장 쓰기 비밀번호는 여전히 하나뿐이지만, 콘솔 Owner가 둘이라 **Google 계정 자격 증명 관리 지점은 늘었다**. 저장소는 어느 것도 알지 못한다 — `CHANGE_DEVICE.md` §5 "저장소에 없는 값"에 해당한다.
 - `biz@re8code.com`은 `ADMIN_EMAILS`에 없으므로 **Authentication에 등록하지 않는다.** 등록해두면 목록에 없어 로그인이 거절되므로 혼란만 남는다.
+
+## 6. 정정 — 계정칸을 자유 입력으로 두지 말 것 (v0.76)
+
+첫 구현에서 계정을 `<input type="email">`로 받고 커서를 거기 뒀다. 배포 직후 "낙서 등록이 안 되는듯"이라는 제보가 왔고, 라이브를 헤드리스로 재현해보니 **사이트는 정상**이었다 — 모달도 뜨고 입력칸도 둘 다 있고 예외도 0건.
+
+문제는 화면이 아니라 **손에 익은 동작**이었다. 그동안 이 모달은 비밀번호만 받았으므로, 열리자마자 비밀번호를 치고 Enter를 누르는 것이 몸에 배어 있다. 그런데 커서가 비어 있는 이메일 칸에 있으니 **비밀번호가 이메일 칸으로 들어간다.**
+
+고친 방식:
+
+- 계정칸을 `<select>`로 — 자유 입력이 아니라 목록이라 잘못 칠 수가 없다
+- **계정이 하나면 계정칸을 아예 내지 않는다** — 고를 것이 없으므로. 이행이 끝나면 모달은 예전 모습 그대로가 된다
+- 커서는 언제나 비밀번호 칸
+
+교훈은 "입력칸을 늘렸으면 커서 위치와 몸에 밴 동작을 함께 생각해야 한다"는 것이다. 기능은 맞게 만들었는데 첫 사용에서 막혔다.
