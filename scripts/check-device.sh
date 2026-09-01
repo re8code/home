@@ -130,38 +130,68 @@ else
   ok "쓰기 계정" "$(printf '%s' "$CFG_MAILS" | wc -w | tr -d ' ')개 계정 — config·rules·ADR D4 일치"
 fi
 
-# 콘솔에 **실제 게시된** 규칙과 대조한다. 규칙은 수동 게시라 "저장소는 맞는데 콘솔은 옛것"인
-# 상태가 가능하고, 그러면 낙서장 글쓰기가 조용히 실패한다(2026-08-29에 실제로 겪은 함정).
-# 조회에는 그 프로젝트를 읽을 수 있는 gcloud 자격 증명이 필요하므로, 없는 장비에서는
-# 조용히 건너뛴다 — 실패로 세지 않는다.
-check_published_rules() {
+# 콘솔 쪽 실제 상태와 대조한다 — 저장소만 맞고 콘솔이 어긋난 상태를 잡기 위한 검사다.
+#   ① 게시된 Firestore 규칙 == firestore.rules   (규칙은 수동 게시라 옛것이 남을 수 있다)
+#   ② ADMIN_EMAILS 의 계정이 Authentication 에 실제로 등록돼 있나
+# 둘 다 2026-08-29에 실제로 겪은 함정이다 — 코드·규칙은 맞는데 콘솔이 따라오지 않아
+# 낙서장 글쓰기가 조용히 실패했다. 조회에는 그 프로젝트를 읽을 수 있는 gcloud 자격 증명이
+# 필요하므로, 없는 장비에서는 조용히 건너뛴다(실패로 세지 않는다).
+check_firebase_console() {
   command -v gcloud >/dev/null 2>&1 || return 0
-  local proj tok rs live acct api
-  api="https://firebaserules.googleapis.com/v1"
+  local proj tok acct rs live users missing extra m
   proj=$(sed -n "s/.*projectId: '\([^']*\)'.*/\1/p" assets/js/firebase-config.js)
   [ -n "$proj" ] || return 0
+
   for acct in $(gcloud auth list --format="value(account)" 2>/dev/null); do
     tok=$(gcloud auth print-access-token --account="$acct" 2>/dev/null) || continue
     [ -n "$tok" ] || continue
     rs=$(curl -sS -m 8 -H "Authorization: Bearer $tok" -H "x-goog-user-project: $proj" \
-         "$api/projects/$proj/releases/cloud.firestore" 2>/dev/null |
+         "https://firebaserules.googleapis.com/v1/projects/$proj/releases/cloud.firestore" 2>/dev/null |
          python3 -c "import sys,json;print(json.load(sys.stdin).get('rulesetName',''))" 2>/dev/null)
     [ -n "$rs" ] || continue
+
+    # ① 게시된 규칙
     live=$(curl -sS -m 8 -H "Authorization: Bearer $tok" -H "x-goog-user-project: $proj" \
-           "$api/$rs" 2>/dev/null |
+           "https://firebaserules.googleapis.com/v1/$rs" 2>/dev/null |
            python3 -c "import sys,json;sys.stdout.write(json.load(sys.stdin)['source']['files'][0]['content'])" 2>/dev/null)
-    [ -n "$live" ] || continue
-    if [ "$live" = "$(cat firestore.rules)" ]; then
+    if [ -z "$live" ]; then
+      warn "게시된 규칙" "릴리스는 찾았으나 본문을 읽지 못함"
+    elif [ "$live" = "$(cat firestore.rules)" ]; then
       ok "게시된 규칙" "콘솔 게시본이 firestore.rules 와 일치"
     else
       bad "게시된 규칙" "콘솔 게시본이 firestore.rules 와 다르다 — 낙서장 글쓰기가 조용히 실패할 수 있다"
       hint "콘솔 > Firestore Database > 규칙에 firestore.rules 를 붙여넣고 게시하세요"
     fi
+
+    # ② Authentication 사용자
+    users=$(curl -sS -m 8 -X POST -H "Authorization: Bearer $tok" -H "x-goog-user-project: $proj" \
+            -H "Content-Type: application/json" -d '{}' \
+            "https://identitytoolkit.googleapis.com/v1/projects/$proj/accounts:query" 2>/dev/null |
+            python3 -c "import sys,json;print(' '.join(sorted(u.get('email','') for u in (json.load(sys.stdin).get('userInfo') or []) if u.get('email'))))" 2>/dev/null)
+    if [ -z "$users" ]; then
+      warn "Auth 사용자" "조회하지 못함 — 콘솔에서 확인하세요"
+    else
+      missing=""; extra=""
+      for m in $CFG_MAILS; do
+        case " $users " in *" $m "*) ;; *) missing="$missing $m";; esac
+      done
+      for m in $users; do
+        case " $CFG_MAILS " in *" $m "*) ;; *) extra="$extra $m";; esac
+      done
+      if [ -n "$missing" ]; then
+        bad "Auth 사용자" "ADMIN_EMAILS 에 있으나 Authentication 에 없음 —$missing"
+        hint "그 계정으로는 로그인 자체가 실패한다. 콘솔 > Authentication > Users 에서 추가하세요"
+      elif [ -n "$extra" ]; then
+        warn "Auth 사용자" "ADMIN_EMAILS 에 없는 사용자가 남아 있음 —$extra (쓰기 권한은 없지만 정리 대상)"
+      else
+        ok "Auth 사용자" "$(printf '%s' "$users" | wc -w | tr -d ' ')명 — ADMIN_EMAILS 와 일치"
+      fi
+    fi
     return 0
   done
   return 0   # 조회 가능한 계정이 없는 장비 — 건너뛴다
 }
-check_published_rules
+check_firebase_console
 
 # 형제 저장소 (CHANGE_DEVICE §5) — 문서가 ../business 로 지칭한다
 [ -d ../business ] && ok "형제 저장소" "../business 있음" \
