@@ -12,7 +12,7 @@
 | --- | --- | --- | --- |
 | 도메인 `recode.ai.kr` (닷홈) | 닷홈 | **유료(연 단위)** | 이미 발생 중 — 갱신 실패 시 도메인 상실 |
 | GitHub + GitHub Pages | GitHub `re8code` | 무료 | 저장소를 **비공개로 전환**하면 Pages에 유료 플랜 필요 |
-| Firebase (Firestore + Auth) | 콘솔 Owner `won@re8code.com`·`biz@re8code.com` / 낙서장 쓰기 `won@re8code.com` (이행 중 — 옛 `triwon20@gmail.com` 병행) | 무료(Spark) | 무료 한도 초과 시 **차단**(Spark는 자동 과금 없음). Blaze로 올리면 과금 시작 |
+| Firebase (Firestore + Auth) | 콘솔 Owner `won@re8code.com`·`biz@re8code.com` / 낙서장 쓰기 `won@re8code.com` | 무료(Spark) | 무료 한도 초과 시 **차단**(Spark는 자동 과금 없음). Blaze로 올리면 과금 시작 |
 | Google Forms (1:1 상담) | Google `triwon20@gmail.com` — **이번 계정 이전 대상이 아니다**(§2) | 무료 | 사실상 없음 (Drive 용량 한도만) |
 | CDN 4종 (Tailwind·jsDelivr·unpkg·gstatic) | 계정 불필요 | 무료 | 없음 — 대신 **가용성 리스크** (§4) |
 | `oj.recode.ai.kr` / `mate.recode.ai.kr` | Google Cloud — `home`과 **다른 계정 체계**(§2-1) | **결제 계정 연결 필수** | 이 생태계에서 **과금 개연성 1순위** (§3) |
@@ -25,7 +25,7 @@
 
 1. **닷홈** — 도메인 `recode.ai.kr` 등록·DNS. 네임서버가 `ns1~3.dothome.co.kr`로 확인됨. GitHub Pages와 4개 서브도메인의 A/CNAME 레코드가 전부 여기 걸려 있어, **이 계정을 잃으면 사이트와 서브도메인이 한꺼번에 끊긴다.**
 2. **GitHub (`re8code`)** — 저장소 `re8code/home` + GitHub Pages 배포. 저장소는 **public**이라 Pages가 무료다.
-3. **Google 계정** — Firebase 프로젝트 `graffiti-3b1fc`(Firestore + Authentication)와 1:1 상담 Google Forms가 여기 걸려 있다. 2026-09-01부터 **Firebase는 콘솔 Owner를 `won@re8code.com`·`biz@re8code.com` 둘로, 낙서장 쓰기는 `won@re8code.com` 하나로 옮기는 중**이고(ADR D4), **Google Forms는 여전히 `triwon20@gmail.com` 소유**다 — 양식과 쌓인 응답이 그 계정 Drive에 있어 Firebase 권한 이전과는 전혀 다른 절차가 필요하다. **`triwon20@gmail.com`을 정리할 때 이 양식을 함께 옮기지 않으면 상담 접수가 끊긴다.**
+3. **Google 계정** — Firebase 프로젝트 `graffiti-3b1fc`(Firestore + Authentication)와 1:1 상담 Google Forms가 여기 걸려 있다. 2026-09-01에 **Firebase는 콘솔 Owner를 `won@re8code.com`·`biz@re8code.com` 둘로, 낙서장 쓰기를 `won@re8code.com` 하나로 옮겼고**(ADR D4), **Google Forms는 여전히 `triwon20@gmail.com` 소유**다 — 양식과 쌓인 응답이 그 계정 Drive에 있어 Firebase 권한 이전과는 전혀 다른 절차가 필요하다. **`triwon20@gmail.com`을 정리할 때 이 양식을 함께 옮기지 않으면 상담 접수가 끊긴다.**
 
 ### 2-1. 서브도메인 프로젝트는 이 저장소와 계정 체계가 다르다 (2026-09-01 확인)
 
@@ -33,7 +33,7 @@
 
 | 프로젝트 | 쓰이는 곳 | 계정 정리 상태 |
 | --- | --- | --- |
-| `graffiti-3b1fc` | 이 저장소의 낙서장 | `triwon20` → 이행 중 (ADR D4) |
+| `graffiti-3b1fc` | 이 저장소의 낙서장 | **정리 완료** — `won`·`biz` Owner, 쓰기 `won` (ADR D4) |
 | `business-1e563` | `business` 서브도메인 | `won`·`biz` 추가됨 — **옛 계정 제거는 미완** |
 | `project-5886…` | `oj` 서브도메인 | 아직 변경 전 |
 | `recodemate` | `mate` 서브도메인 | 정리 완료 |
@@ -50,9 +50,9 @@
 | --- | --- | --- |
 | `won@re8code.com` | ✅ | ✅ |
 | `biz@re8code.com` | ✅ | — (관리 전용) |
-| `triwon20@gmail.com` | **제거 예정** | **제거 예정** — `won`으로 쓰기가 검증된 뒤 |
+| `triwon20@gmail.com` | 제거됨 (2026-09-01) | 제거됨 (2026-09-01) |
 
-쓰기 계정은 단일 값이 아니라 **목록**으로 다룬다 — 이행 중에는 둘이고, `biz`를 임시로 넣어야 할 상황(`won` 계정 잠김 등)에도 코드 구조를 바꾸지 않고 목록만 고치면 된다.
+쓰기 계정은 단일 값이 아니라 **목록**으로 다룬다 — 지금은 하나뿐이지만, `biz`를 넣어야 할 상황(`won` 계정 잠김 등)에도 코드 구조를 바꾸지 않고 목록만 고치면 된다. 계정이 하나이므로 로그인 모달은 계정칸 없이 비밀번호만 받는다.
 
 값을 바꿀 때는 **세 곳을 함께** 고치고 콘솔에 규칙을 재게시해야 한다 — `assets/js/firebase-config.js`의 `ADMIN_EMAILS`, `firestore.rules`, `scripts/check-device.sh`의 `FIXED_ADMIN_MAILS`. 세 목록의 일치는 `./scripts/check-device.sh`가 순서 무관하게 매번 대조하고, **콘솔 쪽 실제 상태 두 가지도 함께 받아와 대조한다**(2026-09-01 추가) — ① 게시된 Firestore 규칙이 `firestore.rules`와 같은가, ② `ADMIN_EMAILS`의 계정이 Authentication에 실제로 등록돼 있는가. 그 프로젝트를 읽을 수 있는 `gcloud` 자격 증명이 있는 장비에서만 동작하고, 없으면 조용히 건너뛴다.
 
@@ -68,7 +68,7 @@
 | 하는 일 | 규칙 게시·요금제·Auth 사용자 생성 | 브라우저에서 로그인해 글을 씀 |
 | 주의 | **콘솔 Owner라도 클라이언트 규칙에서는 아무 특권이 없다** — Auth 사용자로 등록돼 있지 않으면 글을 못 쓴다 | |
 
-`won@re8code.com`은 2026-08-29에 한 번 삭제했다가 **2026-09-01 운영 계정으로 다시 등록한다**(ADR D4) — 같은 주소지만 그때는 정리 대상이었고 지금은 새 운영 계정이다. 같은 주소가 형제 저장소 `../business`의 `/privacy` 페이지에 **개인정보 보호책임자 문의 창구**로 표기돼 있는데, 그건 대외 공개용 메일 주소일 뿐 로그인 계정이 아니다 — 여기서 삭제한 것은 이 Firebase 프로젝트의 인증 레코드이지 메일 계정이 아니므로 그 표기는 그대로 유효하다. git 커밋 author(`re8code <won@re8code.com>`)도 별개 신원이라 영향 없다.
+`won@re8code.com`은 2026-08-29에 한 번 삭제했다가 **2026-09-01 운영 계정으로 다시 등록했다**(ADR D4) — 같은 주소지만 그때는 정리 대상이었고 지금은 새 운영 계정이다. 같은 주소가 형제 저장소 `../business`의 `/privacy` 페이지에 **개인정보 보호책임자 문의 창구**로 표기돼 있는데, 그건 대외 공개용 메일 주소일 뿐 로그인 계정이 아니다 — 여기서 삭제한 것은 이 Firebase 프로젝트의 인증 레코드이지 메일 계정이 아니므로 그 표기는 그대로 유효하다. git 커밋 author(`re8code <won@re8code.com>`)도 별개 신원이라 영향 없다.
 
 계정이 **필요 없는** 것: Tailwind Play CDN·jsDelivr(Pretendard, Swiper)·unpkg(AOS)·gstatic(Firebase SDK) — 전부 익명 공개 CDN이다.
 

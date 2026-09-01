@@ -27,7 +27,7 @@ PORT="${CHECK_DEVICE_PORT:-8799}"   # start.sh 기본 포트(8765)와 겹치지 
 # 낙서장 쓰기 계정 — ARCHITECTURE.md ADR D4로 고정된 목록.
 # 저장소에서 유도할 수 없는 유일한 판정 기준이라 여기 둔다. 바꾸려면 ADR을 먼저 고친다.
 # 순서는 무관하다(정렬해 비교한다). 전부 소문자로 적는다.
-FIXED_ADMIN_MAILS="triwon20@gmail.com won@re8code.com"
+FIXED_ADMIN_MAILS="won@re8code.com"
 
 QUICK=0; AUDIT_ONLY=0
 case "${1:-}" in
