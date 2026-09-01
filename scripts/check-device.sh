@@ -142,7 +142,9 @@ check_firebase_console() {
   proj=$(sed -n "s/.*projectId: '\([^']*\)'.*/\1/p" assets/js/firebase-config.js)
   [ -n "$proj" ] || return 0
 
-  for acct in $(gcloud auth list --format="value(account)" 2>/dev/null); do
+  # 활성 계정을 먼저 본다 — 나머지는 폴백이다. 권한 없는 계정을 앞에서 훑으면
+  # 매 점검마다 실패하는 API 호출이 그만큼 늘어난다.
+  for acct in $(gcloud config get-value account 2>/dev/null; gcloud auth list --format="value(account)" 2>/dev/null); do
     tok=$(gcloud auth print-access-token --account="$acct" 2>/dev/null) || continue
     [ -n "$tok" ] || continue
     rs=$(curl -sS -m 8 -H "Authorization: Bearer $tok" -H "x-goog-user-project: $proj" \

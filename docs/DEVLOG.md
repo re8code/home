@@ -492,3 +492,5 @@
 - 사용자 확인 — `won@re8code.com`으로 낙서 **글쓰기 성공**. 이행 1단계 검증 완료.
 - **v0.80** — **ADR D4 이행 2단계**: 저장소 3곳(`ADMIN_EMAILS`·`firestore.rules`·`FIXED_ADMIN_MAILS`)에서 `triwon20@gmail.com` 제거. 코드에 남은 옛 계정 참조 0건(문서의 경위 서술은 이력이므로 유지). 계정이 하나가 되어 **로그인 모달의 계정 선택칸이 자동으로 사라진다** — 비밀번호만 받던 원래 화면으로 돌아간다(v0.76에서 그렇게 만들어 뒀다).
 - **v0.81** — 이행 2단계 콘솔 작업 완료. ③ Firestore 규칙 게시(Rules API — 게시본이 저장소와 바이트 일치 확인), ④ Authentication에서 `triwon20@gmail.com` 삭제(사용자 1명만 남음), ⑤ 프로젝트 Owner에서 제거(Owner `won`·`biz` 둘). **Owner 추가는 API로 불가능했다** — `SOLO_MUST_INVITE_OWNERS`, 조직 밖 프로젝트는 초대·수락 절차가 필요해 콘솔에서만 된다(제거는 API로 됨). 부수 효과로 이 장비의 `gcloud` 자격 증명이 제거된 계정 것이라 점검의 콘솔 대조가 곧 끊긴다 — `CHANGE_DEVICE.md` §5에 "Owner 계정으로 `gcloud auth login`"을 장비별 준비물로 추가했다. 상담 Google Forms는 여전히 옛 계정 소유로 남아 있다(별도 절차).
+- 사용자가 `gcloud auth login`으로 `won@re8code.com` 추가 — 점검의 콘솔 대조 두 항목이 계속 동작함을 확인. 같은 시점에 `triwon20@gmail.com` 토큰은 `PERMISSION_DENIED`로 바뀌어 **IAM 회수가 전파 완료**됐음도 확인(제거 직후에는 토큰 캐시로 잠시 통과했었다).
+- **v0.82** — `check_firebase_console`이 계정 목록을 순서대로 훑느라 권한 없는 계정에 매번 실패 호출을 하던 것을 고쳐, **활성 계정(`gcloud config get-value account`)을 먼저** 보고 나머지는 폴백으로 두었다.
