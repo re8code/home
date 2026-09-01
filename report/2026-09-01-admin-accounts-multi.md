@@ -13,9 +13,9 @@
 - [x] ADR D4 신설 · D2에 "대체됨" 표기
 - [x] `ACCOUNT_COST.md` · `ARCHITECTURE.md` · `CHANGE_DEVICE.md` · `CLAUDE.md` 갱신
 - [x] 헤드리스 Chrome + CDP 검증 7항목
-- [ ] **콘솔 작업 (사용자)** — Owner 추가 · Auth 사용자 등록 · 규칙 재게시
+- [x] **콘솔 작업** — Owner 초대(사용자) · Auth 등록(사용자) · 규칙 게시(API)
 - [x] 낙서장 Auth는 하나로 확정 (Owner만 둘)
-- [ ] **이행 2단계** — 검증 후 `triwon20@gmail.com` 제거
+- [x] **이행 2단계** — `triwon20@gmail.com` 제거 (저장소 3곳 · 규칙 · Auth · Owner)
 
 ## 1. 값 교체가 아니라 기능 변경이었다
 
@@ -108,3 +108,29 @@ signInWithEmailAndPassword(getAuthInstance(), ADMIN_EMAIL, password)
 - 커서는 언제나 비밀번호 칸
 
 교훈은 "입력칸을 늘렸으면 커서 위치와 몸에 밴 동작을 함께 생각해야 한다"는 것이다. 기능은 맞게 만들었는데 첫 사용에서 막혔다.
+
+## 7. 이행 2단계 완료 (2026-09-01)
+
+`won@re8code.com`으로 실제 글쓰기가 확인되어 옛 계정을 다섯 곳에서 걷어냈다. 순서는 **코드 → 배포 → 규칙 → Auth → Owner**로, 클라이언트가 옛 계정으로 로그인을 시도하지 않게 만든 뒤 권한을 좁혔다.
+
+| # | 작업 | 수행 | 결과 |
+| --- | --- | --- | --- |
+| 1 | `ADMIN_EMAILS`·`firestore.rules`·`FIXED_ADMIN_MAILS` | 저장소 | 코드에 남은 옛 계정 0건 |
+| 2 | `main` 병합·배포 | GitHub Pages | 배포본에 옛 계정 0건 |
+| 3 | Firestore 규칙 게시 | Rules API | 게시본이 저장소와 바이트 일치 |
+| 4 | Authentication 사용자 삭제 | Identity Toolkit API | 사용자 1명(`won`)만 남음 |
+| 5 | 프로젝트 Owner 제거 | `gcloud` | Owner `won`·`biz` 둘 |
+
+계정이 하나가 되면서 **로그인 모달의 계정 선택칸이 자동으로 사라졌다** — v0.76에서 그렇게 만들어 둔 덕에 별도 작업이 없었다.
+
+### 콘솔 작업 중 API로 안 되는 것이 하나 있었다
+
+**Owner 추가는 API로 불가능하다.** `gcloud projects add-iam-policy-binding`이 `SOLO_MUST_INVITE_OWNERS`를 반환한다 — 조직에 속하지 않은 프로젝트는 Owner를 직접 넣을 수 없고 **초대 → 수락** 절차를 거쳐야 한다. 권한 문제가 아니라 Google의 제약이라, 콘솔에서만 된다. 반면 **제거는 API로 된다**(5번).
+
+### 부수 효과 — 이 장비의 조회 권한
+
+점검 스크립트의 콘솔 대조 두 항목은 `gcloud` 자격 증명에 기대는데, 이 장비에 있던 것은 제거된 옛 계정의 것이었다. 액세스 토큰 캐시와 IAM 전파 지연 때문에 제거 직후에도 잠시 동작하지만 곧 끊긴다. **Owner 계정으로 `gcloud auth login`을 해두면 계속 동작한다** — `CHANGE_DEVICE.md` §5에 장비별로 갖춰야 할 값으로 추가했다.
+
+### 남은 것 — Google Forms
+
+**1:1 상담 양식은 여전히 `triwon20@gmail.com` 소유다.** 이번 작업은 Firebase 프로젝트 권한 회수일 뿐이라 양식에는 영향이 없지만, 그 계정 자체를 정리하면 상담 접수가 끊긴다. Firebase와 전혀 다른 절차이므로 별도로 진행해야 한다.
