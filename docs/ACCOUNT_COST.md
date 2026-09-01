@@ -2,7 +2,7 @@
 
 `ARCHITECTURE.md` §1 기술 스택(및 §3 배포·§5 백엔드·§6 서브도메인)에서 **계정이 필요한 항목**과 **비용이 발생할 개연성이 있는 항목**만 뽑아 정리한다. 구조 설명은 `ARCHITECTURE.md`가 정본이고, 이 문서는 "누구 계정으로 무엇이 돌아가고, 어디서 돈이 샐 수 있는가"만 다룬다.
 
-- 최종 갱신: 2026-09-01 (운영 계정을 `won@re8code.com`·`biz@re8code.com` 두 개로 옮기기 시작 — ADR D4로 D2를 대체, §2). 이전 갱신: 2026-08-31 (서브도메인 2개의 실제 호스팅 경로 재확인, §3) · 2026-08-29 (계정을 `triwon20@gmail.com` 하나로 통일하고 **수정 불가**로 확정 — ADR D2. 신설 — 같은 날 `CLAUDE.md` 제1원칙 문서 세트에 편입되어 7개 문서 중 하나가 됨)
+- 최종 갱신: 2026-09-01 (운영 계정을 `won@re8code.com`·`biz@re8code.com`로 옮기는 중 — ADR D4로 D2를 대체. 서브도메인 프로젝트가 `triwon20`이 아닌 **별도 계정** 소유였음을 확인해 §2를 정정, §2-1). 이전 갱신: 2026-08-31 (서브도메인 2개의 실제 호스팅 경로 재확인, §3) · 2026-08-29 (계정을 `triwon20@gmail.com` 하나로 통일하고 **수정 불가**로 확정 — ADR D2. 신설 — 같은 날 `CLAUDE.md` 제1원칙 문서 세트에 편입되어 7개 문서 중 하나가 됨)
 - 확인 방법: 저장소 내 외부 호스트 전수 조사 + 실서비스 응답 헤더/DNS 조회
 - **금액은 적지 않는다** — 요금제는 수시로 바뀌므로 각 서비스 콘솔의 값이 정본이다. 여기에는 "과금으로 전환되는 조건"만 적는다.
 
@@ -15,8 +15,8 @@
 | Firebase (Firestore + Auth) | 콘솔 Owner `won@re8code.com`·`biz@re8code.com` / 낙서장 쓰기 `won@re8code.com` (이행 중 — 옛 `triwon20@gmail.com` 병행) | 무료(Spark) | 무료 한도 초과 시 **차단**(Spark는 자동 과금 없음). Blaze로 올리면 과금 시작 |
 | Google Forms (1:1 상담) | Google `triwon20@gmail.com` — **이번 계정 이전 대상이 아니다**(§2) | 무료 | 사실상 없음 (Drive 용량 한도만) |
 | CDN 4종 (Tailwind·jsDelivr·unpkg·gstatic) | 계정 불필요 | 무료 | 없음 — 대신 **가용성 리스크** (§4) |
-| `oj.recode.ai.kr` / `mate.recode.ai.kr` | Google Cloud | **결제 계정 연결 필수** | 이 생태계에서 **과금 개연성 1순위** (§3) |
-| `business-1e563.web.app` | Google (Firebase) | 무료(Spark) | 호스팅 전송량/용량 한도 초과 시 |
+| `oj.recode.ai.kr` / `mate.recode.ai.kr` | Google Cloud — `home`과 **다른 계정 체계**(§2-1) | **결제 계정 연결 필수** | 이 생태계에서 **과금 개연성 1순위** (§3) |
+| `business-1e563.web.app` | Google (Firebase) — §2-1 | 무료(Spark) | 호스팅 전송량/용량 한도 초과 시 |
 | `lms.recode.ai.kr` | 미정 | 없음 | 오픈 시 호스팅 방식에 따라 결정 |
 
 ## 2. 계정이 필요한 항목
@@ -26,6 +26,21 @@
 1. **닷홈** — 도메인 `recode.ai.kr` 등록·DNS. 네임서버가 `ns1~3.dothome.co.kr`로 확인됨. GitHub Pages와 4개 서브도메인의 A/CNAME 레코드가 전부 여기 걸려 있어, **이 계정을 잃으면 사이트와 서브도메인이 한꺼번에 끊긴다.**
 2. **GitHub (`re8code`)** — 저장소 `re8code/home` + GitHub Pages 배포. 저장소는 **public**이라 Pages가 무료다.
 3. **Google 계정** — Firebase 프로젝트 `graffiti-3b1fc`(Firestore + Authentication)와 1:1 상담 Google Forms가 여기 걸려 있다. 2026-09-01부터 **Firebase는 콘솔 Owner를 `won@re8code.com`·`biz@re8code.com` 둘로, 낙서장 쓰기는 `won@re8code.com` 하나로 옮기는 중**이고(ADR D4), **Google Forms는 여전히 `triwon20@gmail.com` 소유**다 — 양식과 쌓인 응답이 그 계정 Drive에 있어 Firebase 권한 이전과는 전혀 다른 절차가 필요하다. **`triwon20@gmail.com`을 정리할 때 이 양식을 함께 옮기지 않으면 상담 접수가 끊긴다.**
+
+### 2-1. 서브도메인 프로젝트는 이 저장소와 계정 체계가 다르다 (2026-09-01 확인)
+
+**이 문서가 2026-08-29부터 "Firebase·Forms·서브도메인의 Google Cloud가 모두 `triwon20@gmail.com` 한 계정"이라고 적어 온 것은 사실과 달랐다.** 서브도메인 프로젝트들은 별도 계정이 소유하고 있었고, 사용자가 이를 `won@re8code.com`·`biz@re8code.com`으로 통합하는 중이다.
+
+| 프로젝트 | 쓰이는 곳 | 계정 정리 상태 |
+| --- | --- | --- |
+| `graffiti-3b1fc` | 이 저장소의 낙서장 | `triwon20` → 이행 중 (ADR D4) |
+| `business-1e563` | `business` 서브도메인 | `won`·`biz` 추가됨 — **옛 계정 제거는 미완** |
+| `project-5886…` | `oj` 서브도메인 | 아직 변경 전 |
+| `recodemate` | `mate` 서브도메인 | 정리 완료 |
+
+- **확인 방법**: `gcloud projects list --account=<계정>` · `gcloud projects get-iam-policy <프로젝트> --flatten="bindings[].members" --format="table(bindings.role,bindings.members)"`. 상태는 계속 바뀌므로 **여기 적힌 표가 아니라 명령 결과가 정본**이다.
+- **서비스 계정은 건드리지 않는다.** `oj` 프로젝트의 `github-deployer@…`는 `run.admin`·`firebasehosting.admin`·`artifactregistry.writer`를 가진 **CI 배포 주체**다. 사람 계정을 정리하면서 함께 지우면 배포가 멈춘다.
+- 서브도메인 프로젝트의 실제 관리는 이 저장소가 아니라 각 프로젝트 쪽 몫이다(`ARCHITECTURE.md` §6). 여기에는 "어느 계정 아래 있는가"만 적는다.
 
 ### 계정 목록은 세 곳이 일치해야 한다 (2026-09-01, ADR D4)
 
@@ -86,7 +101,8 @@ Google Forms, 그리고 CDN 4종(계정·과금 모두 없음).
 ## 4. 비용은 아니지만 같이 봐야 할 리스크
 
 - **무료 공개 CDN 의존** — Tailwind Play CDN·jsDelivr·unpkg·gstatic 중 하나라도 장애가 나면 그 페이지의 스타일/기능이 즉시 깨진다. 특히 Tailwind Play CDN은 공식적으로 프로덕션 권장 대상이 아니다(빌드 도구를 두지 않기로 한 결정의 트레이드오프 — `DEV_PLAN.md` §1).
-- **Google 계정 집중** — Forms와 (서브도메인의) Google Cloud는 여전히 `triwon20@gmail.com` 한 계정에 묶여 있다. Firebase만 두 계정으로 분산되는 중이라(ADR D4), 그 계정이 잠기면 상담 접수와 서브도메인이 동시에 영향을 받는다.
+- **계정 정리가 진행 중이라 상태가 섞여 있다** — 프로젝트마다 옛 계정과 새 계정이 함께 Owner로 남아 있는 구간이 있다(§2-1). 정리가 끝나기 전에는 "어느 계정을 잃으면 무엇이 끊기는가"를 이 문서만 보고 판단할 수 없다 — §2-1의 확인 명령으로 그때그때 조회한다.
+- **1:1 상담 Google Forms는 여전히 `triwon20@gmail.com` 소유다.** Firebase 권한 이전과 전혀 다른 절차이고, 이 계정을 정리할 때 함께 옮기지 않으면 상담 접수가 끊긴다.
 - **`firestore.rules`는 수동 게시** — 콘솔에 직접 붙여넣어야 반영된다. 규칙이 느슨해지면 무료 한도 소진이 아니라 무단 쓰기로 이어질 수 있다.
 
 ## 5. 갱신 원칙
