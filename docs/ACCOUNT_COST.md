@@ -12,7 +12,7 @@
 | --- | --- | --- | --- |
 | 도메인 `recode.ai.kr` (닷홈) | 닷홈 | **유료(연 단위)** | 이미 발생 중 — 갱신 실패 시 도메인 상실 |
 | GitHub + GitHub Pages | GitHub `re8code` | 무료 | 저장소를 **비공개로 전환**하면 Pages에 유료 플랜 필요 |
-| Firebase (Firestore + Auth) | Google `won@re8code.com`·`biz@re8code.com` (이행 중 — 옛 `triwon20@gmail.com` 병행) | 무료(Spark) | 무료 한도 초과 시 **차단**(Spark는 자동 과금 없음). Blaze로 올리면 과금 시작 |
+| Firebase (Firestore + Auth) | 콘솔 Owner `won@re8code.com`·`biz@re8code.com` / 낙서장 쓰기 `won@re8code.com` (이행 중 — 옛 `triwon20@gmail.com` 병행) | 무료(Spark) | 무료 한도 초과 시 **차단**(Spark는 자동 과금 없음). Blaze로 올리면 과금 시작 |
 | Google Forms (1:1 상담) | Google `triwon20@gmail.com` — **이번 계정 이전 대상이 아니다**(§2) | 무료 | 사실상 없음 (Drive 용량 한도만) |
 | CDN 4종 (Tailwind·jsDelivr·unpkg·gstatic) | 계정 불필요 | 무료 | 없음 — 대신 **가용성 리스크** (§4) |
 | `oj.recode.ai.kr` / `mate.recode.ai.kr` | Google Cloud | **결제 계정 연결 필수** | 이 생태계에서 **과금 개연성 1순위** (§3) |
@@ -25,17 +25,19 @@
 
 1. **닷홈** — 도메인 `recode.ai.kr` 등록·DNS. 네임서버가 `ns1~3.dothome.co.kr`로 확인됨. GitHub Pages와 4개 서브도메인의 A/CNAME 레코드가 전부 여기 걸려 있어, **이 계정을 잃으면 사이트와 서브도메인이 한꺼번에 끊긴다.**
 2. **GitHub (`re8code`)** — 저장소 `re8code/home` + GitHub Pages 배포. 저장소는 **public**이라 Pages가 무료다.
-3. **Google 계정** — Firebase 프로젝트 `graffiti-3b1fc`(Firestore + Authentication)와 1:1 상담 Google Forms가 여기 걸려 있다. 2026-09-01부터 **Firebase는 `won@re8code.com`·`biz@re8code.com` 두 계정으로 옮기는 중**이고(ADR D4), **Google Forms는 여전히 `triwon20@gmail.com` 소유**다 — 양식과 쌓인 응답이 그 계정 Drive에 있어 Firebase 권한 이전과는 전혀 다른 절차가 필요하다. **`triwon20@gmail.com`을 정리할 때 이 양식을 함께 옮기지 않으면 상담 접수가 끊긴다.**
+3. **Google 계정** — Firebase 프로젝트 `graffiti-3b1fc`(Firestore + Authentication)와 1:1 상담 Google Forms가 여기 걸려 있다. 2026-09-01부터 **Firebase는 콘솔 Owner를 `won@re8code.com`·`biz@re8code.com` 둘로, 낙서장 쓰기는 `won@re8code.com` 하나로 옮기는 중**이고(ADR D4), **Google Forms는 여전히 `triwon20@gmail.com` 소유**다 — 양식과 쌓인 응답이 그 계정 Drive에 있어 Firebase 권한 이전과는 전혀 다른 절차가 필요하다. **`triwon20@gmail.com`을 정리할 때 이 양식을 함께 옮기지 않으면 상담 접수가 끊긴다.**
 
 ### 계정 목록은 세 곳이 일치해야 한다 (2026-09-01, ADR D4)
 
-**낙서장 쓰기 계정은 단일 값이 아니라 목록이다.** 이행 중 허용되는 계정은 셋 —
+**콘솔 Owner와 낙서장 쓰기 계정은 개수가 다르다.** 관리 권한은 둘로 이중화하되, 쓰기 계정은 하나만 둔다 — 게시글에 작성자 필드가 없어 계정을 늘려도 구분되는 것 없이 로그인 지점만 늘기 때문이다(ADR D4).
 
-| 계정 | 상태 |
-| --- | --- |
-| `won@re8code.com` | 신규 운영 계정 |
-| `biz@re8code.com` | 신규 운영 계정 |
-| `triwon20@gmail.com` | **제거 예정** — 위 둘로 실제 쓰기가 검증된 뒤 |
+| 계정 | 콘솔 Owner | 낙서장 쓰기 |
+| --- | --- | --- |
+| `won@re8code.com` | ✅ | ✅ |
+| `biz@re8code.com` | ✅ | — (관리 전용) |
+| `triwon20@gmail.com` | **제거 예정** | **제거 예정** — `won`으로 쓰기가 검증된 뒤 |
+
+쓰기 계정은 단일 값이 아니라 **목록**으로 다룬다 — 이행 중에는 둘이고, `biz`를 임시로 넣어야 할 상황(`won` 계정 잠김 등)에도 코드 구조를 바꾸지 않고 목록만 고치면 된다.
 
 값을 바꿀 때는 **세 곳을 함께** 고치고 콘솔에 규칙을 재게시해야 한다 — `assets/js/firebase-config.js`의 `ADMIN_EMAILS`, `firestore.rules`, `scripts/check-device.sh`의 `FIXED_ADMIN_MAILS`. 세 목록의 일치는 `./scripts/check-device.sh`가 순서 무관하게 매번 대조한다(콘솔에 게시된 규칙과의 일치는 콘솔에서만 확인 가능하다 — 규칙은 수동 게시라 드리프트가 가능하고, 이메일 열거 보호가 켜져 있어 클라이언트 API로는 Auth 사용자 존재 여부를 판별할 수 없다).
 

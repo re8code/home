@@ -107,7 +107,7 @@ graph TD
 
 메인 사이트에서 유일하게 동적인 기능. 설정은 `assets/js/`에 역할별로 분리되어 있다.
 
-- **프로젝트**: Firebase 프로젝트 `graffiti-3b1fc` (설정값은 `assets/js/firebase-config.js`). **운영 계정을 `won@re8code.com`·`biz@re8code.com` 두 개로 옮기는 중이다(2026-09-01, ADR D4).** 콘솔 IAM과 Authentication 사용자는 원래 다른 레이어라 갈라질 수 있는데, 두 레이어 모두 같은 두 계정을 쓰도록 맞춘다. 이행 중에는 옛 `triwon20@gmail.com`도 함께 허용해 아무것도 끊기지 않게 두고, 새 계정 검증 후 제거한다(`ACCOUNT_COST.md` §2).
+- **프로젝트**: Firebase 프로젝트 `graffiti-3b1fc` (설정값은 `assets/js/firebase-config.js`). **운영 계정을 옮기는 중이다(2026-09-01, ADR D4) — 콘솔 Owner는 `won@re8code.com`·`biz@re8code.com` 둘, 낙서장 쓰기는 `won@re8code.com` 하나.** 콘솔 IAM과 Authentication 사용자는 원래 다른 레이어라, 여기서는 의도적으로 계정 수를 다르게 둔다. 이행 중에는 옛 `triwon20@gmail.com`도 함께 허용해 아무것도 끊기지 않게 두고, 검증 후 제거한다(`ACCOUNT_COST.md` §2).
 - **DB**: Firestore, 컬렉션 `graffiti_posts` 1개. 목록/상세 조회(`read`)는 누구나 가능, 등록/수정/삭제(`write`)는 Firebase Authentication으로 로그인한 원장 계정(`ADMIN_EMAILS` 목록)만 가능 — 규칙은 `firestore.rules`에 정의(Firebase 콘솔에 수동 게시 필요, 코드에서 자동 배포되지 않음).
 - **인증**: Firebase Authentication (이메일/비밀번호), `assets/js/firebase-auth.js`가 로그인/로그아웃 처리. `assets/js/admin-auth.js`가 "수정/삭제/글 작성" 진입 시 비밀번호 모달(`requestAdminPassword`)과 삭제 확인 모달을 담당.
 - **로컬 개발 폴백**: `firebase-config.js`의 `IS_PLACEHOLDER_CONFIG` 플래그(`projectId`가 `TEMP_`로 시작하면 true)로, 실제 Firebase 프로젝트 없이도 하드코딩 비밀번호(`DEV_FALLBACK_PASSWORD`) 기반 로컬 개발 모드가 동작한다. 이 플래그 하나로 다른 모든 Firebase 관련 파일이 분기하므로, 폴백 로직이 파일마다 중복 구현되지 않는다.
@@ -146,8 +146,9 @@ graph TD
 ### D4. 낙서장 쓰기 계정을 단일 값에서 **목록**으로 바꾸고, 로그인 화면이 계정을 받는다
 
 - **맥락**: D2가 계정을 `triwon20@gmail.com` 하나로 고정했으나, 운영 계정을 `won@re8code.com`·`biz@re8code.com` 두 개로 옮기기로 하면서 전제가 깨졌다. 그런데 값만 늘려서는 동작하지 않는다 — `firebase-auth.js`가 `signInWithEmailAndPassword(auth, ADMIN_EMAIL, password)`로 **이메일을 하드코딩**하고 로그인 모달은 비밀번호만 받고 있어, Authentication에 계정을 몇 개 등록하고 규칙을 열어줘도 사이트는 언제나 한 주소로만 로그인을 시도한다. 즉 이것은 값 교체가 아니라 기능 변경이다.
-- **결정**: `ADMIN_EMAIL`(문자열)을 `ADMIN_EMAILS`(배열)로 바꾸고, 규칙도 `==`에서 `in [...]`으로 바꾼다. 로그인 모달에 **이메일 입력칸을 추가**하고(직전 주소는 `localStorage`에 남겨 다시 채운다 — 비밀번호는 저장하지 않는다), 목록에 없는 주소는 Firebase에 요청을 보내지 않고 즉시 거절한다. 정본 세 곳(`firebase-config.js`의 `ADMIN_EMAILS` · `firestore.rules` · `check-device.sh`의 `FIXED_ADMIN_MAILS`)의 **목록 일치**를 점검 스크립트가 순서 무관하게 대조한다. 이행은 2단계다 — ① 세 계정을 함께 허용해 아무것도 끊기지 않는 상태를 만들고, ② 새 두 계정으로 실제 쓰기가 검증된 뒤 `triwon20@gmail.com`을 제거한다.
-- **트레이드오프**: 로그인이 한 단계 늘어난다(비밀번호만 → 계정+비밀번호). 그 대신 D2가 감수했던 "콘솔 권한과 게시판 쓰기 권한이 한 계정에 묶여 계정 하나가 잠기면 둘 다 멈춘다"는 단일 실패점이 완화된다. 계정이 늘어난 만큼 **비밀번호 관리 지점도 늘어난다** — 계정마다 별도 비밀번호이고 저장소는 그중 어느 것도 알지 못한다. 그리고 D2와 마찬가지로 **콘솔 작업 없이는 완결되지 않는다**: 두 계정이 Authentication에 등록돼야 하고, 바뀐 `firestore.rules`를 재게시해야 실제로 적용된다.
+- **결정**: `ADMIN_EMAIL`(문자열)을 `ADMIN_EMAILS`(배열)로 바꾸고, 규칙도 `==`에서 `in [...]`으로 바꾼다. 로그인 모달에 **이메일 입력칸을 추가**하고(직전 주소는 `localStorage`에 남겨 다시 채운다 — 비밀번호는 저장하지 않는다), 목록에 없는 주소는 Firebase에 요청을 보내지 않고 즉시 거절한다. 정본 세 곳(`firebase-config.js`의 `ADMIN_EMAILS` · `firestore.rules` · `check-device.sh`의 `FIXED_ADMIN_MAILS`)의 **목록 일치**를 점검 스크립트가 순서 무관하게 대조한다.
+  **두 레이어의 계정 수를 다르게 둔다 — 콘솔 Owner는 `won`·`biz` 둘, 낙서장 쓰기는 `won` 하나.** 관리 권한은 이중화해 한 계정이 잠겨도 프로젝트를 잃지 않되, 쓰기 계정은 늘리지 않는다: 게시글에 작성자 필드가 없어(`id·date·title·views·content`) 어느 계정으로 쓰든 결과가 같고, 계정을 늘리면 구분되는 것 없이 로그인 지점만 늘기 때문이다. 이행은 2단계다 — ① `triwon20@gmail.com`과 `won@re8code.com`을 함께 허용해 아무것도 끊기지 않는 상태를 만들고, ② `won`으로 실제 쓰기가 검증된 뒤 `triwon20@gmail.com`을 제거한다.
+- **트레이드오프**: 로그인이 한 단계 늘어난다(비밀번호만 → 계정+비밀번호). 실사용에서는 거의 드러나지 않는다 — Firebase가 로그인 상태를 브라우저에 유지하고 로그아웃 호출부가 아예 없어서, 모달은 새 브라우저·시크릿창·사이트 데이터 삭제 후에나 뜬다. 그때도 직전 이메일이 채워진다. 대신 **쓰기 계정이 하나로 남아 D2의 단일 실패점이 그대로 유지된다** — `won` 계정이 잠기면 낙서장 글쓰기가 멈춘다. 콘솔 Owner가 둘이라 그때 `ADMIN_EMAILS`에 `biz`를 넣고 재게시하면 복구되지만, 그 복구에는 배포와 콘솔 작업이 필요하다(즉시 전환이 아니다). 그리고 D2와 마찬가지로 **콘솔 작업 없이는 완결되지 않는다**: 계정이 Authentication에 등록돼야 하고, 바뀐 `firestore.rules`를 재게시해야 실제로 적용된다.
 
 ### D3. 페이지마다 복제하던 공통 마크업을 정본 1개 + 빌드 스크립트 주입으로 바꾸고, 생성 결과를 커밋한다
 

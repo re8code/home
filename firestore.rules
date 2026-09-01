@@ -13,8 +13,7 @@ service cloud.firestore {
       allow write: if request.auth != null
         && request.auth.token.email in [
              "triwon20@gmail.com",
-             "won@re8code.com",
-             "biz@re8code.com"
+             "won@re8code.com"
            ];
     }
   }

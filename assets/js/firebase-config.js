@@ -20,10 +20,11 @@ export const GRAFFITI_COLLECTION = 'graffiti_posts';
 // (셋의 일치는 ./scripts/check-device.sh 가 매번 대조한다.)
 // 콘솔 > Authentication > Sign-in method 에서 이메일/비밀번호 방식을 켜고,
 // 아래 각 주소를 사용자로 등록해야 실제로 로그인된다.
+// 콘솔 Owner와 이 목록은 별개다 — Owner는 둘(won·biz)이지만 낙서장 쓰기는 하나뿐이다.
+// 글에 작성자가 기록되지 않아 계정을 늘려도 구분되는 것이 없기 때문(ADR D4).
 export const ADMIN_EMAILS = [
-  'triwon20@gmail.com', // 제거 예정 — 새 두 계정 검증 후 (ADR D4)
+  'triwon20@gmail.com', // 제거 예정 — won 계정으로 쓰기가 검증된 뒤 (ADR D4 이행 2단계)
   'won@re8code.com',
-  'biz@re8code.com',
 ];
 
 // firebase-config.js가 아직 실제 값으로 교체되지 않은 임시 상태인지 여부.
