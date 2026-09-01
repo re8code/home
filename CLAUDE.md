@@ -217,7 +217,7 @@
 - `firebase-client.js` — Firestore CRUD(`fetchPosts`/`createPost`/`updatePost`/`deletePost`). `IS_PLACEHOLDER_CONFIG`일 때는 즉시 `null`/`false`를 반환하고, 실제 연결 시에도 6초 타임아웃(`REQUEST_TIMEOUT_MS`)을 넘기면 실패로 간주해 연결을 `terminate` 후 리셋한다(무한 재시도 방지).
 - `firebase-auth.js` — 원장 계정 로그인/로그아웃/로그인 상태 확인. `signInAdmin(email, password)`는 **`ADMIN_EMAILS`에 없는 주소면 Firebase에 요청조차 보내지 않고** 즉시 거절한다.
 - `admin-auth.js` — "수정"/"삭제"/"글 작성" 진입 시 뜨는 인증 모달(`requestAdminPassword`). **쓰기 계정이 하나면 비밀번호만 받고, 둘 이상일 때만 계정 `<select>`가 나온다** — 자유 입력이 아니라 목록이라 비밀번호를 계정칸에 잘못 치는 일이 없다. 직전 선택은 `localStorage`에 남기고 비밀번호는 저장하지 않는다과 삭제 확인 모달(`confirmAction`). `IS_PLACEHOLDER_CONFIG`이면 로컬 하드코딩 비밀번호(`DEV_FALLBACK_PASSWORD`)로, 실제 config가 설정되면 Firebase Authentication으로 자동 전환된다 — 두 경로를 분기하는 지점이 이 파일이다.
-- Firestore 보안 규칙은 `firestore.rules`에 있으며, 반드시 `ADMIN_EMAILS`와 규칙 파일의 이메일 **목록**이 일치해야 한다(`./scripts/check-device.sh`가 `FIXED_ADMIN_MAILS`까지 3중으로 대조). 규칙 파일은 코드에서 자동 배포되지 않고 Firebase 콘솔에 수동으로 붙여넣어 게시해야 함 — **계정을 추가·제거했으면 재게시 전까지 실제로는 적용되지 않는다.**
+- Firestore 보안 규칙은 `firestore.rules`에 있으며, 반드시 `ADMIN_EMAILS`와 규칙 파일의 이메일 **목록**이 일치해야 한다(`./scripts/check-device.sh`가 `FIXED_ADMIN_MAILS`까지 3중으로 대조). 규칙 파일은 코드에서 자동 배포되지 않으므로 **계정을 추가·제거했으면 게시 전까지 실제로는 적용되지 않는다.** 게시는 콘솔에서 붙여넣거나 Firebase Rules API로 할 수 있고, **`check-device.sh`가 콘솔에 실제 게시된 규칙을 받아와 `firestore.rules`와 대조한다**(그 프로젝트를 읽을 수 있는 `gcloud` 자격 증명이 있는 장비에서만 — 없으면 조용히 건너뛴다).
 
 ## 저장소 관례
 

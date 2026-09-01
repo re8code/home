@@ -127,8 +127,41 @@ elif [ "$CFG_MAILS" != "$FIX_MAILS" ]; then
   hint "고정: $FIX_MAILS"
   hint "계정을 정말 바꾸려면 ADR D4와 ACCOUNT_COST §2를 먼저 갱신하고 이 스크립트의 FIXED_ADMIN_MAILS도 함께 고친다"
 else
-  ok "쓰기 계정" "$(printf '%s' "$CFG_MAILS" | wc -w | tr -d ' ')개 계정 — config·rules·ADR D4 일치 (콘솔 게시본과의 일치는 콘솔에서 확인)"
+  ok "쓰기 계정" "$(printf '%s' "$CFG_MAILS" | wc -w | tr -d ' ')개 계정 — config·rules·ADR D4 일치"
 fi
+
+# 콘솔에 **실제 게시된** 규칙과 대조한다. 규칙은 수동 게시라 "저장소는 맞는데 콘솔은 옛것"인
+# 상태가 가능하고, 그러면 낙서장 글쓰기가 조용히 실패한다(2026-08-29에 실제로 겪은 함정).
+# 조회에는 그 프로젝트를 읽을 수 있는 gcloud 자격 증명이 필요하므로, 없는 장비에서는
+# 조용히 건너뛴다 — 실패로 세지 않는다.
+check_published_rules() {
+  command -v gcloud >/dev/null 2>&1 || return 0
+  local proj tok rs live acct api
+  api="https://firebaserules.googleapis.com/v1"
+  proj=$(sed -n "s/.*projectId: '\([^']*\)'.*/\1/p" assets/js/firebase-config.js)
+  [ -n "$proj" ] || return 0
+  for acct in $(gcloud auth list --format="value(account)" 2>/dev/null); do
+    tok=$(gcloud auth print-access-token --account="$acct" 2>/dev/null) || continue
+    [ -n "$tok" ] || continue
+    rs=$(curl -sS -m 8 -H "Authorization: Bearer $tok" -H "x-goog-user-project: $proj" \
+         "$api/projects/$proj/releases/cloud.firestore" 2>/dev/null |
+         python3 -c "import sys,json;print(json.load(sys.stdin).get('rulesetName',''))" 2>/dev/null)
+    [ -n "$rs" ] || continue
+    live=$(curl -sS -m 8 -H "Authorization: Bearer $tok" -H "x-goog-user-project: $proj" \
+           "$api/$rs" 2>/dev/null |
+           python3 -c "import sys,json;sys.stdout.write(json.load(sys.stdin)['source']['files'][0]['content'])" 2>/dev/null)
+    [ -n "$live" ] || continue
+    if [ "$live" = "$(cat firestore.rules)" ]; then
+      ok "게시된 규칙" "콘솔 게시본이 firestore.rules 와 일치"
+    else
+      bad "게시된 규칙" "콘솔 게시본이 firestore.rules 와 다르다 — 낙서장 글쓰기가 조용히 실패할 수 있다"
+      hint "콘솔 > Firestore Database > 규칙에 firestore.rules 를 붙여넣고 게시하세요"
+    fi
+    return 0
+  done
+  return 0   # 조회 가능한 계정이 없는 장비 — 건너뛴다
+}
+check_published_rules
 
 # 형제 저장소 (CHANGE_DEVICE §5) — 문서가 ../business 로 지칭한다
 [ -d ../business ] && ok "형제 저장소" "../business 있음" \

@@ -54,7 +54,7 @@
 
 쓰기 계정은 단일 값이 아니라 **목록**으로 다룬다 — 이행 중에는 둘이고, `biz`를 임시로 넣어야 할 상황(`won` 계정 잠김 등)에도 코드 구조를 바꾸지 않고 목록만 고치면 된다.
 
-값을 바꿀 때는 **세 곳을 함께** 고치고 콘솔에 규칙을 재게시해야 한다 — `assets/js/firebase-config.js`의 `ADMIN_EMAILS`, `firestore.rules`, `scripts/check-device.sh`의 `FIXED_ADMIN_MAILS`. 세 목록의 일치는 `./scripts/check-device.sh`가 순서 무관하게 매번 대조한다(콘솔에 게시된 규칙과의 일치는 콘솔에서만 확인 가능하다 — 규칙은 수동 게시라 드리프트가 가능하고, 이메일 열거 보호가 켜져 있어 클라이언트 API로는 Auth 사용자 존재 여부를 판별할 수 없다).
+값을 바꿀 때는 **세 곳을 함께** 고치고 콘솔에 규칙을 재게시해야 한다 — `assets/js/firebase-config.js`의 `ADMIN_EMAILS`, `firestore.rules`, `scripts/check-device.sh`의 `FIXED_ADMIN_MAILS`. 세 목록의 일치는 `./scripts/check-device.sh`가 순서 무관하게 매번 대조하고, **콘솔에 실제 게시된 규칙까지 받아와 함께 대조한다**(2026-09-01 추가 — 그 프로젝트를 읽을 수 있는 `gcloud` 자격 증명이 있는 장비에서만 동작하고, 없으면 건너뛴다). 다만 **Auth 사용자가 실제로 등록돼 있는지는 여전히 확인할 수 없다** — 이메일 열거 보호가 켜져 있어 클라이언트 API로 판별되지 않는다. 그건 낙서장에서 실제로 글을 써 보는 수밖에 없다.
 
 **계정마다 비밀번호가 따로다.** 저장소는 그중 어느 것도 알지 못하고, 알아서도 안 된다 — `CHANGE_DEVICE.md` §5의 "저장소에 없는 값"에 해당한다.
 
