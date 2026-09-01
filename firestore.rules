@@ -1,7 +1,8 @@
 rules_version = '2';
 
 // Firebase 콘솔 > Firestore Database > 규칙 탭에 이 내용을 붙여넣고 "게시"하세요.
-// (assets/js/firebase-config.js의 ADMIN_EMAIL과 아래 이메일이 반드시 일치해야 합니다.)
+// (assets/js/firebase-config.js의 ADMIN_EMAILS와 아래 목록이 반드시 일치해야 합니다.
+//  어긋나면 낙서장 글쓰기가 조용히 실패합니다 — ./scripts/check-device.sh 가 매번 대조합니다.)
 service cloud.firestore {
   match /databases/{database}/documents {
     match /graffiti_posts/{postId} {
@@ -10,7 +11,11 @@ service cloud.firestore {
 
       // 원장 계정(Firebase Authentication으로 로그인)만 등록/수정/삭제 가능
       allow write: if request.auth != null
-        && request.auth.token.email == "triwon20@gmail.com";
+        && request.auth.token.email in [
+             "triwon20@gmail.com",
+             "won@re8code.com",
+             "biz@re8code.com"
+           ];
     }
   }
 }

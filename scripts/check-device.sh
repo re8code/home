@@ -24,9 +24,10 @@ cd "$(dirname "$0")/.."
 
 PORT="${CHECK_DEVICE_PORT:-8799}"   # start.sh 기본 포트(8765)와 겹치지 않게
 
-# 낙서장 쓰기 계정 — ARCHITECTURE.md ADR D2로 고정된 값(콘솔 계정과 동일하게 통일).
+# 낙서장 쓰기 계정 — ARCHITECTURE.md ADR D4로 고정된 목록.
 # 저장소에서 유도할 수 없는 유일한 판정 기준이라 여기 둔다. 바꾸려면 ADR을 먼저 고친다.
-FIXED_ADMIN_MAIL="triwon20@gmail.com"
+# 순서는 무관하다(정렬해 비교한다). 전부 소문자로 적는다.
+FIXED_ADMIN_MAILS="biz@re8code.com triwon20@gmail.com won@re8code.com"
 
 QUICK=0; AUDIT_ONLY=0
 case "${1:-}" in
@@ -110,18 +111,23 @@ JUNK=$(git ls-files | grep -c '\.DS_Store$' || true)
 ABS=$(grep -rl "/Users/" --include="*.html" --include="*.js" --include="*.css" --include="*.sh" . 2>/dev/null | grep -v '^./scripts/check-device.sh$' | wc -l | tr -d ' ')
 [ "$ABS" = "0" ] && ok "절대경로" "하드코딩 0건" || { bad "절대경로" "${ABS}개 파일에 /Users/ 경로가 박혀 있음"; grep -rl "/Users/" --include="*.html" --include="*.js" --include="*.css" --include="*.sh" . | grep -v check-device | sed 's/^/          → /'; }
 
-# Firebase 쓰기 권한 계정 — config 와 규칙 파일이 어긋나면 낙서장 글쓰기가 조용히 실패한다
-CFG_MAIL=$(grep -o "ADMIN_EMAIL = '[^']*'" assets/js/firebase-config.js | sed "s/.*'\(.*\)'/\1/")
-RUL_MAIL=$(grep -o 'token.email == "[^"]*"' firestore.rules | sed 's/.*"\(.*\)"/\1/')
-if [ -z "$CFG_MAIL" ] || [ -z "$RUL_MAIL" ]; then
-  warn "쓰기 계정" "ADMIN_EMAIL 또는 firestore.rules 이메일을 읽지 못함"
-elif [ "$CFG_MAIL" != "$RUL_MAIL" ]; then
-  bad "쓰기 계정" "config($CFG_MAIL) ≠ rules($RUL_MAIL) — 낙서장 글쓰기가 실패한다"
-elif [ "$CFG_MAIL" != "$FIXED_ADMIN_MAIL" ]; then
-  bad "쓰기 계정" "$CFG_MAIL — ADR D2로 고정된 $FIXED_ADMIN_MAIL 이 아니다"
-  hint "계정을 정말 바꾸려면 ADR D2와 ACCOUNT_COST §2를 먼저 갱신하고 이 스크립트의 FIXED_ADMIN_MAIL도 함께 고친다"
+# Firebase 쓰기 권한 계정 — config 와 규칙 파일이 어긋나면 낙서장 글쓰기가 조용히 실패한다.
+# 계정이 여러 개라 값이 아니라 **목록**을 대조한다(순서 무관 — 정렬해 비교).
+CFG_MAILS=$(sed -n "/ADMIN_EMAILS = \[/,/\]/p" assets/js/firebase-config.js | grep -o "'[^']*@[^']*'" | tr -d "'" | sort | tr '\n' ' ' | sed 's/ $//')
+RUL_MAILS=$(sed -n '/allow write:/,/;/p' firestore.rules | grep -o '"[^"]*@[^"]*"' | tr -d '"' | sort | tr '\n' ' ' | sed 's/ $//')
+FIX_MAILS=$(printf '%s\n' $FIXED_ADMIN_MAILS | sort | tr '\n' ' ' | sed 's/ $//')
+if [ -z "$CFG_MAILS" ] || [ -z "$RUL_MAILS" ]; then
+  warn "쓰기 계정" "ADMIN_EMAILS 또는 firestore.rules 목록을 읽지 못함"
+elif [ "$CFG_MAILS" != "$RUL_MAILS" ]; then
+  bad "쓰기 계정" "config ≠ rules — 낙서장 글쓰기가 실패한다"
+  hint "config: $CFG_MAILS"
+  hint "rules : $RUL_MAILS"
+elif [ "$CFG_MAILS" != "$FIX_MAILS" ]; then
+  bad "쓰기 계정" "$CFG_MAILS — ADR D4로 고정된 목록이 아니다"
+  hint "고정: $FIX_MAILS"
+  hint "계정을 정말 바꾸려면 ADR D4와 ACCOUNT_COST §2를 먼저 갱신하고 이 스크립트의 FIXED_ADMIN_MAILS도 함께 고친다"
 else
-  ok "쓰기 계정" "$CFG_MAIL — config·rules·ADR D2 일치 (콘솔 게시본과의 일치는 콘솔에서 확인)"
+  ok "쓰기 계정" "$(printf '%s' "$CFG_MAILS" | wc -w | tr -d ' ')개 계정 — config·rules·ADR D4 일치 (콘솔 게시본과의 일치는 콘솔에서 확인)"
 fi
 
 # 형제 저장소 (CHANGE_DEVICE §5) — 문서가 ../business 로 지칭한다

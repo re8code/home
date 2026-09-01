@@ -59,7 +59,7 @@ graph TD
 
   Graffiti -- "Firestore CRUD" --> Firebase[("Firebase\nproject: graffiti-3b1fc")]
   Firebase --> Firestore["Firestore\ngraffiti_posts 컬렉션"]
-  Firebase --> Auth["Firebase Authentication\n낙서장 쓰기 사용자(triwon20@gmail.com)"]
+  Firebase --> Auth["Firebase Authentication\n낙서장 쓰기 사용자(ADMIN_EMAILS)"]
 
   Index -- "새 탭 링크" --> OJ["oj.recode.ai.kr\nOnline Judge (wonoj)\n별도 프로젝트, 연동 완료"]
   Index -. "준비중 배지, 추후 링크 활성화" .-> LMS["lms.recode.ai.kr\nLMS 인강\n별도 프로젝트, 개발 중"]
@@ -107,8 +107,8 @@ graph TD
 
 메인 사이트에서 유일하게 동적인 기능. 설정은 `assets/js/`에 역할별로 분리되어 있다.
 
-- **프로젝트**: Firebase 프로젝트 `graffiti-3b1fc` (설정값은 `assets/js/firebase-config.js`). **콘솔 소유 계정과 낙서장 쓰기 계정을 `triwon20@gmail.com` 하나로 통일했다(2026-08-29, ADR D2 — 수정 불가).** 원래 이 둘은 다른 레이어(콘솔 IAM vs Authentication 사용자)라 갈라질 수 있고 실제로 그랬으나, 계정 혼선을 없애기 위해 같은 값으로 고정했다(`ACCOUNT_COST.md` §2).
-- **DB**: Firestore, 컬렉션 `graffiti_posts` 1개. 목록/상세 조회(`read`)는 누구나 가능, 등록/수정/삭제(`write`)는 Firebase Authentication으로 로그인한 원장 계정(`triwon20@gmail.com`)만 가능 — 규칙은 `firestore.rules`에 정의(Firebase 콘솔에 수동 게시 필요, 코드에서 자동 배포되지 않음).
+- **프로젝트**: Firebase 프로젝트 `graffiti-3b1fc` (설정값은 `assets/js/firebase-config.js`). **운영 계정을 `won@re8code.com`·`biz@re8code.com` 두 개로 옮기는 중이다(2026-09-01, ADR D4).** 콘솔 IAM과 Authentication 사용자는 원래 다른 레이어라 갈라질 수 있는데, 두 레이어 모두 같은 두 계정을 쓰도록 맞춘다. 이행 중에는 옛 `triwon20@gmail.com`도 함께 허용해 아무것도 끊기지 않게 두고, 새 계정 검증 후 제거한다(`ACCOUNT_COST.md` §2).
+- **DB**: Firestore, 컬렉션 `graffiti_posts` 1개. 목록/상세 조회(`read`)는 누구나 가능, 등록/수정/삭제(`write`)는 Firebase Authentication으로 로그인한 원장 계정(`ADMIN_EMAILS` 목록)만 가능 — 규칙은 `firestore.rules`에 정의(Firebase 콘솔에 수동 게시 필요, 코드에서 자동 배포되지 않음).
 - **인증**: Firebase Authentication (이메일/비밀번호), `assets/js/firebase-auth.js`가 로그인/로그아웃 처리. `assets/js/admin-auth.js`가 "수정/삭제/글 작성" 진입 시 비밀번호 모달(`requestAdminPassword`)과 삭제 확인 모달을 담당.
 - **로컬 개발 폴백**: `firebase-config.js`의 `IS_PLACEHOLDER_CONFIG` 플래그(`projectId`가 `TEMP_`로 시작하면 true)로, 실제 Firebase 프로젝트 없이도 하드코딩 비밀번호(`DEV_FALLBACK_PASSWORD`) 기반 로컬 개발 모드가 동작한다. 이 플래그 하나로 다른 모든 Firebase 관련 파일이 분기하므로, 폴백 로직이 파일마다 중복 구현되지 않는다.
 - **안정성 처리**: `assets/js/firebase-client.js`는 요청에 6초 타임아웃(`REQUEST_TIMEOUT_MS`)을 두고, 초과 시 연결을 `terminate` 후 리셋해 무한 재시도를 방지한다.
@@ -143,13 +143,19 @@ graph TD
 
 기록 대상은 되돌리기 어렵거나 이후 작업의 전제가 되는 선택이다 — 호스팅·배포 방식, 백엔드/데이터 저장소, 브랜치 전략, 공통부 분리 방식, 페이지 생성 단위 등. 개별 페이지의 카피·색상·레이아웃 조정은 여기가 아니라 `DEVLOG.md`와 `report/`에 남긴다.
 
+### D4. 낙서장 쓰기 계정을 단일 값에서 **목록**으로 바꾸고, 로그인 화면이 계정을 받는다
+
+- **맥락**: D2가 계정을 `triwon20@gmail.com` 하나로 고정했으나, 운영 계정을 `won@re8code.com`·`biz@re8code.com` 두 개로 옮기기로 하면서 전제가 깨졌다. 그런데 값만 늘려서는 동작하지 않는다 — `firebase-auth.js`가 `signInWithEmailAndPassword(auth, ADMIN_EMAIL, password)`로 **이메일을 하드코딩**하고 로그인 모달은 비밀번호만 받고 있어, Authentication에 계정을 몇 개 등록하고 규칙을 열어줘도 사이트는 언제나 한 주소로만 로그인을 시도한다. 즉 이것은 값 교체가 아니라 기능 변경이다.
+- **결정**: `ADMIN_EMAIL`(문자열)을 `ADMIN_EMAILS`(배열)로 바꾸고, 규칙도 `==`에서 `in [...]`으로 바꾼다. 로그인 모달에 **이메일 입력칸을 추가**하고(직전 주소는 `localStorage`에 남겨 다시 채운다 — 비밀번호는 저장하지 않는다), 목록에 없는 주소는 Firebase에 요청을 보내지 않고 즉시 거절한다. 정본 세 곳(`firebase-config.js`의 `ADMIN_EMAILS` · `firestore.rules` · `check-device.sh`의 `FIXED_ADMIN_MAILS`)의 **목록 일치**를 점검 스크립트가 순서 무관하게 대조한다. 이행은 2단계다 — ① 세 계정을 함께 허용해 아무것도 끊기지 않는 상태를 만들고, ② 새 두 계정으로 실제 쓰기가 검증된 뒤 `triwon20@gmail.com`을 제거한다.
+- **트레이드오프**: 로그인이 한 단계 늘어난다(비밀번호만 → 계정+비밀번호). 그 대신 D2가 감수했던 "콘솔 권한과 게시판 쓰기 권한이 한 계정에 묶여 계정 하나가 잠기면 둘 다 멈춘다"는 단일 실패점이 완화된다. 계정이 늘어난 만큼 **비밀번호 관리 지점도 늘어난다** — 계정마다 별도 비밀번호이고 저장소는 그중 어느 것도 알지 못한다. 그리고 D2와 마찬가지로 **콘솔 작업 없이는 완결되지 않는다**: 두 계정이 Authentication에 등록돼야 하고, 바뀐 `firestore.rules`를 재게시해야 실제로 적용된다.
+
 ### D3. 페이지마다 복제하던 공통 마크업을 정본 1개 + 빌드 스크립트 주입으로 바꾸고, 생성 결과를 커밋한다
 
 - **맥락**: 템플릿 시스템이 없어 `<head>`·GNB·푸터 마크업이 30장에 그대로 복제돼 있었다. 그 결과 ① `DEVLOG.md`에 "30개 페이지 일괄 치환"이 16번 기록될 만큼 공통부 수정이 상시 작업이 됐고, ② 실제로 드리프트가 발생했다 — 푸터가 3종(26장 4단형 / `index.html` 변형 / `graffiti*` 3장은 GNB에서 폐기한 `R/` 배지 잔존)으로 갈라졌고, `check-device.sh`는 드리프트를 **사후에 잡기 위해** 12개 항목을 30/30으로 검사하고 있었다. ③ 지금까지 터진 공통부 버그(모바일 메뉴 미개방, 폴드7 GNB 줄바꿈, "회사 소개" 상시 흰색)가 전부 이 복제 영역에서 났다. 커리큘럼형 페이지는 전체의 **40%가 순수 복제**이고, Unity·Agent AI 상세 8장이 예정돼 있어 부담이 계속 늘어난다.
 - **결정**: 공통 마크업의 정본을 `partials/`에 두고 `scripts/build-partials.py`가 각 페이지의 마커(`<!-- @partial:name -->` … `<!-- /@partial:name -->`) 사이에 주입한다. **생성 결과는 커밋한다** — GitHub Pages가 받는 파일은 지금과 동일한 정적 HTML이라 배포 경로가 전혀 바뀌지 않는다. 페이지별로 달라지는 것은 경로 접두사뿐이므로(측정 결과 접두사를 정규화하면 header는 30장 중 29장, footer는 26장이 완전히 동일) `{{HOME}}`·`{{SRC}}`·`{{ASSET}}` 토큰을 파일 위치에서 계산해 치환한다. 적용은 **푸터부터** 시작해 같은 날 GNB(`header.html`)와 `<head>` 공통부(`head-common.html`)까지 넓혔다 — 정본 3종. `<head>`에서는 OG 태그를 그 페이지의 `<title>`·`<meta name="description">`·경로에서 **파생**시켜, 문구를 고칠 때 OG를 따로 챙겨야 하던 이중 관리도 함께 없앴다. 이어서 코스 바로가기 탭(`tabs-lang`·`tabs-web`)까지 정본화해 **정본 5종**으로 마무리했다 — 탭은 현재 페이지만 표시가 다르므로 정본에는 평범한 링크만 두고 빌드가 `filter-tab` 링크 중 자기 자신을 가리키는 것에 `aria-current`/`is-active`를 붙인다.
 - **트레이드오프**: 배포는 **아무것도 나아지지 않는다** — 그게 이 안을 고른 이유다. SSG는 Pages 브랜치 배포가 `/`·`/docs`만 지원해 Actions 배포로 갈아타야 하고, 런타임 JS 주입은 크롤링과 FOUC 방지(critical CSS로 어렵게 잡아둔 것)를 잃는다. 대신 저장소에 **생성 파일**이 들어와, 페이지의 마커 안을 직접 고치면 다음 빌드에 덮어써진다 — 이 위험은 `check-device.sh`의 드리프트 검사(정본과 생성물 대조)로 막는다. 그리고 이 결정이 없애는 것은 **베끼는 부담뿐**이다. 커리큘럼 12항목이나 시각화 엔진 같은 콘텐츠 집필량은 그대로다.
 
-### D2. 낙서장 쓰기 계정을 Firebase 콘솔 계정과 같은 `triwon20@gmail.com`으로 통일한다
+### D2. 낙서장 쓰기 계정을 Firebase 콘솔 계정과 같은 `triwon20@gmail.com`으로 통일한다 → **D4로 대체됨**
 
 - **맥락**: Firestore 규칙의 `request.auth.token.email`(=Authentication에 등록된 최종 사용자)과 Firebase 콘솔 소유 Google 계정은 서로 다른 레이어라 값이 갈라질 수 있고, 실제로 2026-08-29까지 갈라져 있었다(쓰기 `won@re8code.com` / 콘솔 `triwon20@gmail.com`). 문서도 이 둘을 하나로 뭉뚱그려 적어 두어, "Firebase 계정이 무엇인가"라는 질문에 답이 두 개인 상태였다. 로그인 UI는 비밀번호만 받고 이메일은 코드에 하드코딩돼 있어, 어느 계정으로 로그인되는지가 화면에서는 전혀 드러나지 않는다.
 - **결정**: 두 값을 `triwon20@gmail.com` 하나로 통일하고 **수정 불가 값**으로 고정한다. 정본은 `ACCOUNT_COST.md` §2이며, 실제 값은 세 곳(`assets/js/firebase-config.js`의 `ADMIN_EMAIL`, `firestore.rules`, `scripts/check-device.sh`의 `FIXED_ADMIN_MAIL`)에 존재하고 장비 점검 스크립트가 매번 세 값의 일치를 대조한다. 바꾸려면 이 ADR을 먼저 고친다.

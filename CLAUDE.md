@@ -212,12 +212,12 @@
 
 "원장님의 낙서" 게시판 전용. 파일별 역할:
 
-- `firebase-config.js` — 프로젝트 설정값, 컬렉션 이름(`graffiti_posts`), 관리자 이메일(`ADMIN_EMAIL`), 그리고 `IS_PLACEHOLDER_CONFIG` 플래그(`projectId`가 `TEMP_`로 시작하면 실제 Firebase 프로젝트 없이 로컬 개발 모드로 동작). 다른 모든 Firebase 관련 파일이 이 플래그를 참조해 각자 폴백 로직을 중복 구현하지 않도록 함.
+- `firebase-config.js` — 프로젝트 설정값, 컬렉션 이름(`graffiti_posts`), 관리자 계정 **목록**(`ADMIN_EMAILS` — 단일 값이 아니다, ADR D4), 그리고 `IS_PLACEHOLDER_CONFIG` 플래그(`projectId`가 `TEMP_`로 시작하면 실제 Firebase 프로젝트 없이 로컬 개발 모드로 동작). 다른 모든 Firebase 관련 파일이 이 플래그를 참조해 각자 폴백 로직을 중복 구현하지 않도록 함.
 - `firebase-app.js` — `getFirebaseApp()` 싱글턴으로 Firestore/Auth가 동일 App 인스턴스를 공유.
 - `firebase-client.js` — Firestore CRUD(`fetchPosts`/`createPost`/`updatePost`/`deletePost`). `IS_PLACEHOLDER_CONFIG`일 때는 즉시 `null`/`false`를 반환하고, 실제 연결 시에도 6초 타임아웃(`REQUEST_TIMEOUT_MS`)을 넘기면 실패로 간주해 연결을 `terminate` 후 리셋한다(무한 재시도 방지).
-- `firebase-auth.js` — 원장 계정(`ADMIN_EMAIL`) 로그인/로그아웃/로그인 상태 확인.
-- `admin-auth.js` — "수정"/"삭제"/"글 작성" 진입 시 뜨는 비밀번호 모달(`requestAdminPassword`)과 삭제 확인 모달(`confirmAction`). `IS_PLACEHOLDER_CONFIG`이면 로컬 하드코딩 비밀번호(`DEV_FALLBACK_PASSWORD`)로, 실제 config가 설정되면 Firebase Authentication으로 자동 전환된다 — 두 경로를 분기하는 지점이 이 파일이다.
-- Firestore 보안 규칙은 `firestore.rules`에 있으며, 반드시 `ADMIN_EMAIL`과 규칙 파일 내 이메일이 일치해야 한다. 규칙 파일은 코드에서 자동 배포되지 않고 Firebase 콘솔에 수동으로 붙여넣어 게시해야 함.
+- `firebase-auth.js` — 원장 계정 로그인/로그아웃/로그인 상태 확인. `signInAdmin(email, password)`는 **`ADMIN_EMAILS`에 없는 주소면 Firebase에 요청조차 보내지 않고** 즉시 거절한다.
+- `admin-auth.js` — "수정"/"삭제"/"글 작성" 진입 시 뜨는 인증 모달(`requestAdminPassword` — 이메일+비밀번호를 받는다. 직전 이메일은 `localStorage`에 남겨 다시 채우고, 비밀번호는 저장하지 않는다)과 삭제 확인 모달(`confirmAction`). `IS_PLACEHOLDER_CONFIG`이면 로컬 하드코딩 비밀번호(`DEV_FALLBACK_PASSWORD`)로, 실제 config가 설정되면 Firebase Authentication으로 자동 전환된다 — 두 경로를 분기하는 지점이 이 파일이다.
+- Firestore 보안 규칙은 `firestore.rules`에 있으며, 반드시 `ADMIN_EMAILS`와 규칙 파일의 이메일 **목록**이 일치해야 한다(`./scripts/check-device.sh`가 `FIXED_ADMIN_MAILS`까지 3중으로 대조). 규칙 파일은 코드에서 자동 배포되지 않고 Firebase 콘솔에 수동으로 붙여넣어 게시해야 함 — **계정을 추가·제거했으면 재게시 전까지 실제로는 적용되지 않는다.**
 
 ## 저장소 관례
 

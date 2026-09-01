@@ -9,11 +9,11 @@ import { isAdminSignedIn, signInAdmin } from './firebase-auth.js';
 // 더 이상 쓰이지 않고, Firebase Authentication에 등록한 계정 비밀번호가 사용됩니다.
 const DEV_FALLBACK_PASSWORD = 'sungwons';
 
-async function verifyAdminPassword(password) {
+async function verifyAdminPassword(email, password) {
   if (IS_PLACEHOLDER_CONFIG) {
     return password === DEV_FALLBACK_PASSWORD;
   }
-  return signInAdmin(password);
+  return signInAdmin(email, password);
 }
 
 // 비밀번호 입력 모달을 띄우고, 인증 성공 시 true / 취소·실패 시 false를 resolve합니다.
@@ -31,9 +31,10 @@ export function requestAdminPassword(actionLabel) {
     overlay.innerHTML = `
       <div class="w-full max-w-sm rounded-2xl border border-slate-900/10 bg-white p-6 shadow-xl">
         <h3 class="text-base font-semibold text-slate-900">원장 인증</h3>
-        <p class="mt-1 text-sm text-slate-500">"${actionLabel}" 기능은 원장만 사용할 수 있습니다. 비밀번호를 입력해주세요.</p>
-        <input type="password" class="admin-pw-input mt-4 w-full rounded-xl border border-slate-900/10 px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500/50" placeholder="비밀번호" autocomplete="off" />
-        <p class="admin-pw-error mt-2 hidden text-xs text-red-500">비밀번호가 올바르지 않습니다.</p>
+        <p class="mt-1 text-sm text-slate-500">"${actionLabel}" 기능은 원장만 사용할 수 있습니다. 계정과 비밀번호를 입력해주세요.</p>
+        <input type="email" class="admin-id-input mt-4 w-full rounded-xl border border-slate-900/10 px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500/50" placeholder="이메일" autocomplete="username" inputmode="email" />
+        <input type="password" class="admin-pw-input mt-2 w-full rounded-xl border border-slate-900/10 px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500/50" placeholder="비밀번호" autocomplete="current-password" />
+        <p class="admin-pw-error mt-2 hidden text-xs text-red-500">계정 또는 비밀번호가 올바르지 않습니다.</p>
         <div class="mt-5 flex justify-end gap-2">
           <button type="button" class="admin-pw-cancel rounded-full px-4 py-2 text-sm text-slate-500 hover:bg-slate-900/5">취소</button>
           <button type="button" class="admin-pw-confirm rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-brand-400">확인</button>
@@ -41,10 +42,17 @@ export function requestAdminPassword(actionLabel) {
       </div>`;
     document.body.appendChild(overlay);
 
+    const idInput = overlay.querySelector('.admin-id-input');
     const input = overlay.querySelector('.admin-pw-input');
     const errorEl = overlay.querySelector('.admin-pw-error');
     const confirmBtn = overlay.querySelector('.admin-pw-confirm');
-    input.focus();
+    // 같은 브라우저에서 다시 열 때 직전에 쓴 주소를 채워둔다(비밀번호는 저장하지 않는다).
+    try {
+      idInput.value = localStorage.getItem('recode.adminEmail') ?? '';
+    } catch (e) {
+      /* 저장소 접근이 막힌 환경 — 빈칸으로 시작한다 */
+    }
+    (idInput.value ? input : idInput).focus();
 
     function close(result) {
       overlay.remove();
@@ -54,8 +62,13 @@ export function requestAdminPassword(actionLabel) {
     async function submit() {
       confirmBtn.disabled = true;
       confirmBtn.textContent = '확인 중...';
-      const ok = await verifyAdminPassword(input.value);
+      const ok = await verifyAdminPassword(idInput.value, input.value);
       if (ok) {
+        try {
+          localStorage.setItem('recode.adminEmail', idInput.value.trim().toLowerCase());
+        } catch (e) {
+          /* 저장 실패는 로그인 성공과 무관하다 */
+        }
         close(true);
       } else {
         errorEl.classList.remove('hidden');
@@ -68,9 +81,11 @@ export function requestAdminPassword(actionLabel) {
 
     overlay.querySelector('.admin-pw-confirm').addEventListener('click', submit);
     overlay.querySelector('.admin-pw-cancel').addEventListener('click', () => close(false));
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') submit();
-      if (e.key === 'Escape') close(false);
+    [idInput, input].forEach((el) => {
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') submit();
+        if (e.key === 'Escape') close(false);
+      });
     });
   });
 }
