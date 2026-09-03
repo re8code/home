@@ -494,3 +494,10 @@
 - **v0.81** — 이행 2단계 콘솔 작업 완료. ③ Firestore 규칙 게시(Rules API — 게시본이 저장소와 바이트 일치 확인), ④ Authentication에서 `triwon20@gmail.com` 삭제(사용자 1명만 남음), ⑤ 프로젝트 Owner에서 제거(Owner `won`·`biz` 둘). **Owner 추가는 API로 불가능했다** — `SOLO_MUST_INVITE_OWNERS`, 조직 밖 프로젝트는 초대·수락 절차가 필요해 콘솔에서만 된다(제거는 API로 됨). 부수 효과로 이 장비의 `gcloud` 자격 증명이 제거된 계정 것이라 점검의 콘솔 대조가 곧 끊긴다 — `CHANGE_DEVICE.md` §5에 "Owner 계정으로 `gcloud auth login`"을 장비별 준비물로 추가했다. 상담 Google Forms는 여전히 옛 계정 소유로 남아 있다(별도 절차).
 - 사용자가 `gcloud auth login`으로 `won@re8code.com` 추가 — 점검의 콘솔 대조 두 항목이 계속 동작함을 확인. 같은 시점에 `triwon20@gmail.com` 토큰은 `PERMISSION_DENIED`로 바뀌어 **IAM 회수가 전파 완료**됐음도 확인(제거 직후에는 토큰 캐시로 잠시 통과했었다).
 - **v0.82** — `check_firebase_console`이 계정 목록을 순서대로 훑느라 권한 없는 계정에 매번 실패 호출을 하던 것을 고쳐, **활성 계정(`gcloud config get-value account`)을 먼저** 보고 나머지는 폴백으로 두었다.
+
+## 2026-09-03
+- **v0.83** — `tasks/매니페스트-생성-지시서.md` 수행: 여러 프로젝트를 가로질러 계정·비용·스택을 취합하는 외부 도구용 `.project-meta.json`을 생성했다(stack 7 · services 8, 코드 변경 없음). 상세: `report/2026-09-03-project-manifest.md`.
+  - **비용은 한 칸도 못 채웠고 그게 맞다** — `ACCOUNT_COST.md` §5가 "금액을 적지 않는다"를 방침으로 두고 있어 저장소에 근거가 없고, 지시서도 추정을 금지한다. 두 문서가 같은 곳을 가리킨다. `stack[].version`도 전부 비웠다 — 취합 도구가 **선언된 스택과 감지된 의존성을 대조**하는 구조라 코드를 베끼면 그 대조가 무의미해지기 때문.
+  - 외부 호스트 전수 조사 결과 **문서에 없는데 코드에 있는 서비스는 0건**. 문서 간 모순도 새로 나온 것 없음(§2-1의 정정은 이미 기록돼 있다).
+  - 서브도메인 3개(`oj`·`mate`·`business`)는 별도 프로젝트라 넣지 않았다 — 각 저장소에서 따로 만들어야 이중 계상되지 않는다.
+  - public 저장소이므로 `.gitignore`에 추가. **이 저장소에서 gitignore로 빠지는 첫 파일**이라 `CHANGE_DEVICE.md` §5의 "빠지는 설정 파일이 없다"는 서두를 정정하고 준비물 표에 행을 추가했다(값을 옮기는 게 아니라 지시서로 다시 생성한다). `ACCOUNT_COST.md` §5에는 매니페스트가 이 문서의 **파생 사본**이라는 관계를 명시.
