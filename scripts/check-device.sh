@@ -137,20 +137,31 @@ fi
 # 낙서장 글쓰기가 조용히 실패했다. 조회에는 그 프로젝트를 읽을 수 있는 gcloud 자격 증명이
 # 필요하므로, 없는 장비에서는 조용히 건너뛴다(실패로 세지 않는다).
 check_firebase_console() {
-  command -v gcloud >/dev/null 2>&1 || return 0
-  local proj tok acct rs live users missing extra m
+  local proj tok acct rs live users missing extra m reauth denied
+  if ! command -v gcloud >/dev/null 2>&1; then
+    warn "콘솔 대조" "gcloud 없음 — 게시된 규칙·Auth 사용자를 대조하지 못했다"
+    hint "이 두 항목은 실패가 아니라 미확인 상태다 (CHANGE_DEVICE.md §5)"
+    return 0
+  fi
   proj=$(sed -n "s/.*projectId: '\([^']*\)'.*/\1/p" assets/js/firebase-config.js)
   [ -n "$proj" ] || return 0
 
   # 활성 계정을 먼저 본다 — 나머지는 폴백이다. 권한 없는 계정을 앞에서 훑으면
   # 매 점검마다 실패하는 API 호출이 그만큼 늘어난다.
+  reauth=""; denied=""
   for acct in $(gcloud config get-value account 2>/dev/null; gcloud auth list --format="value(account)" 2>/dev/null); do
-    tok=$(gcloud auth print-access-token --account="$acct" 2>/dev/null) || continue
-    [ -n "$tok" ] || continue
+    # 왜 못 썼는지를 계정별로 남긴다 — 그래야 마지막에 "무엇을 하면 되는지" 말할 수 있다.
+    if ! tok=$(gcloud auth print-access-token --account="$acct" 2>/dev/null) || [ -z "$tok" ]; then
+      case " $reauth " in *" $acct "*) ;; *) reauth="$reauth $acct";; esac
+      continue
+    fi
     rs=$(curl -sS -m 8 -H "Authorization: Bearer $tok" -H "x-goog-user-project: $proj" \
          "https://firebaserules.googleapis.com/v1/projects/$proj/releases/cloud.firestore" 2>/dev/null |
          python3 -c "import sys,json;print(json.load(sys.stdin).get('rulesetName',''))" 2>/dev/null)
-    [ -n "$rs" ] || continue
+    if [ -z "$rs" ]; then
+      case " $denied " in *" $acct "*) ;; *) denied="$denied $acct";; esac
+      continue
+    fi
 
     # ① 게시된 규칙
     live=$(curl -sS -m 8 -H "Authorization: Bearer $tok" -H "x-goog-user-project: $proj" \
@@ -191,7 +202,11 @@ check_firebase_console() {
     fi
     return 0
   done
-  return 0   # 조회 가능한 계정이 없는 장비 — 건너뛴다
+  # 여기까지 왔다는 것은 두 대조를 한 번도 못 했다는 뜻이다. 조용히 끝내면
+  # 화면이 전부 초록인데 확인은 안 된 상태가 된다(CHANGE_DEVICE.md §7 함정 11).
+  warn "콘솔 대조" "게시된 규칙·Auth 사용자를 대조하지 못했다${reauth:+ · 재인증 필요:$reauth}${denied:+ · 프로젝트 권한 없음:$denied}"
+  hint "Owner 계정으로 'gcloud auth login' 후 다시 실행하세요 (ACCOUNT_COST.md §2)"
+  return 0
 }
 check_firebase_console
 
