@@ -143,6 +143,12 @@ graph TD
 
 기록 대상은 되돌리기 어렵거나 이후 작업의 전제가 되는 선택이다 — 호스팅·배포 방식, 백엔드/데이터 저장소, 브랜치 전략, 공통부 분리 방식, 페이지 생성 단위 등. 개별 페이지의 카피·색상·레이아웃 조정은 여기가 아니라 `DEVLOG.md`와 `report/`에 남긴다.
 
+### D5. Firebase 프로젝트 `graffiti-3b1fc`를 개인 계정 소유에서 `re8code.com` **조직 소속**으로 옮긴다
+
+- **맥락**: D4로 계정을 `won`·`biz`로 옮겼지만 그건 **프로젝트 안의 권한**만 바꾼 것이고, 프로젝트 자체는 여전히 어느 조직에도 속하지 않은 **무소속(no organization)** 상태였다. 무소속 프로젝트는 소유권이 개인 계정의 IAM 바인딩에만 걸려 있어, 계정을 잃으면 조직 차원에서 되찾을 경로가 없다. 조회해 보니 `re8code.com` 조직(`438985008538`, Cloud Identity `C0471rvuc`)은 **이미 존재**했고 `recodemate`(mate 서브도메인)는 이미 그 아래 있었다 — 즉 새로 만들 것이 아니라 뒤처져 있던 둘(`graffiti-3b1fc`·`business-1e563`)을 맞추는 문제였다.
+- **결정**: `gcloud beta projects move`로 `graffiti-3b1fc`를 조직에 귀속시킨다. **Firebase 쪽 작업은 없다** — Firebase 프로젝트는 GCP 프로젝트와 같은 것이라 컨테이너만 옮으면 되고, `projectId`가 그대로여서 `firebase-config.js`(apiKey·authDomain·storageBucket)도 손대지 않는다. 실행에는 조직의 `roles/resourcemanager.projectMover`가 필요한데 `organizationAdmin`에 포함돼 있지 않아 따로 부여했다(`gcloud projects move`는 GA 트랙에 없어 `beta`를 쓴다). `business-1e563`은 같은 방식으로 다음 차례이고, `oj`는 프로젝트 접근 권한 확보가 선행되어야 한다.
+- **트레이드오프**: **되돌릴 수 없다** — 조직 밖(무소속)으로 되돌리는 경로는 지원되지 않는다. 그리고 조직 정책을 상속받는다: `iam.allowedPolicyMemberDomains`가 `C0471rvuc`만 허용하므로 앞으로 이 프로젝트에 **`allUsers` 같은 외부 멤버를 IAM에 새로 붙일 수 없고**, `iam.disableServiceAccountKeyCreation`으로 **서비스 계정 키를 새로 발급할 수 없다**(Admin SDK·CI 배포를 도입한다면 워크로드 아이덴티티 연합 등 다른 방식을 써야 한다). 지금 범위에서는 대가가 없다 — 낙서장의 공개 읽기는 IAM이 아니라 `firestore.rules`가 통제하고 로그인 계정은 Authentication 사용자(IAM 멤버가 아니다)이며, Storage·Admin SDK는 쓰지 않는다. 조직 정책은 **정책을 쓰는 시점**에만 평가되므로 기존 바인딩은 소급 차단되지 않는다(이미 조직 안에 있는 `recodemate`가 프로젝트 예외 없이 Cloud Run `allUsers`를 유지하고 있는 것이 그 증거다 — `oj`를 옮길 때는 이 점이 실제 관문이 된다).
+
 ### D4. 낙서장 쓰기 계정을 단일 값에서 **목록**으로 바꾸고, 로그인 화면이 계정을 받는다
 
 - **맥락**: D2가 계정을 `triwon20@gmail.com` 하나로 고정했으나, 운영 계정을 `won@re8code.com`·`biz@re8code.com` 두 개로 옮기기로 하면서 전제가 깨졌다. 그런데 값만 늘려서는 동작하지 않는다 — `firebase-auth.js`가 `signInWithEmailAndPassword(auth, ADMIN_EMAIL, password)`로 **이메일을 하드코딩**하고 로그인 모달은 비밀번호만 받고 있어, Authentication에 계정을 몇 개 등록하고 규칙을 열어줘도 사이트는 언제나 한 주소로만 로그인을 시도한다. 즉 이것은 값 교체가 아니라 기능 변경이다.

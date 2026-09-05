@@ -2,7 +2,7 @@
 
 `ARCHITECTURE.md` §1 기술 스택(및 §3 배포·§5 백엔드·§6 서브도메인)에서 **계정이 필요한 항목**과 **비용이 발생할 개연성이 있는 항목**만 뽑아 정리한다. 구조 설명은 `ARCHITECTURE.md`가 정본이고, 이 문서는 "누구 계정으로 무엇이 돌아가고, 어디서 돈이 샐 수 있는가"만 다룬다.
 
-- 최종 갱신: 2026-09-01 (운영 계정을 `won@re8code.com`·`biz@re8code.com`로 옮기는 중 — ADR D4로 D2를 대체. 서브도메인 프로젝트가 `triwon20`이 아닌 **별도 계정** 소유였음을 확인해 §2를 정정, §2-1). 이전 갱신: 2026-08-31 (서브도메인 2개의 실제 호스팅 경로 재확인, §3) · 2026-08-29 (계정을 `triwon20@gmail.com` 하나로 통일하고 **수정 불가**로 확정 — ADR D2. 신설 — 같은 날 `CLAUDE.md` 제1원칙 문서 세트에 편입되어 7개 문서 중 하나가 됨)
+- 최종 갱신: 2026-09-05 (`graffiti-3b1fc`를 `re8code.com` 조직에 귀속 — ADR D5. §2-1에 조직 소속 열과 조직 정책 상속 항목 추가). 이전 갱신: 2026-09-01 (운영 계정을 `won@re8code.com`·`biz@re8code.com`로 옮기는 중 — ADR D4로 D2를 대체. 서브도메인 프로젝트가 `triwon20`이 아닌 **별도 계정** 소유였음을 확인해 §2를 정정, §2-1). 이전 갱신: 2026-08-31 (서브도메인 2개의 실제 호스팅 경로 재확인, §3) · 2026-08-29 (계정을 `triwon20@gmail.com` 하나로 통일하고 **수정 불가**로 확정 — ADR D2. 신설 — 같은 날 `CLAUDE.md` 제1원칙 문서 세트에 편입되어 7개 문서 중 하나가 됨)
 - 확인 방법: 저장소 내 외부 호스트 전수 조사 + 실서비스 응답 헤더/DNS 조회
 - **금액은 적지 않는다** — 요금제는 수시로 바뀌므로 각 서비스 콘솔의 값이 정본이다. 여기에는 "과금으로 전환되는 조건"만 적는다.
 
@@ -31,12 +31,16 @@
 
 **이 문서가 2026-08-29부터 "Firebase·Forms·서브도메인의 Google Cloud가 모두 `triwon20@gmail.com` 한 계정"이라고 적어 온 것은 사실과 달랐다.** 서브도메인 프로젝트들은 별도 계정이 소유하고 있었고, 사용자가 이를 `won@re8code.com`·`biz@re8code.com`으로 통합하는 중이다.
 
-| 프로젝트 | 쓰이는 곳 | 계정 정리 상태 |
-| --- | --- | --- |
-| `graffiti-3b1fc` | 이 저장소의 낙서장 | **정리 완료** — `won`·`biz` Owner, 쓰기 `won` (ADR D4) |
-| `business-1e563` | `business` 서브도메인 | `won`·`biz` 추가됨 — **옛 계정 제거는 미완** |
-| `project-5886…` | `oj` 서브도메인 | 아직 변경 전 |
-| `recodemate` | `mate` 서브도메인 | 정리 완료 |
+| 프로젝트 | 쓰이는 곳 | 계정 정리 상태 | 조직 소속 |
+| --- | --- | --- | --- |
+| `graffiti-3b1fc` | 이 저장소의 낙서장 | **정리 완료** — `won`·`biz` Owner, 쓰기 `won` (ADR D4) | ✅ **2026-09-05 귀속** (ADR D5) |
+| `business-1e563` | `business` 서브도메인 | `won`·`biz` 추가됨 — **옛 계정 제거는 미완** | ❌ 무소속 — 다음 차례 |
+| `project-5886…` | `oj` 서브도메인 | 아직 변경 전 | ❌ 무소속 — `won`에게 **보이지도 않는다**(접근 권한 확보가 선행) |
+| `recodemate` | `mate` 서브도메인 | 정리 완료 | ✅ 이미 소속 |
+
+**조직은 새로 만들 것이 아니라 이미 있다** — `re8code.com`(ID `438985008538`, Cloud Identity 고객 `C0471rvuc`), `won@re8code.com`이 `roles/resourcemanager.organizationAdmin`이다. 계정을 옮기는 것(ADR D4, 프로젝트 *안*의 권한)과 조직에 귀속시키는 것(ADR D5, 프로젝트 *자체*의 소유 계층)은 별개이며, 무소속으로 남은 프로젝트는 계정을 잃었을 때 조직 차원에서 되찾을 경로가 없다.
+
+조직에 들어가면 조직 정책을 상속한다 — 현재 걸려 있는 것 중 이 생태계에 실제로 닿는 둘은 `iam.allowedPolicyMemberDomains`(`C0471rvuc`만 허용 → **`allUsers` 등 외부 멤버를 IAM에 새로 붙일 수 없다**)와 `iam.disableServiceAccountKeyCreation`(**서비스 계정 키 신규 발급 불가**)이다. 정책은 정책을 쓰는 시점에만 평가되어 기존 바인딩은 소급 차단되지 않지만(조직 안의 `recodemate`가 Cloud Run `allUsers`를 그대로 유지 중), **Cloud Run 공개 호출을 IAM으로 여는 `oj`를 옮길 때는 이것이 실제 관문이 된다.** `business-1e563`은 옮기기 전에 배포가 서비스 계정 키에 의존하는지 확인해야 한다.
 
 - **확인 방법**: `gcloud projects list --account=<계정>` · `gcloud projects get-iam-policy <프로젝트> --flatten="bindings[].members" --format="table(bindings.role,bindings.members)"`. 상태는 계속 바뀌므로 **여기 적힌 표가 아니라 명령 결과가 정본**이다.
 - **서비스 계정은 건드리지 않는다.** `oj` 프로젝트의 `github-deployer@…`는 `run.admin`·`firebasehosting.admin`·`artifactregistry.writer`를 가진 **CI 배포 주체**다. 사람 계정을 정리하면서 함께 지우면 배포가 멈춘다.
