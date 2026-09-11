@@ -120,10 +120,12 @@ graph TD
 
 | 서브도메인 | 용도 | 상태 (2026-09-11 기준) |
 | --- | --- | --- |
-| `oj.recode.ai.kr` (wonoj) | Online Judge | 개발 완료, `index.html` 헤더에 실제 링크 연결됨(새 탭) |
-| `lms.recode.ai.kr` | LMS 인강 | 별도 프로젝트로 개발 중, 헤더에 "준비중" 배지 + 비활성 링크 |
-| `business.recode.ai.kr` (business) | 프로젝트 의뢰 | 별도 프로젝트, 2026-08-26 헤더 링크 활성화(새 탭, 당시 `business-1e563.web.app`), 2026-09-11 커스텀 도메인으로 교체 완료 |
-| `mate.recode.ai.kr` (studio) | 오프라인 수업 예약·수강권 관리 | 별도 프로젝트, 2026-08-25 헤더 링크 활성화(새 탭), 커스텀 도메인 연결 완료 |
+| `oj.recode.ai.kr` (wonoj, GNB 라벨 **Online Judge**) | Online Judge | 개발 완료, `index.html` 헤더에 실제 링크 연결됨(새 탭) |
+| `lms.recode.ai.kr` (GNB 라벨 **VOD**) | LMS 인강 | 별도 프로젝트로 개발 중, 헤더에 "준비중" 배지 + 비활성 링크 |
+| `business.recode.ai.kr` (business, GNB 라벨 **Business**) | 프로젝트 의뢰 | 별도 프로젝트, 2026-08-26 헤더 링크 활성화(새 탭, 당시 `business-1e563.web.app`), 2026-09-11 커스텀 도메인으로 교체 완료 |
+| `mate.recode.ai.kr` (studio, GNB 라벨 **Class**) | 오프라인 수업 예약·수강권 관리 | 별도 프로젝트, 2026-08-25 헤더 링크 활성화(새 탭), 커스텀 도메인 연결 완료 |
+
+GNB 라벨은 2026-09-11부터 프로젝트명이 아니라 서비스 설명형(Online Judge · Class · VOD · Business)이다 — 위 표의 괄호 안 프로젝트명과 GNB에 보이는 글자가 다르다는 점에 유의.
 
 서브도메인이 실제로 오픈되면 이 저장소에서 할 일은 "준비중" 배지 제거 + 실제 링크로 교체뿐이다(`PRD.md` §8 미결 사항 참고).
 

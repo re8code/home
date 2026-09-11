@@ -26,9 +26,9 @@
 ### Out of Scope — 별도 프로젝트, 외부 링크만 연결
 | 영역 | 내용 |
 | --- | --- |
-| Online Judge (wonoj) | `oj.recode.ai.kr` 서브도메인, 별도 프로젝트로 직접 제작·개발 진행 중. 이 저장소에서는 외부 링크만 연결. |
-| LMS 인강 | `lms.recode.ai.kr` 서브도메인, 별도 프로젝트로 직접 제작·개발 진행 중. 이 저장소에서는 외부 링크만 연결. |
-| business (프로젝트 의뢰) | `business.recode.ai.kr` 서브도메인, 별도 프로젝트로 직접 제작 예정. 이 저장소에서는 외부 링크만 연결. |
+| Online Judge (wonoj, GNB 라벨 "Online Judge") | `oj.recode.ai.kr` 서브도메인, 별도 프로젝트로 직접 제작·개발 진행 중. 이 저장소에서는 외부 링크만 연결. |
+| LMS 인강 (GNB 라벨 "VOD") | `lms.recode.ai.kr` 서브도메인, 별도 프로젝트로 직접 제작·개발 진행 중. 이 저장소에서는 외부 링크만 연결. |
+| business (프로젝트 의뢰, GNB 라벨 "Business") | `business.recode.ai.kr` 서브도메인, 별도 프로젝트로 직접 제작 예정. 이 저장소에서는 외부 링크만 연결. |
 | studio (오프라인 수업 예약·수강권 관리) | `studio.recode.ai.kr` 서브도메인, 별도 프로젝트로 직접 제작 예정. 이 저장소에서는 외부 링크만 연결. |
 
 ## 4. 타겟 사용자

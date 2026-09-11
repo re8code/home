@@ -527,3 +527,5 @@
 ## 2026-09-11
 - 장비 이동 후 `./scripts/check-device.sh` 점검 — 원격보다 2커밋 뒤처진 것을 pull(v0.93)하고, `won@re8code.com`으로 `gcloud auth login` 후 콘솔 대조(게시된 규칙·Auth 사용자) ✅ 확인. 실패 0건, 프로토콜 변경 없음(기록하지 않음).
 - **v0.94** — GNB `business` 링크를 `https://business-1e563.web.app` → **`https://business.recode.ai.kr`**로 교체(사용자 알림 — 커스텀 도메인 연결 완료, 200 응답 확인). 정본 `partials/header.html` 2곳만 고치고 빌드해 30장 반영, 옛 도메인 잔존 0건. `CLAUDE.md`·`PRD`·`ARCHITECTURE` §6·`DEV_PLAN` Phase 3·`ACCOUNT_COST` §1의 "커스텀 도메인 연결 전" 서술을 정리. 상세: `report/2026-09-11-business-custom-domain.md`.
+- v0.94를 `main`에 fast-forward 병합·푸시했으나 **GitHub Pages 빌드가 "Upload artifact" 단계에서 실패**(Jekyll 빌드는 성공, 커밋은 HTML/문서만 변경 — GitHub 쪽 일시 장애로 판단). 이 장비에 `gh` 로그인이 없어 재실행은 사용자 몫으로 넘김.
+- **v0.95** — GNB 서브 서비스 4개 라벨을 프로젝트명에서 **서비스 설명형**으로 교체(사용자 제안·논의): `wonoj`→Online Judge · `studio`→Class · `LMS`→VOD(준비중 유지) · `business`→Business. Studio 대안으로 Class/Classroom/Lesson/Booking을 비교해 **VOD(온라인)와 짝이 되는 Class(오프라인 수업)**로 결정. 정본 8곳 수정 → 빌드 30장, 1024px에서 한 줄 유지 CDP 실측. `CLAUDE.md`·`PRD` §3·`ARCHITECTURE` §6·`DEV_PLAN` Phase 3 갱신. 상세: `report/2026-09-11-gnb-service-labels.md`.
