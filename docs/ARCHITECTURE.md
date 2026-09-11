@@ -63,7 +63,7 @@ graph TD
 
   Index -- "새 탭 링크" --> OJ["oj.recode.ai.kr\nOnline Judge (wonoj)\n별도 프로젝트, 연동 완료"]
   Index -. "준비중 배지, 추후 링크 활성화" .-> LMS["lms.recode.ai.kr\nLMS 인강\n별도 프로젝트, 개발 중"]
-  Index -- "새 탭 링크" --> Business["business-1e563.web.app\n프로젝트 의뢰\n별도 프로젝트, 연동 완료(커스텀 도메인 연결 전)"]
+  Index -- "새 탭 링크" --> Business["business.recode.ai.kr\n프로젝트 의뢰\n별도 프로젝트, 연동 완료"]
   Index -- "새 탭 링크" --> Studio["mate.recode.ai.kr\n오프라인 수업 예약·수강권\n별도 프로젝트, 연동 완료"]
 ```
 
@@ -118,11 +118,11 @@ graph TD
 
 `recode.ai.kr` 하위 4개 서브도메인은 각각 **별도 프로젝트로 독립 개발**되며, 이 저장소는 그 링크만 연결한다(코드/배포를 이 저장소에서 관리하지 않음).
 
-| 서브도메인 | 용도 | 상태 (2026-08-26 기준) |
+| 서브도메인 | 용도 | 상태 (2026-09-11 기준) |
 | --- | --- | --- |
 | `oj.recode.ai.kr` (wonoj) | Online Judge | 개발 완료, `index.html` 헤더에 실제 링크 연결됨(새 탭) |
 | `lms.recode.ai.kr` | LMS 인강 | 별도 프로젝트로 개발 중, 헤더에 "준비중" 배지 + 비활성 링크 |
-| `business-1e563.web.app`(→ 추후 `business.recode.ai.kr`) | 프로젝트 의뢰 | 별도 프로젝트, 2026-08-26 헤더 링크 활성화(새 탭) — 아직 Firebase 기본 도메인, 커스텀 도메인 연결 전 |
+| `business.recode.ai.kr` (business) | 프로젝트 의뢰 | 별도 프로젝트, 2026-08-26 헤더 링크 활성화(새 탭, 당시 `business-1e563.web.app`), 2026-09-11 커스텀 도메인으로 교체 완료 |
 | `mate.recode.ai.kr` (studio) | 오프라인 수업 예약·수강권 관리 | 별도 프로젝트, 2026-08-25 헤더 링크 활성화(새 탭), 커스텀 도메인 연결 완료 |
 
 서브도메인이 실제로 오픈되면 이 저장소에서 할 일은 "준비중" 배지 제거 + 실제 링크로 교체뿐이다(`PRD.md` §8 미결 사항 참고).

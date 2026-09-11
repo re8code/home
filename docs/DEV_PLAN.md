@@ -65,7 +65,7 @@
 
 ### Phase 3 — 외부 연동 정리 (진행 중, 3/4 완료)
 - OJ/LMS/business/studio 4개 서브도메인은 각각 별도 프로젝트로 직접 제작 중 — 이 저장소는 오픈 시점에 맞춰 링크 활성화·"준비중" 배지 정리만 담당.
-- 완료: OJ(`oj.recode.ai.kr`, 2026-08-21) / studio(`mate.recode.ai.kr`, 2026-08-25 활성화 후 같은 날 커스텀 도메인으로 재교체) / business(`business-1e563.web.app`, 2026-08-26 — Firebase 기본 도메인이라 커스텀 도메인 `business.recode.ai.kr` 연결 시 30개 페이지 60곳 재교체 필요).
+- 완료: OJ(`oj.recode.ai.kr`, 2026-08-21) / studio(`mate.recode.ai.kr`, 2026-08-25 활성화 후 같은 날 커스텀 도메인으로 재교체) / business(2026-08-26 `business-1e563.web.app`로 활성화 → 2026-09-11 커스텀 도메인 `business.recode.ai.kr`로 교체, 정본 `partials/header.html`만 고쳐 30장 반영).
 - 남은 작업: LMS(`lms.recode.ai.kr`) 하나만 "준비중" 배지 + 비활성 링크 상태. 활성화 절차는 studio/business 때와 동일(배지·`aria-disabled`·`onclick` 제거 → `target="_blank" rel="noopener"` 외부 링크).
 
 ### Phase 4 — 푸터 리디자인 (방향 확정, 내용 미정 — 2026-08-31)

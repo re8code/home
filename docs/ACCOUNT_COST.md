@@ -16,7 +16,7 @@
 | Google Forms (1:1 상담) | Google `triwon20@gmail.com` — **이번 계정 이전 대상이 아니다**(§2) | 무료 | 사실상 없음 (Drive 용량 한도만) |
 | CDN 4종 (Tailwind·jsDelivr·unpkg·gstatic) | 계정 불필요 | 무료 | 없음 — 대신 **가용성 리스크** (§4) |
 | `oj.recode.ai.kr` / `mate.recode.ai.kr` | Google Cloud — `home`과 **다른 계정 체계**(§2-1) | **결제 계정 연결 필수** | 이 생태계에서 **과금 개연성 1순위** (§3) |
-| `business-1e563.web.app` | Google (Firebase) — §2-1 | 무료(Spark) | 호스팅 전송량/용량 한도 초과 시 |
+| `business.recode.ai.kr` (Firebase 프로젝트 `business-1e563`) | Google (Firebase) — §2-1 | 무료(Spark) | 호스팅 전송량/용량 한도 초과 시 |
 | `lms.recode.ai.kr` | 미정 | 없음 | 오픈 시 호스팅 방식에 따라 결정 |
 
 ## 2. 계정이 필요한 항목

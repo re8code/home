@@ -523,3 +523,7 @@
 - **v0.93** — **v0.92를 `main`에 병합·배포**(v0.90 → v0.92, fast-forward). 라이브(`recode.ai.kr`)에서 GNB 순서가 바뀐 것을 확인.
 - 1:1 상담 폼을 Firestore로 옮기는 안을 검토하고 **보류**로 결론냈다 — 얻는 것은 UX가 아니라 계정 정리인데, 대가가 셋(공개 쓰기의 **스팸으로 Spark 한도가 소진되면 낙서장까지 멈춘다** · 메일 알림이 사라지고 되살리려면 Blaze=과금 · 개인정보를 직접 떠안는다)이라 지금 규모에서는 Forms가 낫다. 대신 **Drive 소유권만 `won@re8code.com`으로 이전**하기로 했다(게시 URL이 폼 ID 기반이라 유지된다). 절차·막힐 수 있는 지점: `report/2026-09-10-forms-ownership-plan.md`.
 - 실측으로 드러난 것 — **폼 URL이 정본 밖 27곳(각 페이지 하단 CTA)에 박혀 있다.** 문구가 페이지마다 달라 정본화되지 않은 자리다. `CLAUDE.md` partials 절에 남겼다.
+
+## 2026-09-11
+- 장비 이동 후 `./scripts/check-device.sh` 점검 — 원격보다 2커밋 뒤처진 것을 pull(v0.93)하고, `won@re8code.com`으로 `gcloud auth login` 후 콘솔 대조(게시된 규칙·Auth 사용자) ✅ 확인. 실패 0건, 프로토콜 변경 없음(기록하지 않음).
+- **v0.94** — GNB `business` 링크를 `https://business-1e563.web.app` → **`https://business.recode.ai.kr`**로 교체(사용자 알림 — 커스텀 도메인 연결 완료, 200 응답 확인). 정본 `partials/header.html` 2곳만 고치고 빌드해 30장 반영, 옛 도메인 잔존 0건. `CLAUDE.md`·`PRD`·`ARCHITECTURE` §6·`DEV_PLAN` Phase 3·`ACCOUNT_COST` §1의 "커스텀 도메인 연결 전" 서술을 정리. 상세: `report/2026-09-11-business-custom-domain.md`.
