@@ -22,4 +22,4 @@
 
 ## 남은 것
 
-- v0.94(business 커스텀 도메인) 배포가 Pages "Upload artifact" 실패로 라이브 미반영 — 이번 v0.95와 함께 병합·재배포 시 확인 필요. 재실행에는 `gh auth login` 또는 브라우저 Re-run이 필요하다.
+- (해소) v0.94·v0.95를 함께 `main`에 병합해 재배포 — Pages 빌드 성공, 라이브 반영 확인(v0.96 기록). 앞선 "Upload artifact" 실패는 일시 장애였다.
