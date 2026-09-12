@@ -530,3 +530,10 @@
 - v0.94를 `main`에 fast-forward 병합·푸시했으나 **GitHub Pages 빌드가 "Upload artifact" 단계에서 실패**(Jekyll 빌드는 성공, 커밋은 HTML/문서만 변경 — GitHub 쪽 일시 장애로 판단). 이 장비에 `gh` 로그인이 없어 재실행은 사용자 몫으로 넘김.
 - **v0.95** — GNB 서브 서비스 4개 라벨을 프로젝트명에서 **서비스 설명형**으로 교체(사용자 제안·논의): `wonoj`→Online Judge · `studio`→Class · `LMS`→VOD(준비중 유지) · `business`→Business. Studio 대안으로 Class/Classroom/Lesson/Booking을 비교해 **VOD(온라인)와 짝이 되는 Class(오프라인 수업)**로 결정. 정본 8곳 수정 → 빌드 30장, 1024px에서 한 줄 유지 CDP 실측. `CLAUDE.md`·`PRD` §3·`ARCHITECTURE` §6·`DEV_PLAN` Phase 3 갱신. 상세: `report/2026-09-11-gnb-service-labels.md`.
 - **v0.96** — **v0.94·v0.95를 `main`에 fast-forward 병합·배포**(v0.92 → v0.95). 이번 Pages 빌드는 성공(`6eae01e`) — 앞선 v0.94 단독 빌드의 "Upload artifact" 실패는 재현되지 않아 GitHub 쪽 일시 장애로 확정. 라이브(`/`·`src/about.html`·`src/algo-bst.html`)에서 새 라벨 8곳(Online Judge·Class·VOD·Business ×2)과 `business.recode.ai.kr` 링크 확인, 옛 라벨·옛 도메인 0건. 이 장비의 `gh`는 `hosts.yml`이 비어 있어 미로그인 상태였고(사용자가 로그인했다고 했으나 브라우저 인증이 완료되지 않은 듯), 빌드 확인은 공개 Actions API(`/repos/.../actions/runs`)로 대신했다 — **`gh` 없이도 빌드 상태·잡별 실패 단계까지는 비인증 API로 볼 수 있다**(로그 다운로드·재실행만 인증 필요).
+
+## 2026-09-12
+- 새 장비에 클론 — `./scripts/check-device.sh` 실패 0건, `dev` 체크아웃. 경고 2건은 둘 다 저장소 밖 문제였다: `gcloud` 미로그인으로 콘솔 대조 미수행(§7 함정 11), 경로 키 잔재는 이 저장소가 아니라 사라진 `dam/claudeWork` 것(history 319줄은 복구 불가라 §7 함정 8대로 두었다). **장비 이동만으로 생긴 커밋 없음.**
+- **v0.97** — `.project-meta.json` 재생성(다섯 번째). 지시서가 **v0.26**으로 올라와 있었고, 이번 실행의 새로운 점은 결과가 아니라 절차다 — v0.26이 신설한 **0단계 CLI 사전 점검을 처음 수행**했다(이전 판은 이 단계가 "작업을 막지 않는다"였다). 클론 직후라 `gh`·`gcloud`·`firebase` 전부 미로그인이어서 규칙대로 **보고하고 턴을 끝냈고**, 사용자의 "이대로 진행"을 받은 뒤 1~3단계를 수행했다. 결과는 지난 네 번과 같은 stack 7 · services 8, 자가 검증 위반 0건, 외부 호스트 전수 조사에서 문서에 없는 서비스 0건.
+- 그 과정에서 구분이 하나 필요했다 — **Firebase·Forms는 CLI로 대조하지 못했지만 `owner_email`을 채웠다.** 지시서의 찾는 순서가 ①CLI ②레포 문서 ③사람이고 이 둘은 문서(ADR D4 정리 결과)에 근거가 있어 2순위 출처를 쓴 것이다. 닷홈·GitHub은 문서에도 답이 없어 비웠다(**다섯 번째 반복** — 닷홈은 CLI 자체가 없어 사람만 아는 값이다).
+- `CHANGE_DEVICE.md` §5 매니페스트 행에 **순서 주의**를 추가 — 지시서 0단계가 `gh`·`gcloud` 로그인을 먼저 요구하고 미로그인이면 멈추므로, 준비물을 갖춘 뒤 돌려야 왕복이 준다. 이번에 실제로 겪은 순서 문제다.
+- `tasks/매니페스트-생성-지시서.md` 사본이 커밋본보다 새 판(v0.26)이었던 것을 커밋에 포함해 정본과 맞췄다. 상세: `report/2026-09-12-manifest-regen.md`.
