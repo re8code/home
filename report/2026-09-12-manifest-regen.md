@@ -59,6 +59,19 @@ v0.26이 0단계를 **작업을 멈추는 단계**로 바꿨다(그 전까지 "�
 - **평문 자격증명** — `assets/js/admin-auth.js`의 `DEV_FALLBACK_PASSWORD`와 Firebase 웹 `apiKey` 둘 다 여전히 커밋돼 있다. 성격과 판단은 `report/2026-09-03-project-manifest.md` §7에 이미 정리돼 있고 변화 없다(매니페스트에는 넣지 않았다).
 - **지시서 사본이 커밋본보다 새 판이었다** — 작업 트리의 파일은 정본과 동일한 v0.26인데 커밋된 것은 그 이전 판이었다. 이번 커밋에 포함시켜 저장소의 사본을 정본에 맞췄다.
 
+## 6. 추가 — 세션 정리 직전 CLI 로그인이 생겨 두 건을 대조했다 (같은 날)
+
+작업을 마친 뒤 사용자가 `gcloud`·`gh`·`firebase`에 로그인했고, 세션 정리로 다시 내리기 전에 §4의 질문 두 건을 조회했다. **로그아웃하면 다시 못 보는 값이라 정리보다 조회를 먼저 했다.**
+
+| 항목 | 결과 |
+| --- | --- |
+| Firebase `owner_email` | **대조 완료** — `roles/owner`가 `biz@re8code.com`·`won@re8code.com` 둘로 문서(ADR D4)와 정확히 일치. `parent`도 `organization/438985008538`로 확인(ADR D5). 문서 근거 → **CLI 확인으로 승격** |
+| GitHub 로그인 이메일 | **여전히 미확인** — 저장소 소유자(`re8code`)와 로그인 계정(`re8code`)이 같다는 것까지는 확인했으나, 계정 이메일이 비공개이고 토큰에 `user` 스코프가 없어 `gh api user/emails`가 404다. `gh auth refresh -h github.com -s user` 후 재조회하면 채워진다 |
+
+`check-device.sh`의 **콘솔 대조 두 항목도 이때 통과**시켰다(게시된 규칙 = `firestore.rules`, Auth 사용자 1명 = `ADMIN_EMAILS`). 점검 결과는 프로토콜대로 문서에 적지 않는다.
+
+**닷홈은 그대로 남아 있다** — CLI가 없어 로그인으로 풀리는 종류가 아니다.
+
 ## 남은 이슈
 
 - 닷홈 계정·갱신일, GitHub 로그인 이메일 — §4.
