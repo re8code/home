@@ -70,7 +70,7 @@
 </head>
 <body class="text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
 
-  <!-- @partial:header -->
+  <!-- @partial:header-gate -->
   <header class="fixed top-0 inset-x-0 z-[60] bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
     <div class="mx-auto max-w-[1440px] px-6 lg:px-10 h-16 flex items-center justify-between gap-8">
       <div class="flex items-center gap-6">
@@ -78,24 +78,10 @@
           <img src="../assets/image/logo.png" alt="Recode Coding" class="h-8 w-8" />
           <span class="hidden sm:inline">Recode Coding</span>
         </a>
-        <a href="about.html" class="hidden lg:inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors">
-          회사 소개
-        </a>
       </div>
       <div class="hidden lg:flex items-center gap-8">
         <nav class="flex items-center gap-6 text-sm text-slate-400">
           <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
-          <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">Online Judge</a>
-          <a href="https://mate.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">
-            Class
-          </a>
-          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
-            VOD
-            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
-          </a>
-          <a href="https://business.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">
-            Business
-          </a>
         </nav>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-400 transition-colors">
           1:1 상담 신청
@@ -119,24 +105,12 @@
     </div>
     <div id="mobile-menu" class="hidden lg:hidden border-t border-white/10 bg-[#0c0c0f]/95 backdrop-blur">
       <nav class="flex flex-col px-6 py-4 gap-4 text-sm text-slate-300">
-        <a href="about.html" class="hover:text-white transition-colors">회사 소개</a>
         <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
-        <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">Online Judge</a>
-        <a href="https://mate.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">
-          Class
-        </a>
-        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
-          VOD
-          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
-        </a>
-        <a href="https://business.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">
-          Business
-        </a>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-brand-500 px-4 py-2 font-semibold text-white hover:bg-brand-400 transition-colors">1:1 상담 신청</a>
       </nav>
     </div>
   </header>
-  <!-- /@partial:header -->
+  <!-- /@partial:header-gate -->
 
   <main class="pt-16">
 
