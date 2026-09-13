@@ -1,5 +1,5 @@
 <!-- 대문(Phase 5) 전용 GNB 정본 — 지금은 src/mockup.html 만 참조한다. index.html 로 승격되면 header.html 을 대체한다.
-     header.html 에서 회사 소개·Online Judge·Class·VOD·Business 를 뺀 것 — 로고 · 원장님의 낙서 · 1:1 상담 신청만 남는다(2026-09-13 사용자 지시).
+     header.html 에서 Online Judge·Class·VOD·Business 를 뺀 것 — 로고 · 회사 소개 · 원장님의 낙서 · 1:1 상담 신청만 남는다(2026-09-13 사용자 지시, 회사 소개는 유지 확정).
      구조(fixed · lg: 브레이크포인트 · 햄버거)는 header.html 과 동일하게 유지해 base.css critical CSS 와 check-device.sh 의 공통 요소 검사를 그대로 통과한다. -->
   <header class="fixed top-0 inset-x-0 z-[60] bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
     <div class="mx-auto max-w-[1440px] px-6 lg:px-10 h-16 flex items-center justify-between gap-8">
@@ -7,6 +7,9 @@
         <a href="{{HOME_HREF}}" class="flex items-center gap-2 font-mono font-semibold tracking-tight text-white">
           <img src="{{ASSET}}image/logo.png" alt="Recode Coding" class="h-8 w-8" />
           <span class="hidden sm:inline">Recode Coding</span>
+        </a>
+        <a href="{{SRC}}about.html" class="hidden lg:inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors">
+          회사 소개
         </a>
       </div>
       <div class="hidden lg:flex items-center gap-8">
@@ -35,6 +38,7 @@
     </div>
     <div id="mobile-menu" class="hidden lg:hidden border-t border-white/10 bg-[#0c0c0f]/95 backdrop-blur">
       <nav class="flex flex-col px-6 py-4 gap-4 text-sm text-slate-300">
+        <a href="{{SRC}}about.html" class="hover:text-white transition-colors">회사 소개</a>
         <a href="{{SRC}}graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-brand-500 px-4 py-2 font-semibold text-white hover:bg-brand-400 transition-colors">1:1 상담 신청</a>
       </nav>

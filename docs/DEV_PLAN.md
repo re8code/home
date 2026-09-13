@@ -85,7 +85,7 @@
   1. ✅ **문서 기록** (이 항목, v0.99)
   2. 🔄 **`src/mockup.html` 시안** — **1차 제작 완료(2026-09-13, v0.100)**: 7섹션(히어로는 `학생 문 → [RECODE AGENCY 허브] → 기업 문` 3열로 "우리가 중간 허브"를 구조로 표현, 두 문 모두 실제 링크 — `student.recode.ai.kr`(가칭, 미개통)·`business.recode.ai.kr`). 1440px claude-in-chrome·390px CDP 검증(오버플로우 0). GNB·푸터는 정본 마커 그대로(대문용 GNB는 5-5에서). 다음은 사용자 검토 → 카피·구성 조정. 원래 계획: 대문 골격(`PRD.md` §9-4) 8섹션을 `index.html` 무손상으로 제작, 로컬 서버 + claude-in-chrome으로 함께 다듬는다. 1차 리뉴얼 때 `mockup.html`에서 반복 검토 후 승격·삭제한 방식과 같다(`PRD.md` §1). **카피는 `PRD.md` §9-5의 제약 안에서만.** 시안 단계에서는 CTA 링크를 `student` 자리에 `#`로 두고, 도메인 확정 후 교체.
   3. ☐ **(다른 저장소) `student` 프로젝트 착수** — 이 저장소의 정본 `partials/`·`base.css`·`tailwind-config.js` 패턴을 복제해 공개 층부터. **이 저장소에서는 하지 않는다.** 이 단계가 끝나야 4로 간다.
-  4. ☐ **이관** — 24장 + `about.html` 레이어 + 낙서장(소속 확정 시) → `student`. 이 저장소에서는 옮겨간 파일 삭제, 내부 링크 정리, `check-device.sh`의 "30장" 계수·카드 연결 검사 갱신.
+  4. ☐ **이관** — 24장 + `about.html` 레이어 + 낙서장(소속 확정 시) → `student`. 이 저장소에서는 옮겨간 파일 삭제, 내부 링크 정리, `check-device.sh`의 "30장" 계수·카드 연결 검사 갱신. **옮겨간 24장 자리에는 `student` 대응 URL로 보내는 `<meta http-equiv="refresh">` 리다이렉트 스텁을 남긴다**(GitHub Pages는 서버 리다이렉트가 없다) — 카톡 공유·즐겨찾기로 남아 있는 외부 유입 링크의 404 방지. 대문 GNB(`header-gate.html`)에는 OJ·Class 링크가 없으므로 **이 단계 전에 `home`을 깎으면 그 두 서비스로 가는 경로가 사이트에서 사라진다** — 순서를 지키는 실제 이유.
   5. ☐ **`mockup.html` → `index.html` 승격** + GNB 재편(두 입구 중심 — 지금의 서비스 링크 5개는 `student`가 가져간다) + `CLAUDE.md` 페이지 구조 절 축소(대부분이 `student` 쪽 서술이 된다).
   6. ☐ **`main` 병합·배포** — 이 시점에 `ARCHITECTURE.md` §2~§6·`ACCOUNT_COST.md`(새 서브도메인)·`CHANGE_DEVICE.md`(페이지 수 등 스크립트 기준값) 갱신.
 - **`business` 저장소에 남길 것**: D30·`Philosophy.md` §6·`tasks/2026-09-11-학생축-논의.md`에 "D6로 개정됨" 메모 — 여기서 못 고치므로 그쪽 세션에서. 문구는 `report/2026-09-13-landing-restructure-discussion.md` §6.
