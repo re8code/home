@@ -9,7 +9,7 @@
 - [x] `docs/DEV_PLAN.md` Phase 5
 - [x] `docs/DEVLOG.md` · `CLAUDE.md` 개요 · `tasks/Philosophy.md` 보완
 - [x] `business` 저장소용 개정 메모 문구 준비(§6)
-- [ ] `src/mockup.html` 시안 (다음 작업, Phase 5-2)
+- [x] `src/mockup.html` 시안 1차 + 사용자 검토(v0.100~v0.105) — 문구 다듬기는 `student` 완료 후
 
 ## 1. 무엇을
 `recode.ai.kr`(이 저장소)의 역할을 **학습 콘텐츠 허브 → 학생·기업을 잇는 대문 1장**으로 바꾸기로 결정했다. 학습 콘텐츠 24장·about 레이어·OJ/Class/VOD 링크는 `student.recode.ai.kr`(가칭, 별도 프로젝트)로 나간다. 오늘은 **결정과 기록만** — `index.html`을 비롯한 코드는 손대지 않았다.
@@ -51,3 +51,11 @@
 - `student` 도메인 확정(가칭) · 낙서장 소속 · 대문 GNB 항목 · 실존 랜서 사례(익명) 소재.
 - 이 장비 `gcloud` 미로그인 — 콘솔 대조(게시된 규칙·Auth 사용자) 미수행. Firebase 작업 전 Owner 계정 로그인 필요.
 - Phase 4(살아 있는 푸터)의 논지(시각화 14종)가 `student`로 따라가므로 대문 푸터는 Phase 5-5에서 새로 정한다.
+
+## 8. 목업 1차 (v0.100~v0.105, 같은 날)
+- `src/mockup.html` 7섹션 제작(`PRD` §9-4). 히어로는 사용자 지시("우리가 중간 허브임을 강력히")로 `학생 문 → [RECODE AGENCY 허브] → 기업 문` 3열. 두 문은 `student.recode.ai.kr`(가칭)·`business.recode.ai.kr` 실제 링크.
+- GNB: 사용자 지시로 Online Judge·Class·VOD·Business 제거, **회사 소개는 유지** → 대문용 정본 `partials/header-gate.html`(로고·회사 소개·원장님의 낙서·1:1 상담 신청). 30장의 `header.html`은 불변.
+- 히어로 타이틀 줄간격 1.3 — Tailwind 반응형 `text-*`의 `line-height:1`이 `leading-*`을 덮는 문제를 발견해 `sm:`/`lg:` 변형 병기로 해결.
+- 리다이렉트 스텁: 제안 → 사용자가 불필요로 결정(홍보 전). 승격 순서(`student` 먼저)도 "student 완성 후 홍보"라 실질 위험 없음.
+- **종료**: 문구 조정은 `student` 완료 후. 다음 작업은 5-3(다른 저장소).
+
