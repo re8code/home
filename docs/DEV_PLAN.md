@@ -83,7 +83,7 @@
 - **결정**: `recode.ai.kr`을 학습 콘텐츠 허브에서 **학생·기업을 잇는 대문 1장**으로 바꾼다. 학습 콘텐츠 24장·about 레이어·OJ/Class/VOD 링크는 `student.recode.ai.kr`(가칭, **별도 저장소·별도 프로젝트**)로 나간다. 무엇을 왜 — `PRD.md` §9, 근거와 트레이드오프 — `ARCHITECTURE.md` ADR **D6**(형제 저장소 `../business` D30의 개정). 논의 경위 — `report/2026-09-13-landing-restructure-discussion.md`.
 - **순서가 곧 계획이다** — `home`을 먼저 깎으면 그 사이 `recode.ai.kr`이 빈 집이 되므로:
   1. ✅ **문서 기록** (이 항목, v0.99)
-  2. ☐ **`src/mockup.html` 시안** — 대문 골격(`PRD.md` §9-4) 8섹션을 `index.html` 무손상으로 제작, 로컬 서버 + claude-in-chrome으로 함께 다듬는다. 1차 리뉴얼 때 `mockup.html`에서 반복 검토 후 승격·삭제한 방식과 같다(`PRD.md` §1). **카피는 `PRD.md` §9-5의 제약 안에서만.** 시안 단계에서는 CTA 링크를 `student` 자리에 `#`로 두고, 도메인 확정 후 교체.
+  2. 🔄 **`src/mockup.html` 시안** — **1차 제작 완료(2026-09-13, v0.100)**: 7섹션(히어로는 `학생 문 → [RECODE AGENCY 허브] → 기업 문` 3열로 "우리가 중간 허브"를 구조로 표현, 두 문 모두 실제 링크 — `student.recode.ai.kr`(가칭, 미개통)·`business.recode.ai.kr`). 1440px claude-in-chrome·390px CDP 검증(오버플로우 0). GNB·푸터는 정본 마커 그대로(대문용 GNB는 5-5에서). 다음은 사용자 검토 → 카피·구성 조정. 원래 계획: 대문 골격(`PRD.md` §9-4) 8섹션을 `index.html` 무손상으로 제작, 로컬 서버 + claude-in-chrome으로 함께 다듬는다. 1차 리뉴얼 때 `mockup.html`에서 반복 검토 후 승격·삭제한 방식과 같다(`PRD.md` §1). **카피는 `PRD.md` §9-5의 제약 안에서만.** 시안 단계에서는 CTA 링크를 `student` 자리에 `#`로 두고, 도메인 확정 후 교체.
   3. ☐ **(다른 저장소) `student` 프로젝트 착수** — 이 저장소의 정본 `partials/`·`base.css`·`tailwind-config.js` 패턴을 복제해 공개 층부터. **이 저장소에서는 하지 않는다.** 이 단계가 끝나야 4로 간다.
   4. ☐ **이관** — 24장 + `about.html` 레이어 + 낙서장(소속 확정 시) → `student`. 이 저장소에서는 옮겨간 파일 삭제, 내부 링크 정리, `check-device.sh`의 "30장" 계수·카드 연결 검사 갱신.
   5. ☐ **`mockup.html` → `index.html` 승격** + GNB 재편(두 입구 중심 — 지금의 서비스 링크 5개는 `student`가 가져간다) + `CLAUDE.md` 페이지 구조 절 축소(대부분이 `student` 쪽 서술이 된다).

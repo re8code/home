@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Recode Coding — AI 시대, 세상으로 나가는 가장 안전한 관문</title>
+<meta name="description" content="검증받은 학생, 회사 내부의 베테랑, AI Agent — 셋을 한 팀으로 묶어 기업이 원하는 품질을 보증합니다. 학생은 여기서 개발자가 되고, 기업은 여기서 개발팀을 얻습니다." />
+
+<!-- @partial:head-common -->
+<!-- Open Graph: 카카오톡 등 메신저/SNS에 링크 공유 시 제목·설명·썸네일 미리보기 표시 -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Recode Coding" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:url" content="https://recode.ai.kr/src/mockup.html" />
+<meta property="og:title" content="Recode Coding — AI 시대, 세상으로 나가는 가장 안전한 관문" />
+<meta property="og:description" content="검증받은 학생, 회사 내부의 베테랑, AI Agent — 셋을 한 팀으로 묶어 기업이 원하는 품질을 보증합니다. 학생은 여기서 개발자가 되고, 기업은 여기서 개발팀을 얻습니다." />
+<meta property="og:image" content="https://recode.ai.kr/assets/image/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<!-- favicon: Chrome은 파비콘을 일반 HTTP 캐시와 별개로 보관해 새로고침으로 갱신되지 않으므로, 교체 시 ?v=N 을 올릴 것 -->
+<link rel="icon" href="../assets/image/favicon.ico?v=1" sizes="any" />
+<link rel="apple-touch-icon" href="../assets/image/apple-touch-icon.png?v=1" />
+
+<link rel="stylesheet" href="/assets/css/base.css" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="/assets/js/tailwind-config.js"></script>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link
+  rel="stylesheet"
+  as="style"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
+/>
+<!-- /@partial:head-common -->
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-feature-settings: "tnum"; background-color: #FBF7EE; }
+
+  /* 대문 목업(Phase 5-2) 전용 — 승격 시 index.html 인라인 <style>로 옮긴다 */
+  .door {
+    transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+  }
+  .door:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 30px 60px -30px rgba(15, 23, 42, 0.5);
+  }
+  .rank-step { position: relative; }
+  .rank-step + .rank-step::before {
+    content: ""; position: absolute; left: -1.25rem; top: 50%; width: 1.25rem; height: 2px;
+    background: rgba(15, 23, 42, .18);
+  }
+  @media (max-width: 1023px) {
+    .rank-step + .rank-step::before { left: 50%; top: -1.25rem; width: 2px; height: 1.25rem; transform: translateX(-50%); }
+  }
+  .gate-pulse { animation: gatePulse 2.4s ease-in-out infinite; }
+  @keyframes gatePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(24,180,118,.45); }
+    50% { box-shadow: 0 0 0 14px rgba(24,180,118,0); }
+  }
+  .formula-plus { font-variation-settings: "wght" 300; }
+  .net-line { stroke-dasharray: 6 6; animation: netFlow 3s linear infinite; }
+  @keyframes netFlow { to { stroke-dashoffset: -24; } }
+  @media (prefers-reduced-motion: reduce) {
+    .gate-pulse, .net-line { animation: none; }
+  }
+</style>
+</head>
+<body class="text-slate-800 antialiased selection:bg-brand-400/30 selection:text-slate-900">
+
+  <!-- @partial:header -->
+  <header class="fixed top-0 inset-x-0 z-[60] bg-[#0c0c0f]/95 backdrop-blur border-b border-white/10">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 h-16 flex items-center justify-between gap-8">
+      <div class="flex items-center gap-6">
+        <a href="../index.html" class="flex items-center gap-2 font-mono font-semibold tracking-tight text-white">
+          <img src="../assets/image/logo.png" alt="Recode Coding" class="h-8 w-8" />
+          <span class="hidden sm:inline">Recode Coding</span>
+        </a>
+        <a href="about.html" class="hidden lg:inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors">
+          회사 소개
+        </a>
+      </div>
+      <div class="hidden lg:flex items-center gap-8">
+        <nav class="flex items-center gap-6 text-sm text-slate-400">
+          <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+          <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">Online Judge</a>
+          <a href="https://mate.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">
+            Class
+          </a>
+          <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+            VOD
+            <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+          </a>
+          <a href="https://business.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">
+            Business
+          </a>
+        </nav>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-400 transition-colors">
+          1:1 상담 신청
+        </a>
+      </div>
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
+        aria-label="메뉴 열기"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg data-icon="open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-5 w-5">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg data-icon="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="hidden h-5 w-5">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden lg:hidden border-t border-white/10 bg-[#0c0c0f]/95 backdrop-blur">
+      <nav class="flex flex-col px-6 py-4 gap-4 text-sm text-slate-300">
+        <a href="about.html" class="hover:text-white transition-colors">회사 소개</a>
+        <a href="graffiti.html" class="hover:text-white transition-colors">원장님의 낙서</a>
+        <a href="https://oj.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">Online Judge</a>
+        <a href="https://mate.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">
+          Class
+        </a>
+        <a href="#" onclick="event.preventDefault()" aria-disabled="true" class="inline-flex items-center gap-1.5 text-slate-500 cursor-not-allowed">
+          VOD
+          <span class="rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">준비중</span>
+        </a>
+        <a href="https://business.recode.ai.kr" target="_blank" rel="noopener" class="hover:text-white transition-colors">
+          Business
+        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHQsHGay34Q2I3a9NG-6lSMR3lkIcQ6DK1Uuhg905Eo2RqMg/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-brand-500 px-4 py-2 font-semibold text-white hover:bg-brand-400 transition-colors">1:1 상담 신청</a>
+      </nav>
+    </div>
+  </header>
+  <!-- /@partial:header -->
+
+  <main class="pt-16">
+
+    <!-- ============================================================
+         1. 히어로 — 한 줄 + 두 입구
+         ============================================================ -->
+    <section class="mx-auto max-w-[1440px] px-6 lg:px-10 pt-8">
+      <div class="relative rounded-3xl overflow-hidden bg-[#0c0c0f] border border-white/10">
+        <div class="absolute -top-32 -left-32 h-[520px] w-[520px] rounded-full bg-brand-500/25 blur-[130px]"></div>
+        <div class="absolute -bottom-32 -right-32 h-[520px] w-[520px] rounded-full bg-brand-300/15 blur-[130px]"></div>
+
+        <div class="relative px-6 sm:px-12 lg:px-20 pt-16 sm:pt-24 pb-12 sm:pb-16">
+          <p class="font-mono text-xs sm:text-sm tracking-[0.3em] text-brand-300/90 text-center">RECODE AGENCY</p>
+          <h1 class="mt-5 text-center text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.15] break-keep">
+            AI 시대, 세상으로 나가는<br class="hidden sm:block" />
+            <span class="text-brand-300">가장 안전한 관문.</span>
+          </h1>
+          <p class="mt-6 mx-auto max-w-2xl text-center text-base sm:text-lg text-slate-300 leading-relaxed break-keep">
+            오래 지켜본 사람만, 베테랑과 AI Agent를 붙여 내보냅니다.<br class="hidden sm:block" />
+            학생은 여기서 개발자가 되고, 기업은 여기서 개발팀을 얻습니다.
+          </p>
+
+          <!-- 두 입구 사이에 우리 — 허브 -->
+          <div class="mt-12 sm:mt-16 grid lg:grid-cols-[1fr_auto_1fr] gap-4 lg:gap-0 items-stretch">
+
+            <!-- 학생 문 -->
+            <a href="https://student.recode.ai.kr" class="door group relative rounded-2xl lg:rounded-r-none border border-brand-400/40 bg-brand-500/10 p-7 sm:p-9 hover:border-brand-300 flex flex-col">
+              <p class="font-mono text-[11px] tracking-[0.25em] text-brand-300">FOR STUDENTS</p>
+              <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white break-keep">성장하려는 학생</h2>
+              <p class="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed break-keep">
+                배우는 데서 끝나지 않습니다. 학생 → 훈련생 → 랜서 → 에이전트, 실전까지 이어지는 사다리를 보세요.
+              </p>
+              <span class="mt-auto pt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-300 group-hover:gap-3 transition-all">
+                이 길을 보기
+                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
+              </span>
+            </a>
+
+            <!-- 허브 -->
+            <div class="relative flex flex-col items-center justify-center px-6 py-8 lg:px-10 lg:py-6 rounded-2xl lg:rounded-none border border-brand-400/60 bg-brand-500 text-white shadow-glow lg:min-w-[300px]">
+              <!-- 좌우 화살표: 양쪽 문에서 허브로 -->
+              <span class="hidden lg:flex absolute -left-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-brand-300 text-brand-900 items-center justify-center">
+                <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
+              </span>
+              <span class="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-brand-300 text-brand-900 items-center justify-center">
+                <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
+              </span>
+              <img src="../assets/image/logo.png" alt="" class="h-14 w-14 rounded-full ring-4 ring-white/30" />
+              <p class="mt-4 font-mono text-[11px] tracking-[0.3em] text-brand-100">RECODE AGENCY</p>
+              <p class="mt-2 text-xl sm:text-2xl font-bold text-center leading-tight break-keep">양쪽을 잇는<br />유일한 길목</p>
+              <ul class="mt-5 space-y-1.5 text-xs sm:text-sm text-brand-50 text-center font-medium">
+                <li>검증받은 학생</li>
+                <li class="text-brand-200">+ 회사 내부의 베테랑</li>
+                <li class="text-brand-200">+ AI Agent</li>
+                <li class="pt-1.5 mt-1.5 border-t border-white/25 text-white">= 보증된 품질</li>
+              </ul>
+            </div>
+
+            <!-- 기업 문 -->
+            <a href="https://business.recode.ai.kr" target="_blank" rel="noopener" class="door group relative rounded-2xl lg:rounded-l-none border border-white/15 bg-white/5 p-7 sm:p-9 hover:border-white/40 flex flex-col">
+              <p class="font-mono text-[11px] tracking-[0.25em] text-slate-400">FOR BUSINESS</p>
+              <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white break-keep">개발팀이 필요한 기업</h2>
+              <p class="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed break-keep">
+                채용 대신 구독. 검수를 통과한 결과물만 받고, 고용의 리스크는 우리가 집니다.
+              </p>
+              <span class="mt-auto pt-6 inline-flex items-center gap-2 text-sm font-semibold text-white group-hover:gap-3 transition-all">
+                개발팀 살펴보기
+                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         2. 관문 섹션 (학생) — 사라진 사다리, 다시 만든 사다리
+         ============================================================ -->
+    <section class="mx-auto max-w-[1440px] px-6 lg:px-10 py-20 sm:py-28">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+        <div class="lg:col-span-5">
+          <p class="font-mono text-xs tracking-[0.25em] text-brand-600">THE MISSING LADDER</p>
+          <h2 class="mt-4 text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight leading-tight break-keep">
+            AI가 없앤 것은 코딩이 아니라<br class="hidden sm:block" />
+            <span class="text-brand-600">주니어의 사다리</span>입니다.
+          </h2>
+          <p class="mt-6 text-base sm:text-lg text-slate-600 leading-relaxed break-keep">
+            예전엔 주니어가 단순한 일을 하며 배웠습니다. 그 일을 이제 AI가 합니다.
+            그래서 기업은 주니어를 뽑지 않고, 학생은 배울 자리를 잃었습니다.
+            배워도 실전에 못 들어가고, "투입해도 된다"고 아무도 보증해 주지 않습니다.
+          </p>
+        </div>
+        <div class="lg:col-span-7">
+          <div class="rounded-2xl border border-slate-200 bg-white p-7 sm:p-10">
+            <p class="font-mono text-xs tracking-[0.25em] text-slate-500">SO WE BUILT ONE</p>
+            <h3 class="mt-3 text-2xl sm:text-3xl font-bold text-slate-900 break-keep">그래서 사다리를 다시 만들었습니다.</h3>
+            <ul class="mt-8 space-y-5">
+              <li class="flex gap-4">
+                <span class="mt-1 h-7 w-7 shrink-0 rounded-full bg-brand-100 text-brand-700 font-mono text-xs font-bold flex items-center justify-center">1</span>
+                <div>
+                  <p class="font-semibold text-slate-900">관문이 있습니다.</p>
+                  <p class="mt-1 text-sm sm:text-base text-slate-600 leading-relaxed break-keep">실전에 나가는 기준은 학생용으로 낮춘 기준이 아니라, 기업에 납품할 때 쓰는 자와 같습니다. 기준은 공개돼 있고, 우리는 그것을 낮추지 않습니다.</p>
+                </div>
+              </li>
+              <li class="flex gap-4">
+                <span class="mt-1 h-7 w-7 shrink-0 rounded-full bg-brand-100 text-brand-700 font-mono text-xs font-bold flex items-center justify-center">2</span>
+                <div>
+                  <p class="font-semibold text-slate-900">오래 지켜봅니다.</p>
+                  <p class="mt-1 text-sm sm:text-base text-slate-600 leading-relaxed break-keep">학생에서 훈련생까지, 전 과정을 우리가 옆에서 봅니다. 이력서 한 장이 아니라 긴 시간의 관찰 기록이 당신의 평가 자산이 됩니다.</p>
+                </div>
+              </li>
+              <li class="flex gap-4">
+                <span class="mt-1 h-7 w-7 shrink-0 rounded-full bg-brand-100 text-brand-700 font-mono text-xs font-bold flex items-center justify-center">3</span>
+                <div>
+                  <p class="font-semibold text-slate-900">통과하면, 세상이 달라집니다.</p>
+                  <p class="mt-1 text-sm sm:text-base text-slate-600 leading-relaxed break-keep">관문을 통과한 순간부터 수업료를 내는 쪽이 아니라 수익을 나누는 쪽이 됩니다. 계약서를 쓰고, 실전에 들어갑니다.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         3. 파이프라인 — 학생 → 훈련생 → │관문│ → 랜서 → 에이전트
+         ============================================================ -->
+    <section class="mx-auto max-w-[1440px] px-6 lg:px-10 py-20 sm:py-28 border-t border-slate-200">
+      <div class="text-center">
+        <p class="font-mono text-xs tracking-[0.25em] text-brand-600">THE LADDER</p>
+        <h2 class="mt-4 text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight break-keep">
+          네 단계, 하나의 관문.
+        </h2>
+        <p class="mt-4 mx-auto max-w-2xl text-base sm:text-lg text-slate-600 leading-relaxed break-keep">
+          훈련생까지는 배우는 사람입니다. 관문을 지나면 일하는 사람입니다.
+          돈의 방향이 여기서 뒤집힙니다.
+        </p>
+      </div>
+
+      <div class="mt-14 grid lg:grid-cols-[1fr_1fr_auto_1fr_1fr] gap-5 lg:gap-5 items-stretch">
+        <!-- 학생 -->
+        <div class="rank-step rounded-2xl border border-slate-200 bg-white p-6">
+          <p class="font-mono text-[11px] tracking-[0.2em] text-slate-400">01</p>
+          <h3 class="mt-2 text-xl font-bold text-slate-900">학생</h3>
+          <p class="mt-2 text-sm text-slate-600 leading-relaxed break-keep">언어·자료구조·알고리즘. 결과를 눈으로 확인하는 도구부터 쥡니다.</p>
+          <p class="mt-4 inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-mono text-slate-600">수업료</p>
+        </div>
+        <!-- 훈련생 -->
+        <div class="rank-step rounded-2xl border border-slate-200 bg-white p-6">
+          <p class="font-mono text-[11px] tracking-[0.2em] text-slate-400">02</p>
+          <h3 class="mt-2 text-xl font-bold text-slate-900">훈련생</h3>
+          <p class="mt-2 text-sm text-slate-600 leading-relaxed break-keep">요구에서 배포까지 혼자 완결하는 훈련. 회차마다 난이도는 오르고 도움은 줄어듭니다.</p>
+          <p class="mt-4 inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-mono text-slate-600">수업료</p>
+        </div>
+        <!-- 관문 -->
+        <div class="rank-step flex lg:flex-col items-center justify-center gap-3 py-4 lg:py-0 lg:px-2">
+          <div class="gate-pulse h-16 w-16 rounded-full bg-brand-500 text-white flex items-center justify-center">
+            <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+          <p class="font-mono text-[11px] tracking-[0.2em] text-brand-700 text-center">관문<br /><span class="text-slate-400">우리의 승인</span></p>
+        </div>
+        <!-- 랜서 -->
+        <div class="rank-step rounded-2xl border border-brand-300 bg-brand-50 p-6">
+          <p class="font-mono text-[11px] tracking-[0.2em] text-brand-500">03</p>
+          <h3 class="mt-2 text-xl font-bold text-slate-900">랜서</h3>
+          <p class="mt-2 text-sm text-slate-700 leading-relaxed break-keep">실전 투입. 베테랑이 함께 가고, 검수의 밀도가 낮아지는 만큼 올라갑니다.</p>
+          <p class="mt-4 inline-flex rounded-full bg-brand-500 px-2.5 py-1 text-[11px] font-mono text-white">수익배분 · 계약</p>
+        </div>
+        <!-- 에이전트 -->
+        <div class="rank-step rounded-2xl border border-brand-400 bg-brand-500 p-6 text-white shadow-glow">
+          <p class="font-mono text-[11px] tracking-[0.2em] text-brand-100">04</p>
+          <h3 class="mt-2 text-xl font-bold">에이전트</h3>
+          <p class="mt-2 text-sm text-brand-50 leading-relaxed break-keep">면허를 받은 일당백. 혼자 임무를 맡고, 이름이 드러나고, 진정한 디지털 노마드가 됩니다.</p>
+          <p class="mt-4 inline-flex rounded-full bg-white/20 px-2.5 py-1 text-[11px] font-mono">수익배분 · 면허</p>
+        </div>
+      </div>
+
+      <p class="mt-8 text-center text-sm text-slate-500 break-keep">
+        강등은 없습니다. 정체만 있습니다 — 정체가 길어지면 우리가 못 가르친 것일 수 있다는 전제로 봅니다.
+      </p>
+    </section>
+
+    <!-- ============================================================
+         4. 보증 공식 (중심) — 검증받은 학생 + 베테랑 + AI Agent = 보증된 품질
+         ============================================================ -->
+    <section class="mx-auto max-w-[1440px] px-6 lg:px-10 py-6">
+      <div class="relative rounded-3xl overflow-hidden bg-[#0c0c0f] border border-white/10 px-6 sm:px-12 lg:px-20 py-16 sm:py-24">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[900px] rounded-full bg-brand-500/15 blur-[140px]"></div>
+        <div class="relative">
+          <p class="font-mono text-xs tracking-[0.25em] text-brand-300 text-center">THE ONLY GATE</p>
+          <h2 class="mt-4 text-center text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight break-keep">
+            어느 하나만으로는<br class="sm:hidden" /> 보증이 되지 않습니다.
+          </h2>
+
+          <!-- 공식 -->
+          <div class="mt-14 grid md:grid-cols-[1fr_auto_1fr_auto_1fr] gap-4 md:gap-3 items-center">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6 text-center">
+              <p class="font-mono text-[11px] tracking-[0.2em] text-slate-400">VERIFIED</p>
+              <p class="mt-2 text-xl sm:text-2xl font-bold text-white">검증받은 학생</p>
+              <p class="mt-2 text-sm text-slate-400 break-keep">혼자면 프리랜서 플랫폼과 같습니다.</p>
+            </div>
+            <p class="formula-plus text-4xl text-brand-300 text-center">+</p>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6 text-center">
+              <p class="font-mono text-[11px] tracking-[0.2em] text-slate-400">VETERAN</p>
+              <p class="mt-2 text-xl sm:text-2xl font-bold text-white">회사 내부의 베테랑</p>
+              <p class="mt-2 text-sm text-slate-400 break-keep">혼자면 그냥 외주입니다.</p>
+            </div>
+            <p class="formula-plus text-4xl text-brand-300 text-center">+</p>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6 text-center">
+              <p class="font-mono text-[11px] tracking-[0.2em] text-slate-400">AI AGENT</p>
+              <p class="mt-2 text-xl sm:text-2xl font-bold text-white">AI Agent</p>
+              <p class="mt-2 text-sm text-slate-400 break-keep">혼자면 아무도 책임지지 않습니다.</p>
+            </div>
+          </div>
+
+          <div class="mt-6 flex flex-col items-center gap-3">
+            <svg class="h-8 w-8 text-brand-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16m-6-6 6 6 6-6"/></svg>
+            <div class="rounded-2xl border border-brand-400/50 bg-brand-500/15 px-8 py-6 text-center">
+              <p class="font-mono text-[11px] tracking-[0.2em] text-brand-300">GUARANTEED</p>
+              <p class="mt-2 text-2xl sm:text-3xl font-bold text-white break-keep">기업이 원하는 품질을 보증합니다.</p>
+            </div>
+          </div>
+
+          <p class="mt-12 mx-auto max-w-3xl text-center text-base sm:text-lg text-slate-300 leading-relaxed break-keep">
+            셋을 한 팀으로 묶어 우리 이름으로 내보냅니다. 코드는 AI가 상당 부분 쓰고, 판단은 베테랑이 하고, 성장은 학생이 합니다.
+            우리가 파는 것은 개발이 아니라 <span class="text-white font-semibold">책임과 검증</span>입니다 — 그래서 이곳이 유일한 길목입니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         5. 구독 (기업) — 채용 vs 구독
+         ============================================================ -->
+    <section class="mx-auto max-w-[1440px] px-6 lg:px-10 py-20 sm:py-28">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+        <div class="lg:col-span-5">
+          <p class="font-mono text-xs tracking-[0.25em] text-brand-600">FOR BUSINESS</p>
+          <h2 class="mt-4 text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight leading-tight break-keep">
+            신입 한 명을 뽑는 대신,<br class="hidden sm:block" />
+            <span class="text-brand-600">개발팀을 구독</span>하세요.
+          </h2>
+          <p class="mt-6 text-base sm:text-lg text-slate-600 leading-relaxed break-keep">
+            대졸초임 연봉 수준의 예산으로 주니어 한 명을 뽑으면 품질은 복불복이고, 퇴사하면 처음부터입니다.
+            같은 예산으로 검수까지 끝난 결과물을 받으세요. 물어볼 사람이 있고, 자잘한 것은 그냥 처리되고, 끝나도 맥락이 남습니다.
+          </p>
+          <p class="mt-4 text-sm text-slate-500 break-keep">검수를 통과하지 못하면 납품하지 않습니다. 이것이 관문의 기준과 같은 문장입니다.</p>
+        </div>
+        <div class="lg:col-span-7">
+          <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
+            <table class="w-full text-sm sm:text-base">
+              <thead>
+                <tr class="border-b border-slate-200">
+                  <th class="px-5 py-4 text-left font-mono text-xs tracking-[0.2em] text-slate-400 font-normal"></th>
+                  <th class="px-5 py-4 text-left font-semibold text-slate-500">주니어 채용</th>
+                  <th class="px-5 py-4 text-left font-semibold text-brand-700 bg-brand-50">개발팀 구독</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr>
+                  <td class="px-5 py-4 text-slate-500">품질</td>
+                  <td class="px-5 py-4 text-slate-600 break-keep">뽑아봐야 안다</td>
+                  <td class="px-5 py-4 text-slate-900 bg-brand-50/50 break-keep">베테랑 검수를 통과한 것만 받는다</td>
+                </tr>
+                <tr>
+                  <td class="px-5 py-4 text-slate-500">사람이 나가면</td>
+                  <td class="px-5 py-4 text-slate-600 break-keep">처음부터 다시</td>
+                  <td class="px-5 py-4 text-slate-900 bg-brand-50/50 break-keep">팀이 남고, 맥락이 남는다</td>
+                </tr>
+                <tr>
+                  <td class="px-5 py-4 text-slate-500">고용 리스크</td>
+                  <td class="px-5 py-4 text-slate-600 break-keep">회사가 진다</td>
+                  <td class="px-5 py-4 text-slate-900 bg-brand-50/50 break-keep">우리가 진다</td>
+                </tr>
+                <tr>
+                  <td class="px-5 py-4 text-slate-500">막혔을 때</td>
+                  <td class="px-5 py-4 text-slate-600 break-keep">혼자 헤맨다</td>
+                  <td class="px-5 py-4 text-slate-900 bg-brand-50/50 break-keep">베테랑과 AI Agent가 뒤에 있다</td>
+                </tr>
+                <tr>
+                  <td class="px-5 py-4 text-slate-500">그리고</td>
+                  <td class="px-5 py-4 text-slate-600 break-keep">—</td>
+                  <td class="px-5 py-4 text-slate-900 bg-brand-50/50 break-keep">한 청년이 세상으로 나오는 길에 함께한다</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mt-4 text-xs text-slate-400">구독의 범위와 조건은 상담에서 정합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         6. 네트워크 — 에이전트 풀 ↔ 여러 기업, 동참 초대
+         ============================================================ -->
+    <section class="mx-auto max-w-[1440px] px-6 lg:px-10 py-20 sm:py-28 border-t border-slate-200">
+      <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div class="order-2 lg:order-1">
+          <svg viewBox="0 0 560 360" class="w-full h-auto" role="img" aria-label="에이전시를 가운데 두고 에이전트들이 여러 기업으로 연결되는 그림">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3ecf8e"/><stop offset="1" stop-color="#0e9261"/></linearGradient>
+            </defs>
+            <!-- 연결선 -->
+            <g stroke="#18b476" stroke-width="2" fill="none" opacity=".7">
+              <path class="net-line" d="M280 180 C 200 180, 160 90, 90 70"/>
+              <path class="net-line" d="M280 180 C 200 180, 160 180, 90 180"/>
+              <path class="net-line" d="M280 180 C 200 180, 160 270, 90 290"/>
+              <path class="net-line" d="M280 180 C 360 180, 400 60, 470 50"/>
+              <path class="net-line" d="M280 180 C 360 180, 400 140, 470 140"/>
+              <path class="net-line" d="M280 180 C 360 180, 400 220, 470 220"/>
+              <path class="net-line" d="M280 180 C 360 180, 400 300, 470 310"/>
+            </g>
+            <!-- 에이전트(왼쪽 풀) -->
+            <g>
+              <circle cx="90" cy="70" r="22" fill="url(#g1)"/><text x="90" y="75" text-anchor="middle" font-size="11" font-family="ui-monospace,monospace" fill="#fff">AGENT</text>
+              <circle cx="90" cy="180" r="22" fill="url(#g1)"/><text x="90" y="185" text-anchor="middle" font-size="11" font-family="ui-monospace,monospace" fill="#fff">AGENT</text>
+              <circle cx="90" cy="290" r="22" fill="url(#g1)"/><text x="90" y="295" text-anchor="middle" font-size="11" font-family="ui-monospace,monospace" fill="#fff">AGENT</text>
+              <text x="90" y="335" text-anchor="middle" font-size="12" font-family="ui-monospace,monospace" fill="#64748b">일당백 에이전트</text>
+            </g>
+            <!-- 에이전시(가운데) -->
+            <g>
+              <rect x="220" y="140" width="120" height="80" rx="16" fill="#0c0c0f"/>
+              <text x="280" y="176" text-anchor="middle" font-size="12" font-family="ui-monospace,monospace" fill="#74e4ad" letter-spacing="2">RECODE</text>
+              <text x="280" y="196" text-anchor="middle" font-size="12" font-family="ui-monospace,monospace" fill="#fff" letter-spacing="2">AGENCY</text>
+              <text x="280" y="250" text-anchor="middle" font-size="12" font-family="ui-monospace,monospace" fill="#64748b">베테랑 + AI Agent</text>
+            </g>
+            <!-- 기업(오른쪽) -->
+            <g fill="#fff" stroke="#cbd5e1" stroke-width="1.5">
+              <rect x="440" y="30" width="60" height="40" rx="8"/>
+              <rect x="440" y="120" width="60" height="40" rx="8"/>
+              <rect x="440" y="200" width="60" height="40" rx="8"/>
+              <rect x="440" y="290" width="60" height="40" rx="8"/>
+            </g>
+            <g font-size="10" font-family="ui-monospace,monospace" fill="#475569" text-anchor="middle">
+              <text x="470" y="54">기업</text><text x="470" y="144">기업</text><text x="470" y="224">기업</text><text x="470" y="314">기업</text>
+            </g>
+            <text x="470" y="352" text-anchor="middle" font-size="12" font-family="ui-monospace,monospace" fill="#64748b">소상공인 · 중소기업</text>
+          </svg>
+        </div>
+        <div class="order-1 lg:order-2">
+          <p class="font-mono text-xs tracking-[0.25em] text-brand-600">THE NETWORK</p>
+          <h2 class="mt-4 text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight leading-tight break-keep">
+            수많은 일당백이<br class="hidden sm:block" />
+            수많은 회사의 일원이 됩니다.
+          </h2>
+          <p class="mt-6 text-base sm:text-lg text-slate-600 leading-relaxed break-keep">
+            한 회사에 한 명이 아닙니다. 에이전시가 관리하는 에이전트들이 여러 회사에 퍼져 있고,
+            각 회사는 그 일부를 구독합니다. 그 뒤에는 언제나 베테랑과 AI Agent가 있습니다.
+          </p>
+          <p class="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed break-keep">
+            그래서 기업에게 드리는 말은 부탁이 아니라 초대입니다 —
+            <span class="text-slate-900 font-semibold">청년이 세상으로 나오는 길에, 함께 서 주십시오.</span>
+            결과로 평가하시면 됩니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         7. 이중 CTA
+         ============================================================ -->
+    <section class="mx-auto max-w-[1440px] px-6 lg:px-10 pb-16">
+      <div class="grid md:grid-cols-2 gap-4 sm:gap-6">
+        <div class="relative rounded-3xl overflow-hidden bg-[#0c0c0f] border border-white/10 p-8 sm:p-12">
+          <div class="absolute -top-20 -right-20 h-[300px] w-[300px] rounded-full bg-brand-500/25 blur-[100px]"></div>
+          <div class="relative">
+            <p class="font-mono text-[11px] tracking-[0.25em] text-brand-300">FOR STUDENTS</p>
+            <h3 class="mt-3 text-2xl sm:text-3xl font-bold text-white break-keep">사다리의 첫 칸을 보세요.</h3>
+            <p class="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed break-keep">커리큘럼, 관문의 기준, 등급이 전부 공개돼 있습니다. 어디까지 올라갈 수 있는지 먼저 확인하세요.</p>
+            <a href="https://student.recode.ai.kr" class="mt-7 inline-flex items-center gap-2 rounded-full bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-400 transition-colors">
+              학생 페이지로
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="relative rounded-3xl overflow-hidden bg-white border border-slate-200 p-8 sm:p-12">
+          <p class="font-mono text-[11px] tracking-[0.25em] text-slate-500">FOR BUSINESS</p>
+          <h3 class="mt-3 text-2xl sm:text-3xl font-bold text-slate-900 break-keep">개발팀, 빌려보실래요?</h3>
+          <p class="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed break-keep">사례와 진행 방식을 보고, 우리 예산으로 되는지 부담 없이 물어보세요. 검수를 통과한 것만 납품합니다.</p>
+          <a href="https://business.recode.ai.kr" target="_blank" rel="noopener" class="mt-7 inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-700 transition-colors">
+            기업 페이지로
+            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- @partial:footer -->
+  <footer class="border-t border-slate-200">
+    <div class="mx-auto max-w-[1440px] px-6 lg:px-10 pt-14 pb-8">
+      <p class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">RECODE</p>
+
+      <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-8 border-t border-slate-200 pt-10">
+        <div>
+          <p class="text-sm font-semibold text-slate-900">훈련 코스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#lang" class="hover:text-slate-900 transition-colors">Language</a></li>
+            <li><a href="../index.html#algo" class="hover:text-slate-900 transition-colors">Algorithm</a></li>
+            <li><a href="../index.html#web" class="hover:text-slate-900 transition-colors">Web &amp; WebApp</a></li>
+            <li><a href="../index.html#game" class="hover:text-slate-900 transition-colors">Unity</a></li>
+            <li><a href="../index.html#agent-ai" class="hover:text-slate-900 transition-colors">Agent AI</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">회사</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#philosophy" class="hover:text-slate-900 transition-colors">교육 철학</a></li>
+            <li><a href="about.html" class="hover:text-slate-900 transition-colors">소개</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">모집</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="../index.html#cta" class="hover:text-slate-900 transition-colors">1:1 상담 신청</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">리소스</p>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="graffiti.html" class="hover:text-slate-900 transition-colors">원장님의 낙서</a></li>
+            <li><a href="#" class="hover:text-slate-900 transition-colors">문의</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 text-center">
+        © 2026 Recode Coding. AI시대 프로그래밍 연구소.
+      </p>
+    </div>
+  </footer>
+  <!-- /@partial:footer -->
+
+  <script src="../assets/js/mobile-menu.js" defer></script>
+</body>
+</html>
