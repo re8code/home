@@ -5,7 +5,7 @@
 
 ## 1. 새 세션에서 할 일 (순서대로)
 
-1. **새 저장소 생성** — `~/recode-ai/<이름>` (이름·주소는 미정, 회의록 §5 미결). 형제 저장소와 같은 관례로 `dev` 브랜치, `vX.XX` 커밋(v0.01부터).
+1. **새 저장소 생성** — `~/recode-ai/mission` (서비스명·저장소명 **`mission`** 확정, 2026-10-18 — 007 은유: 프로젝트 = 임무, 훈련생은 "훈련 임무". 주소는 `mission.recode.ai.kr` 예정). 형제 저장소와 같은 관례로 `dev` 브랜치, `vX.XX` 커밋(v0.01부터).
 2. **이 폴더의 파일 3개를 새 저장소로 복사** — 권장 위치: `report/2026-10-18-project-system-meeting.md`, `report/2026-10-18-requirements-gaps.md`, 이 README는 복사하지 않아도 된다.
 3. **새 세션의 첫 메시지** 예시:
    > `report/2026-10-18-project-system-meeting.md`와 `report/2026-10-18-requirements-gaps.md`를 읽고 시작하자. `home` 세션에서 한 회의의 연속이다. 형제 저장소(`../agency`·`../recode-db`·`../recodemate`)는 읽기만 한다.
