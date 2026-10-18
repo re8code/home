@@ -118,5 +118,5 @@
 - **익명**(§3) · **지어내지 않는다**(§5 ③).
 
 ### 9-6. 순서와 현재 단계
-`student` 먼저 → 이관 → 마지막에 `home`을 대문으로. **`home`을 먼저 깎지 않는다**(빈 집 방지). 지금 이 저장소에서는 문서 기록(완료)과 `src/mockup.html` 시안까지만 하고 `index.html`은 손대지 않는다 — `DEV_PLAN.md` Phase 5.
+~~`student` 먼저 → 이관 → 마지막에 `home`을 대문으로.~~ **2026-10-18 ADR D7로 변경** — 이 저장소가 그대로 `student`(`student.recode.ai.kr`)가 되고, 대문은 새 저장소로 빼서 `recode.ai.kr`을 가져간다. 낙서장은 대문으로 간다. 빈 집 문제는 학습 콘텐츠가 처음부터 `student` 주소에 살아 있으므로 생기지 않는다. 아래는 D7 이전의 서술: 지금 이 저장소에서는 문서 기록(완료)과 `src/mockup.html` 시안까지만 하고 `index.html`은 손대지 않는다 — `DEV_PLAN.md` Phase 5.
 

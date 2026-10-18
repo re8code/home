@@ -5,6 +5,7 @@
 
 ## 1. 새 세션에서 할 일 (순서대로)
 
+0. **GitHub Organization이 먼저** — `mission`은 개인 계정 `re8code`가 아니라 조직 안에 만든다(조직 이름 후보 `recode-ai`, 소유자 `re8code` + 보조 1명 — `home` ADR D7). 조직은 사용자가 웹에서 직접 만든다.
 1. **새 저장소 생성** — `~/recode-ai/mission` (서비스명·저장소명 **`mission`** 확정, 2026-10-18 — 007 은유: 프로젝트 = 임무, 훈련생은 "훈련 임무". 주소는 `mission.recode.ai.kr` 예정). 형제 저장소와 같은 관례로 `dev` 브랜치, `vX.XX` 커밋(v0.01부터).
 2. **이 폴더의 파일 3개를 새 저장소로 복사** — 권장 위치: `report/2026-10-18-project-system-meeting.md`, `report/2026-10-18-requirements-gaps.md`, 이 README는 복사하지 않아도 된다.
 3. **새 세션의 첫 메시지** 예시:
@@ -42,7 +43,7 @@
 | `recode-db` | 서비스↔등급 표: VOD 추가, 훈련·실전 운영 서비스 → 하나의 프로젝트 관리 서비스(계약·정산·민감정보는 별도 스키마). 8단계 `core` 설계 입력 |
 | `recodemate` | 훈련생 6개월 수강권 상품(200만 원 + VAT). 학생 수강권과의 기간 겹침 금지 제약 → 승급 시 처리 방식 결정 |
 | `student` (미생성) | VOD(학생·훈련생·랜서 O, 에이전트 X), 학습 콘텐츠 이관(home Phase 5), 학생 관찰 기록을 승급 화면에 제공 |
-| `home` | 옮긴 뒤 `_handoff/` 삭제 |
+| `home` (→ `student`로 이름 변경 예정, D7) | 옮긴 뒤 `_handoff/` 삭제. 저장소 재편 일정은 `home` `docs/DEV_PLAN.md` Phase 5 A~F |
 
 ## 6. 이 세션의 상태
 

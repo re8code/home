@@ -78,19 +78,22 @@
 - 목업 캔버스(Artifact): `https://claude.ai/code/artifact/26a54fbd-5ba8-45b0-9cb5-c3e06c7df4d3` — "새 방향" 페이지에 살아 있는 푸터·터미널 푸터, "이전 시안" 페이지에 현재 푸터와 A~D안. **이 링크는 없어져도 무방하다** — 채택안을 재현하는 데 필요한 애니메이션 규칙은 `report/2026-08-31-footer-direction.md` §5에 옮겨 뒀다.
 - 구현은 내용이 정해진 뒤 `partials/footer.html` 하나만 고치면 30장에 반영된다.
 
-### Phase 5 — 대문 재편 (결정 완료 · 실행 전 — 2026-09-13)
+### Phase 5 — 대문 재편 (결정 완료 · 실행 전 — 2026-09-13, **2026-10-18 D7로 실행 방식 변경**)
 
 - **결정**: `recode.ai.kr`을 학습 콘텐츠 허브에서 **학생·기업을 잇는 대문 1장**으로 바꾼다. 학습 콘텐츠 24장·about 레이어·OJ/Class/VOD 링크는 `student.recode.ai.kr`(가칭, **별도 저장소·별도 프로젝트**)로 나간다. 무엇을 왜 — `PRD.md` §9, 근거와 트레이드오프 — `ARCHITECTURE.md` ADR **D6**(형제 저장소 `../business` D30의 개정). 논의 경위 — `report/2026-09-13-landing-restructure-discussion.md`.
 - **순서가 곧 계획이다** — `home`을 먼저 깎으면 그 사이 `recode.ai.kr`이 빈 집이 되므로:
   1. ✅ **문서 기록** (이 항목, v0.99)
   2. 🔄 **`src/mockup.html` 시안** — **1차 제작 완료(2026-09-13, v0.100)**: 7섹션(히어로는 `학생 문 → [RECODE AGENCY 허브] → 기업 문` 3열로 "우리가 중간 허브"를 구조로 표현, 두 문 모두 실제 링크 — `student.recode.ai.kr`(가칭, 미개통)·`business.recode.ai.kr`). 1440px claude-in-chrome·390px CDP 검증(오버플로우 0). GNB·푸터는 정본 마커 그대로(대문용 GNB는 5-5에서). **사용자 1차 검토 완료(2026-09-13, v0.104)** — GNB 축소·타이틀 줄간격 반영. **문구는 조정이 필요하다고 판단했으나 `student` 프로젝트를 먼저 완료한 뒤 다듬기로 결정** — 이 단계는 여기서 멈추고 5-3(다른 저장소)으로 넘어간다. 다시 열 때 볼 것: 카피 전반(`PRD.md` §9-5 제약 유지), 제목들의 `leading-tight`가 반응형 폰트에 덮이는 문제(DEVLOG v0.102). 원래 계획: 대문 골격(`PRD.md` §9-4) 8섹션을 `index.html` 무손상으로 제작, 로컬 서버 + claude-in-chrome으로 함께 다듬는다. 1차 리뉴얼 때 `mockup.html`에서 반복 검토 후 승격·삭제한 방식과 같다(`PRD.md` §1). **카피는 `PRD.md` §9-5의 제약 안에서만.** 시안 단계에서는 CTA 링크를 `student` 자리에 `#`로 두고, 도메인 확정 후 교체.
-  3. ☐ **(다른 저장소) `student` 프로젝트 착수** — 이 저장소의 정본 `partials/`·`base.css`·`tailwind-config.js` 패턴을 복제해 공개 층부터. **이 저장소에서는 하지 않는다.** 이 단계가 끝나야 4로 간다.
-  4. ☐ **이관** — 24장 + `about.html` 레이어 + 낙서장(소속 확정 시) → `student`. 이 저장소에서는 옮겨간 파일 삭제, 내부 링크 정리, `check-device.sh`의 "30장" 계수·카드 연결 검사 갱신. 옮겨간 자리에 리다이렉트 스텁은 **두지 않는다**(사용자 결정 2026-09-13 — 아직 홍보한 적이 없어 외부 유입 링크가 없다). 대문 GNB(`header-gate.html`)에는 OJ·Class 링크가 없으므로 **이 단계 전에 `home`을 깎으면 그 두 서비스로 가는 경로가 사이트에서 사라진다** — 순서를 지키는 실제 이유.
-  5. ☐ **`mockup.html` → `index.html` 승격** + GNB 재편(두 입구 중심 — 지금의 서비스 링크 5개는 `student`가 가져간다) + `CLAUDE.md` 페이지 구조 절 축소(대부분이 `student` 쪽 서술이 된다).
-  6. ☐ **`main` 병합·배포** — 이 시점에 `ARCHITECTURE.md` §2~§6·`ACCOUNT_COST.md`(새 서브도메인)·`CHANGE_DEVICE.md`(페이지 수 등 스크립트 기준값) 갱신.
+  3~6. ~~`student` 신규 저장소 착수 → 이관 → `mockup.html` 승격 → 배포~~ — **2026-10-18 ADR D7로 대체.** 이 저장소가 `student`가 되고 대문을 새 저장소로 뺀다(움직이는 양이 적은 쪽을 옮긴다). 새 순서:
+  - ☐ **A. GitHub Organization 생성** — 사용자가 웹에서 직접(Free 플랜). 이름 후보 `recode-ai`, 소유자 `re8code` + 보조 1명.
+  - ☐ **B. 새 대문 저장소** (조직 안, 이름 미정 — `home`을 쓰려면 C의 이름 변경이 먼저) — `src/mockup.html` → `index.html`, `header-gate.html` → `header.html`, 공통 자산(`base.css`·`tailwind-config.js`·`mobile-menu.js`·`build-partials.py`·로고·파비콘·OG 이미지) 복사, **낙서장 이전**(`graffiti*` 3장 · `firebase-*.js`·`admin-auth.js` · `firestore.rules` · `check-device.sh` Firebase 대조 · D4·D5 문서). 회사 소개는 에이전시 소개로 새로 쓴다. 문구 다듬기(5-2에서 미뤄 둔 것)도 여기서. Pages는 도메인 없이 먼저 켠다.
+  - ☐ **C. 이 저장소 → `student`** — GitHub 저장소 이름 변경(`re8code/home` → `student`, 이후 조직으로 이전은 급하지 않음), 로컬 폴더 `~/recode-ai/student`로 변경 + 장비마다 `CHANGE_DEVICE.md` §4 경로 키 정리.
+  - ☐ **D. 도메인 전환** — 닷홈 DNS에 `student.recode.ai.kr` 추가 → 이 저장소 `CNAME`을 `student.recode.ai.kr`로 → 새 대문 저장소에 `recode.ai.kr` 연결. HTTPS 재발급 공백 감수(홍보 전).
+  - ☐ **E. `student` 정리** — `mockup.html`·`header-gate.html`·낙서장 관련 파일 삭제, `og:url` 등 `https://recode.ai.kr/...` 하드코딩을 `student.recode.ai.kr`로, `check-device.sh` 페이지 계수·검사 갱신, 문서 7종을 `student` 기준으로 재작성(D6·D7은 이력으로 유지), `_handoff/` 삭제(`mission`으로 옮긴 뒤).
+  - ☐ **F. `agency` 저장소** — 그쪽 세션에서 D7(칸마다 별도 사이트) 개정, 사다리 개요를 새 대문으로 흡수하고 보관하는 안 검토.
 - **`business` 저장소에 남길 것**: D30·`Philosophy.md` §6·`tasks/2026-09-11-학생축-논의.md`에 "D6로 개정됨" 메모 — 여기서 못 고치므로 그쪽 세션에서. 문구는 `report/2026-09-13-landing-restructure-discussion.md` §6.
 - **Phase 4(푸터)와의 관계**: 살아 있는 푸터(정렬 시각화)는 "시각화 14종이 이 사이트만의 자산"이라는 논지였는데, 그 14종이 `student`로 나가면 푸터의 논지도 `student`로 따라간다. **대문의 푸터는 Phase 5-5에서 새로 정한다** — Phase 4의 확정 방향은 `student` 쪽에 넘기는 것으로 보되, 최종 판단은 그때.
-- **미정**: 낙서장 소속 · `student` 도메인 확정 · 대문에 남길 GNB 항목 · 실존 랜서 사례 소재.
+- **미정**: ~~낙서장 소속~~(D7: 새 대문) · ~~`student` 도메인~~(D7: `student.recode.ai.kr`) · ~~대문 GNB~~(v0.103 확정) · 새 대문 저장소 이름 · GitHub 조직 이름 · 실존 랜서 사례 소재.
 
 ## 4. 작업 관례
 - 각 Phase 착수 시 `../tasks/*.md`에 작업 지시 기록, 완료 후 `../report/YYYY-MM-DD-*.md`에 진행 보고서 작성 (기존 관례 유지).
